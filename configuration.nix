@@ -152,6 +152,7 @@
       rpi-imager
       alejandra
       flashrom
+      gh
 
       # Gpg keys
       gnupg
