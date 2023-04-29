@@ -130,6 +130,7 @@
       gimp
       krita
       rawtherapee
+      vlc
 
       # Game
       prismlauncher
@@ -149,7 +150,7 @@
       git
       direnv
       rpi-imager
-      nixpkgs-fmt
+      alejandra
       flashrom
 
       # Gpg keys
