@@ -153,6 +153,7 @@
       alejandra
       flashrom
       gh
+      dbeaver
 
       # Gpg keys
       gnupg
