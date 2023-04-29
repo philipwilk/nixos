@@ -159,6 +159,9 @@
       pinentry-gnome
     ];
   };
+  
+  # Enable virtualisation w/ podman
+  virtualisation.podman.enable = true;
 
   # Ddcutil config
   #hardware.i2c.enable = true;
