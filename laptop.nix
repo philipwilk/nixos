@@ -1,14 +1,17 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: let
+  unstable = import <nixos-unstable> {config = config.nixpkgs.config;};
+in {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -61,7 +64,7 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   # Remove certain gnome apps
-  environment.gnome.excludePackages = (with pkgs; [
+  environment.gnome.excludePackages = with pkgs; [
     gnome-tour
     gnome-photos
     gnome.gnome-maps
@@ -74,10 +77,10 @@
     gnome.gnome-calendar
     gnome.yelp
     gnome-text-editor
-  ]);
-  
+  ];
+
   # Yeet xterm
-  services.xserver.excludePackages = [ pkgs.xterm ];
+  services.xserver.excludePackages = [pkgs.xterm];
 
   # Run Nix garbage collection
   nix.gc.automatic = true;
@@ -116,17 +119,27 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Firefox nightly overlay
+  nixpkgs.overlays =
+  let
+    # Change this to a rev sha to pin
+    moz-rev = "master";
+    moz-url = builtins.fetchTarball { url = "https://github.com/mozilla/nixpkgs-mozilla/archive/${moz-rev}.tar.gz";};
+    nightlyOverlay = (import "${moz-url}/firefox-overlay.nix");
+  in [
+    nightlyOverlay
+  ];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.philip = {
     isNormalUser = true;
     description = "philip";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel" "input" "dialout"];
     packages = with pkgs; [
-      firefox
-
+      latest.firefox-nightly-bin
       armcord
       neofetch
-      heimdall
+      hw-probe
 
       # Media manipulation
       obs-studio
@@ -145,17 +158,26 @@
       gnomeExtensions.gsnap
       gnomeExtensions.appindicator
       gnomeExtensions.emoji-selector
-      #gnomeExtensions.brightness-control-using-ddcutil
       gnome.gnome-tweaks
 
       # Development
-      vscode
+      unstable.vscode
       git
       direnv
       rpi-imager
       alejandra
+      nixfmt
+      nixpkgs-fmt
       flashrom
       gh
+      minicom
+      vim
+      emacs
+      nixpkgs-review
+
+      # Android
+      heimdall
+      pmbootstrap
 
       # Gpg keys
       gnupg
@@ -164,10 +186,10 @@
   };
 
   # steam firewall settings
-  programs.steam = {    
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
   };
 
   # Enable virtualisation w/ podman
@@ -187,8 +209,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -196,7 +218,6 @@
   # programs.mtr.enable = true;
   services.pcscd.enable = true;
   programs.gnupg.agent = {
-    enable = true;
     enableSSHSupport = true;
   };
 
@@ -227,8 +248,14 @@
   #system.autoUpgrade.allowReboot = true;
 
   # nixos experimental features
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Nixos enable roation
   hardware.sensor.iio.enable = true;
+  
+  # Tlp power management daemon
+  services.tlp.enable = true;
+  services.power-profiles-daemon.enable = false;
+  # "Deep" sleep to MEMORY NOT IDLE
+  boot.kernelParams = [ "mem_sleep_default=deep" ];
 }
