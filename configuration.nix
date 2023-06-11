@@ -3,11 +3,13 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
-
+let
+  unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
+in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
@@ -19,6 +21,15 @@
   # Latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Enable tablet driver
+  hardware.opentabletdriver.enable = true;
+  services.udev.extraRules = ''
+    KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
+    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="256c", ATTRS{idProduct}=="0061", MODE="0666"
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="256c", ATTRS{idProduct}=="0061", MODE="0666"
+    SUBSYSTEM=="input", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0094", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+  '';
+
   networking.hostName = "nixowos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -28,7 +39,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
+  
   # Set your time zone.
   time.timeZone = "Europe/London";
 
@@ -72,7 +83,7 @@
     gnome.yelp
     gnome-text-editor
   ]);
-  
+
   # Yeet xterm
   services.xserver.excludePackages = [ pkgs.xterm ];
 
@@ -113,24 +124,36 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Firefox nightly overlay
+  nixpkgs.overlays =
+  let
+    # Change this to a rev sha to pin
+    moz-rev = "master";
+    moz-url = builtins.fetchTarball { url = "https://github.com/mozilla/nixpkgs-mozilla/archive/${moz-rev}.tar.gz";};
+    nightlyOverlay = (import "${moz-url}/firefox-overlay.nix");
+  in [
+    nightlyOverlay
+  ];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.philip = {
     isNormalUser = true;
     description = "philip";
-    extraGroups = [ "networkmanager" "wheel" "i2c" "corectrl"];
+    extraGroups = [ "networkmanager" "wheel" "i2c" "corectrl" "adbusers" ];
     packages = with pkgs; [
-      firefox
+      latest.firefox-nightly-bin 
       armcord
-      heimdall
       #ddcutil
       neofetch
- 
+      via
+
       # Media manipulation
       obs-studio
       gimp
       krita
       rawtherapee
       vlc
+      ardour
 
       # Game
       prismlauncher
@@ -146,32 +169,44 @@
       gnome.gnome-tweaks
 
       # Development
-      vscode
+      unstable.vscode
+      emacs
       git
       direnv
       rpi-imager
       alejandra
+      nixfmt
+      nixpkgs-fmt
       flashrom
       gh
       dbeaver
+      nixpkgs-review
+      vim
+
+      # Android
+      heimdall
+      pmbootstrap
 
       # Gpg keys
       gnupg
       pinentry-gnome
     ];
   };
-  
+
   # Enable virtualisation w/ podman
   virtualisation.podman.enable = true;
+
+  # Enable adb
+  programs.adb.enable = true;
 
   # Ddcutil config
   #hardware.i2c.enable = true;
 
   # steam firewall settings
-  programs.steam = {    
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
   };
 
   # Allow unfree packages
@@ -180,8 +215,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
   ];
   # Enable opencl on my amd graphics cards
   hardware.opengl.extraPackages = with pkgs; [
@@ -215,7 +250,7 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
-  
+
   # Enable flatpak
   services.flatpak.enable = true;
 
@@ -225,7 +260,7 @@
 
   # nixos experimental features
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
+
   # Update cpu microcode
   hardware.cpu.amd.updateMicrocode = true;
   # enable amd sev device
@@ -240,4 +275,20 @@
 
   # Cpu governor
   powerManagement.cpuFreqGovernor = "ondemand";
+
+  # Enable wayland "support"
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  # Enable tlp power management
+  services.tlp.enable = true;
+  services.power-profiles-daemon.enable = false;
+ 
+  # Enable fast bluetooth pairing
+  hardware.bluetooth.settings = {
+    General = {
+      FastConnectable = true;
+      ReconnectAttempts=7;
+      ReconnectIntervals="1, 2, 3";
+    };    
+  };
 }
