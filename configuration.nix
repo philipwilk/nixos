@@ -20,6 +20,7 @@ in
 
   # Latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [ "amd_pstate=guided" ];
 
   # Enable tablet driver
   hardware.opentabletdriver.enable = true;
@@ -33,13 +34,9 @@ in
   networking.hostName = "nixowos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Enable networking
   networking.networkmanager.enable = true;
-  
+
   # Set your time zone.
   time.timeZone = "Europe/London";
 
@@ -88,8 +85,11 @@ in
   services.xserver.excludePackages = [ pkgs.xterm ];
 
   # Run Nix garbage collection
-  nix.gc.automatic = true;
-  nix.gc.dates = "weekly";
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "-d --delete-older-than 14d";
+  };
 
   # Configure keymap in X11
   services.xserver = {
@@ -113,27 +113,10 @@ in
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
-  # Firefox nightly overlay
-  nixpkgs.overlays =
-  let
-    # Change this to a rev sha to pin
-    moz-rev = "master";
-    moz-url = builtins.fetchTarball { url = "https://github.com/mozilla/nixpkgs-mozilla/archive/${moz-rev}.tar.gz";};
-    nightlyOverlay = (import "${moz-url}/firefox-overlay.nix");
-  in [
-    nightlyOverlay
-  ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.philip = {
@@ -141,8 +124,7 @@ in
     description = "philip";
     extraGroups = [ "networkmanager" "wheel" "i2c" "corectrl" "adbusers" ];
     packages = with pkgs; [
-      latest.firefox-nightly-bin 
-      armcord
+      firefox-devedition
       #ddcutil
       neofetch
       via
@@ -165,31 +147,30 @@ in
       gnomeExtensions.gsnap
       gnomeExtensions.appindicator
       gnomeExtensions.emoji-selector
-      #gnomeExtensions.brightness-control-using-ddcutil
       gnome.gnome-tweaks
 
       # Development
+      ## Editors 
       unstable.vscode
-      emacs
+      lapce
+      helix
+      ## Git
       git
+      gh
+      ## Others
       direnv
       rpi-imager
       alejandra
       nixfmt
       nixpkgs-fmt
       flashrom
-      gh
       dbeaver
       nixpkgs-review
-      vim
+      yubikey-touch-detector
 
       # Android
       heimdall
       pmbootstrap
-
-      # Gpg keys
-      gnupg
-      pinentry-gnome
     ];
   };
 
@@ -198,9 +179,6 @@ in
 
   # Enable adb
   programs.adb.enable = true;
-
-  # Ddcutil config
-  #hardware.i2c.enable = true;
 
   # steam firewall settings
   programs.steam = {
@@ -228,20 +206,14 @@ in
   # started in user sessions.
   #programs.mtr.enable = true;
   services.pcscd.enable = true;
-  programs.gnupg.agent = {
-    enableSSHSupport = true;
-  };
+  #programs.gnupg.agent = {
+  #  enableSSHSupport = true;
+  #};
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -279,16 +251,16 @@ in
   # Enable wayland "support"
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  # Enable tlp power management
-  services.tlp.enable = true;
-  services.power-profiles-daemon.enable = false;
- 
   # Enable fast bluetooth pairing
   hardware.bluetooth.settings = {
     General = {
       FastConnectable = true;
-      ReconnectAttempts=7;
-      ReconnectIntervals="1, 2, 3";
-    };    
+      ReconnectAttempts = 7;
+      ReconnectIntervals = "1, 2, 3";
+    };
+  };
+
+  services.openssh.settings = {
+    extraConfig = "+PubkeyAuthOptions verify-required+";
   };
 }
