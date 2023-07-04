@@ -160,8 +160,6 @@ in
       ## Others
       direnv
       rpi-imager
-      alejandra
-      nixfmt
       nixpkgs-fmt
       flashrom
       dbeaver
