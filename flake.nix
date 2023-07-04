@@ -16,7 +16,11 @@
       nixosConfigurations = {
         nixowos = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./machines/nixowos/configuration.nix ];
+          modules = [ ./machines/nixowos/configuration.nix ./machines/nix-settings.nix ./machines/uk-region.nix ./machines/workstation.nix ];
+        };
+        nixowos-laptop = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [ ./machines/nixowos-laptop/configuration.nix ./machines/nix-settings.nix ./machines/uk-region.nix ./machines/workstation.nix ];
         };
       };
     };
