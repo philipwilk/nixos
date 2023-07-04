@@ -1,4 +1,5 @@
-{ inputs
+{ nixpkgs
+, nixpkgs-unstable
 , lib
 , config
 , ...
@@ -11,8 +12,10 @@
   };
 
   nix = {
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+    registry = lib.mapAttrs (_: value: { flake = value; }) {
+      inherit nixpkgs nixpkgs-unstable;
+    };
+    nixPath = lib.mapAttrsToList (key: value: "${ key}=${ value. to. path}") config.nix.registry;
     settings = {
       experimental-features = "nix-command flakes auto-allocate-uids ca-derivations";
       auto-optimise-store = true;
