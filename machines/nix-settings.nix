@@ -5,7 +5,13 @@
 , ...
 }: {
   nixpkgs = {
-    overlays = [ ];
+    overlays =
+      let
+        overlay = _: _: {
+          unstable = import nixpkgs-unstable { system = "x86_64-linux"; inherit (config.nixpkgs) config; };
+        };
+      in
+      [ overlay ];
     config = {
       allowUnfree = true;
     };

@@ -1,7 +1,6 @@
 { pkgs
 , ...
 }: {
-
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -68,7 +67,7 @@
 
       # Development
       ## Editors
-      vscode
+      unstable.vscode
       lapce
       helix
       ## Git
