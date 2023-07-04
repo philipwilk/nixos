@@ -14,7 +14,7 @@
   };
 
   nix = {
-    registry = lib.MapAttrs (_: value: { flake = value; }) inputs;
+    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
     settings = {
       experimental-features = "nix-command flakes auto-allocate-uids ca-derivations";
@@ -32,7 +32,7 @@
       systemd-boot.enable = true;
       efi = {
         canTouchEfiVariables = true;
-        efiSysMountPoint = true;
+        efiSysMountPoint = "/boot/efi";
       };
     };
     kernelPackages = pkgs.linuxPackages_latest;
@@ -41,7 +41,7 @@
 
   networking = {
     hostName = "nixowos";
-    networkManager.enable = true;
+    networkmanager.enable = true;
   };
   time.timeZone = "Europe/London";
   i18n = {
@@ -133,13 +133,16 @@
         ## Git
         git
         gh
-        ## Others
-        direnv
-        rpi-imager
+        ## Nix
         nixpkgs-fmt
+        nixpkgs-review
+        nil
+        direnv
+
+        ## Others
+        rpi-imager
         flashrom
         dbeaver
-        nixpkgs-review
         yubikey-touch-detector
 
         # Android
