@@ -6,17 +6,18 @@
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    ...
-  } @ inputs: {
-    nixosConfigurations = {
-      "nixowos" = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-        modules = [./machines/${self.hostName}/configuration.nix];
+  outputs =
+    { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , ...
+    } @ inputs:
+    {
+      nixosConfigurations = {
+        nixowos = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [ ./machines/nixowos/configuration.nix ];
+        };
       };
     };
-  };
 }
