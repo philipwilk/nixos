@@ -4,6 +4,7 @@ let
 in
 {
   age.secrets.mail_cf_dns_key.file = ../../secrets/mail_cf_dns_key.age;
+  age.secrets.ldap_oldrtpw.file = ../../secrets/ldap_oldrtpw.age;
   services.openldap = {
     enable = true;
     urlList = [ "ldap:///" "ldaps:///" ];
@@ -39,7 +40,7 @@ in
 
           /* your admin account, do not use writeText on a production system */
           olcRootDN = "cn=admin,dc=fogbox,dc=uk";
-          olcRootPW.path = pkgs.writeText "olcRootPW" "pass";
+          olcRootPW = config.age.secrets.ldap_oldrtpw.path;
 
           olcAccess = [
             /* custom access rules for userPassword attributes */

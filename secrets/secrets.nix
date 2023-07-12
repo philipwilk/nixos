@@ -7,4 +7,5 @@ let
 in
 {
   "mail_cf_dns_key.age".publicKeys = [ nixos-thinkcentre-tiny ];
+  "ldap_oldrtpw.age".publicKeys = [ nixos-thinkcentre-tiny ];
 }
