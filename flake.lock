@@ -2,9 +2,33 @@
   "nodes": {
     "agenix": {
       "inputs": {
+        "agenix": "agenix_2",
+        "crane": "crane",
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1682237245,
+        "narHash": "sha256-xbBR7LNK+d5Yi/D6FXQGc1R6u2VV2nwr/Df5iaEbOEQ=",
+        "owner": "yaxitech",
+        "repo": "ragenix",
+        "rev": "281f68c3d477904f79ff1cd5807a8c226cd80a50",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yaxitech",
+        "repo": "ragenix",
+        "type": "github"
+      }
+    },
+    "agenix_2": {
+      "inputs": {
         "darwin": "darwin",
         "nixpkgs": [
-          "ragenix",
+          "agenix",
           "nixpkgs"
         ]
       },
@@ -26,15 +50,15 @@
       "inputs": {
         "flake-compat": "flake-compat",
         "flake-utils": [
-          "ragenix",
+          "agenix",
           "flake-utils"
         ],
         "nixpkgs": [
-          "ragenix",
+          "agenix",
           "nixpkgs"
         ],
         "rust-overlay": [
-          "ragenix",
+          "agenix",
           "rust-overlay"
         ]
       },
@@ -55,7 +79,7 @@
     "darwin": {
       "inputs": {
         "nixpkgs": [
-          "ragenix",
+          "agenix",
           "agenix",
           "nixpkgs"
         ]
@@ -139,45 +163,21 @@
         "type": "indirect"
       }
     },
-    "ragenix": {
-      "inputs": {
-        "agenix": "agenix",
-        "crane": "crane",
-        "flake-utils": "flake-utils",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay"
-      },
-      "locked": {
-        "lastModified": 1682237245,
-        "narHash": "sha256-xbBR7LNK+d5Yi/D6FXQGc1R6u2VV2nwr/Df5iaEbOEQ=",
-        "owner": "yaxitech",
-        "repo": "ragenix",
-        "rev": "281f68c3d477904f79ff1cd5807a8c226cd80a50",
-        "type": "github"
-      },
-      "original": {
-        "owner": "yaxitech",
-        "repo": "ragenix",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
+        "agenix": "agenix",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable",
-        "ragenix": "ragenix"
+        "nixpkgs-unstable": "nixpkgs-unstable"
       }
     },
     "rust-overlay": {
       "inputs": {
         "flake-utils": [
-          "ragenix",
+          "agenix",
           "flake-utils"
         ],
         "nixpkgs": [
-          "ragenix",
+          "agenix",
           "nixpkgs"
         ]
       },
