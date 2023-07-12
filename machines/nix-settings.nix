@@ -1,5 +1,6 @@
 { nixpkgs
 , nixpkgs-unstable
+, pkgs
 , lib
 , config
 , ...
@@ -33,6 +34,8 @@
       persistent = true;
     };
   };
+
+  environment.systemPackages = with pkgs; [ git ];
 
   system = {
     autoUpgrade.enable = true;
