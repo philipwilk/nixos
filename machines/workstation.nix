@@ -61,7 +61,6 @@
       lapce
       helix
       ## Git
-      git
       gh
       ## Nix
       nixpkgs-fmt
