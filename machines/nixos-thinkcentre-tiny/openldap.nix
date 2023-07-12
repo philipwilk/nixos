@@ -5,6 +5,7 @@ in
 {
   age.secrets.mail_cf_dns_key.file = ../../secrets/mail_cf_dns_key.age;
   age.secrets.ldap_oldrtpw.file = ../../secrets/ldap_oldrtpw.age;
+  age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
   services.openldap = {
     enable = true;
     urlList = [ "ldap:///" "ldaps:///" ];
