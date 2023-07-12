@@ -1,17 +1,7 @@
 { pkgs
+, agenix
 , ...
 }: {
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi = {
-        canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot/efi";
-      };
-    };
-    kernelPackages = pkgs.linuxPackages_latest;
-  };
-
   hardware = {
     opentabletdriver.enable = true;
     pulseaudio.enable = false;
@@ -78,6 +68,7 @@
       nixpkgs-review
       nil
       direnv
+      agenix.packages.x86_64-linux.default
       ## Databases
       dbeaver
       ## Others
