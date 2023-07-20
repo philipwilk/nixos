@@ -25,6 +25,8 @@
       gnome.gnome-calendar
       gnome.yelp
       gnome-text-editor
+      gnome.gnome-music
+      gnome.gnome-software
     ];
   };
 
