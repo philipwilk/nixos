@@ -35,6 +35,7 @@
       firefox-devedition
       neofetch
       minicom
+      thunderbirdPackages.thunderbird-115
 
       # Media manipulation
       obs-studio
