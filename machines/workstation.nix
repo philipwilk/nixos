@@ -37,8 +37,7 @@
       firefox-devedition
       neofetch
       minicom
-      thunderbirdPackages.thunderbird-115
-
+      unstable.thunderbird
       # Media manipulation
       obs-studio
       gimp
