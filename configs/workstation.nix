@@ -1,7 +1,11 @@
 { pkgs
 , agenix
+, config
 , ...
 }: {
+  age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
+  age.secrets.workstation_password.file = ../secrets/workstation_password.age;
+
   hardware = {
     opentabletdriver.enable = true;
     pulseaudio.enable = false;
@@ -33,6 +37,7 @@
   users.users.philip = {
     isNormalUser = true;
     extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" ];
+    passwordFile = config.age.secrets.workstation_password.path;
     packages = with pkgs; [
       firefox-devedition
       neofetch
@@ -140,7 +145,7 @@
       defaultFonts = {
         serif = [ "Noto Serif" "Noto Serif CJK" ];
         sansSerif = [ "Noto Sans" "Noto Sans CJK" ];
-        emoji = [ "Blobmoji" "Noto Color Emoji"];
+        emoji = [ "Blobmoji" "Noto Color Emoji" ];
         monospace = [ "Fira Code" ];
       };
     };
