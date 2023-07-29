@@ -120,4 +120,29 @@
       SUBSYSTEM=="input", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0094", ENV{LIBINPUT_IGNORE_DEVICE}="1"
     '';
   };
+
+  fonts = {
+    fonts = with pkgs; [
+      corefonts
+      noto-fonts-emoji-blob-bin
+      noto-fonts-emoji
+      noto-fonts
+      noto-fonts-extra
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      fira-code
+      fira-code-symbols
+    ];
+    fontDir.enable = true;
+    enableDefaultFonts = true;
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        serif = [ "Noto Serif" "Noto Serif CJK" ];
+        sansSerif = [ "Noto Sans" "Noto Sans CJK" ];
+        emoji = [ "Blobmoji" "Noto Color Emoji"];
+        monospace = [ "Fira Code" ];
+      };
+    };
+  };
 }
