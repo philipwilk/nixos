@@ -8,7 +8,7 @@ let
   servers = [ nixos-thinkcentre-tiny hp-dl380p-g8-LFF ];
 in
 {
-  "mail_cf_dns_key.age".publicKeys = servers;
+  "openldap_cloudflare_creds.age".publicKeys = servers;
   "ldap_oldrtpw.age".publicKeys = servers;
   "server_password.age".publicKeys = servers;
   "workstation_password.age".publicKeys = workstations;

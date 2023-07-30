@@ -3,7 +3,7 @@ let
   ldapname = "ldap.fogbox.uk";
 in
 {
-  age.secrets.mail_cf_dns_key.file = ../../../secrets/mail_cf_dns_key.age;
+  age.secrets.openldap_cloudflare_creds.file = ../../../secrets/openldap_cloudflare_creds.age;
   age.secrets.ldap_oldrtpw.file = ../../../secrets/ldap_oldrtpw.age;
   services.openldap = {
     enable = true;
@@ -70,7 +70,7 @@ in
       email = "wiryfuture@gmail.com";
       group = "certs";
       dnsProvider = "cloudflare";
-      credentialsFile = config.age.secrets.mail_cf_dns_key.path;
+      credentialsFile = config.age.secrets.openldap_cloudflare_creds.path;
     };
     certs."${ldapname}" = {
       extraDomainNames = [ ];
