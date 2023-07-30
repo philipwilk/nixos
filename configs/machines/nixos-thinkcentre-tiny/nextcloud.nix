@@ -1,4 +1,12 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
+  age.secrets.nextcloud_admin = {
+    file = ../../../secrets/nextcloud_admin.age;
+    owner = "nextcloud";
+  };
+  age.secrets.nextcloud_sql = {
+    file = ../../../secrets/nextcloud_sql.age;
+    owner = "nextcloud";
+  };
   # Enable nextcloud
   services.nextcloud = {
     enable = true;
@@ -10,13 +18,13 @@
     hostName = "nextcloud.philipw.uk";
     config = {
       extraTrustedDomains = [ "192.168.1.10" ];
-      adminpassFile = "/usr/adminpassfile";
+      adminpassFile = config.age.secrets.nextcloud_admin.path;
       adminuser = "philip";
       trustedProxies = [ "192.168.1.0" ];
       dbtype = "mysql";
       dbhost = "localhost";
       dbname = "nextcloud";
-      dbpassFile = "/usr/dbpassfile";
+      dbpassFile = config.age.secrets.nextcloud_sql.path;
     };
     extraOptions = {
       mysql = {
