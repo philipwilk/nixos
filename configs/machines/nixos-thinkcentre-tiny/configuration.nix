@@ -9,7 +9,7 @@
     firewall = {
       enable = true;
       interfaces."eno1" = {
-        allowedTCPPorts = [ 80 443 ];
+        allowedTCPPorts = [ 80 443 389 636 ];
       };
     };
   };
