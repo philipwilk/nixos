@@ -65,8 +65,7 @@
       # Development
       ## Editors
       unstable.vscode
-      lapce
-      helix
+      unstable.helix
       ## Git
       gh
       ## Nix
