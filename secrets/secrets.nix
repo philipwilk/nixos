@@ -12,4 +12,6 @@ in
   "ldap_oldrtpw.age".publicKeys = servers;
   "server_password.age".publicKeys = servers;
   "workstation_password.age".publicKeys = workstations;
+  "nextcloud_admin.age".publicKeys = servers;
+  "nextcloud_sql.age".publicKeys = servers;
 }
