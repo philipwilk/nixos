@@ -9,7 +9,7 @@ let
 in
 {
   "openldap_cloudflare_creds.age".publicKeys = servers;
-  "ldap_oldrtpw.age".publicKeys = servers;
+  "ldap_admin_pw.age".publicKeys = servers;
   "server_password.age".publicKeys = servers;
   "workstation_password.age".publicKeys = workstations;
   "nextcloud_admin.age".publicKeys = servers;
