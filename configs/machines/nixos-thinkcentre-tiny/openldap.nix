@@ -1,13 +1,14 @@
 { pkgs, config, ... }:
 let
   ldapname = "ldap.fogbox.uk";
+  ldapSuffix = "dc=ldap,dc=fogbox,dc=uk";
 in
 {
   age.secrets.openldap_cloudflare_creds.file = ../../../secrets/openldap_cloudflare_creds.age;
-  age.secrets.ldap_oldrtpw.file = ../../../secrets/ldap_oldrtpw.age;
+  age.secrets.ldap_admin_pw.file = ../../../secrets/ldap_admin_pw.age;
   services.openldap = {
     enable = true;
-    urlList = [ "ldap:///" "ldaps:///" ];
+    urlList = [ "ldap://" "ldaps://" ];
 
     settings = {
       attrs = {
@@ -36,11 +37,11 @@ in
           olcDatabase = "{1}mdb";
           olcDbDirectory = "/var/lib/openldap/data";
 
-          olcSuffix = "dc=fogbox,dc=uk";
+          olcSuffix = "${ldapSuffix}";
 
-          /* your admin account, do not use writeText on a production system */
-          olcRootDN = "cn=admin,dc=fogbox,dc=uk";
-          olcRootPW = config.age.secrets.ldap_oldrtpw.path;
+          /* your admin account */
+          olcRootDN = "cn=admin,${ldapSuffix}";
+          olcRootPW = config.age.secrets.ldap_admin_pw.path;
 
           olcAccess = [
             /* custom access rules for userPassword attributes */
@@ -77,4 +78,6 @@ in
     };
   };
   users.groups.certs.members = [ "openldap" ];
+
+  networking.firewall.interfaces."eno1".allowedTCPPorts = [ 389 636 ];
 }
