@@ -2,7 +2,7 @@
 }:
 
 {
-  imports = [ ./hardware-configuration.nix ./nextcloud.nix ./openldap.nix ];
+  imports = [ ./hardware-configuration.nix ];
 
   networking = {
     hostName = "nixos-thinkcentre-tiny";

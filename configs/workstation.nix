@@ -61,6 +61,9 @@
       gnomeExtensions.emoji-selector
       gnomeExtensions.vitals
       gnome.gnome-tweaks
+      gnomeExtensions.forge
+      gnomeExtensions.volume-scroller-2
+      gnomeExtensions.workspace-switch-wraparound
 
       # Development
       ## Editors
@@ -113,6 +116,7 @@
       pulse.enable = true;
       wireplumber.enable = true;
     };
+    gnome.gnome-keyring.enable = true;
     printing.enable = true;
     flatpak.enable = true;
     pcscd.enable = true;

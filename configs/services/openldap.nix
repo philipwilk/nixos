@@ -4,8 +4,8 @@ let
   ldapSuffix = "dc=ldap,dc=fogbox,dc=uk";
 in
 {
-  age.secrets.openldap_cloudflare_creds.file = ../../../secrets/openldap_cloudflare_creds.age;
-  age.secrets.ldap_admin_pw.file = ../../../secrets/ldap_admin_pw.age;
+  age.secrets.openldap_cloudflare_creds.file = ../../secrets/openldap_cloudflare_creds.age;
+  age.secrets.ldap_admin_pw.file = ../../secrets/ldap_admin_pw.age;
   services.openldap = {
     enable = true;
     urlList = [ "ldap://" "ldaps://" ];
