@@ -14,4 +14,5 @@ in
   "workstation_password.age".publicKeys = workstations;
   "nextcloud_admin.age".publicKeys = servers;
   "nextcloud_sql.age".publicKeys = servers;
+  "factorio_password.age".publicKeys = servers;
 }
