@@ -29,7 +29,7 @@
         };
         nixos-thinkcentre-tiny = nixpkgs.lib.nixosSystem {
           specialArgs = inputs;
-          modules = [ ./configs/machines/nixos-thinkcentre-tiny/configuration.nix ./configs/boot/systemd.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/server.nix ./configs/services/nextcloud.nix ./configs/services/openldap.nix agenix.nixosModules.default ];
+          modules = [ ./configs/machines/nixos-thinkcentre-tiny/configuration.nix ./configs/boot/systemd.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/server.nix ./configs/services/nextcloud.nix ./configs/services/openldap.nix ./configs/services/factorio.nix agenix.nixosModules.default ];
         };
         hp-dl380p-g8-LFF = nixpkgs.lib.nixosSystem {
           specialArgs = inputs;
