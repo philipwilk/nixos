@@ -34,13 +34,12 @@
       gnome-console
     ];
     shells = with pkgs; [
-      unstable.nushellFull
+      unstable.fish
     ];
     binsh = "${pkgs.dash}/bin/dash";
     systemPackages = with pkgs; [
       # Terminals and shells
       unstable.kitty
-      unstable.nushellFull
       dash
       # Global editor
       unstable.helix
@@ -48,7 +47,7 @@
   };
 
   users = {
-    defaultUserShell = pkgs.unstable.nushellFull;
+    defaultUserShell = pkgs.unstable.fish;
     users.philip = {
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" ];
@@ -100,6 +99,7 @@
   virtualisation.podman.enable = true;
 
   programs = {
+    fish.enable = true;
     adb.enable = true;
     steam = {
       enable = true;
