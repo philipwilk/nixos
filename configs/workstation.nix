@@ -31,62 +31,70 @@
       gnome-text-editor
       gnome.gnome-music
       gnome.gnome-software
+      gnome-console
+    ];
+    shells = with pkgs; [
+      unstable.nushellFull
+    ];
+    binsh = "${pkgs.dash}/bin/dash";
+    systemPackages = with pkgs; [
+      # Terminals and shells
+      unstable.kitty
+      unstable.nushellFull
+      dash
+      # Global editor
+      unstable.helix
     ];
   };
 
-  users.users.philip = {
-    isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" ];
-    passwordFile = config.age.secrets.workstation_password.path;
-    packages = with pkgs; [
+  users = {
+    defaultUserShell = pkgs.unstable.nushellFull;
+    users.philip = {
+      isNormalUser = true;
+      extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" ];
+      passwordFile = config.age.secrets.workstation_password.path;
+      packages = with pkgs; [
+      # Browsers
       firefox-devedition
-      neofetch
-      minicom
+      # Communication
       unstable.thunderbird
-      # Media manipulation
+      minicom
+      # Games
+      prismlauncher
+      # Media creation
       obs-studio
       gimp
       krita
       rawtherapee
-      vlc
       ardour
-
-      # Games
-      prismlauncher
+      # Media consumption
+      vlc
+      
+      # Development
+      ## Editors
+      unstable.vscode
+      ## Github auth manager
+      gh
+      ## Nix
+      unstable.nixpkgs-review
+      direnv
+      agenix.packages.x86_64-linux.default
+      ## Database Management
+      dbeaver
 
       # Gnome extensions
-      gnomeExtensions.gsconnect
       gnomeExtensions.gsnap
       gnomeExtensions.appindicator
       gnomeExtensions.emoji-selector
       gnomeExtensions.vitals
-      gnome.gnome-tweaks
       gnomeExtensions.forge
-      gnomeExtensions.volume-scroller-2
       gnomeExtensions.workspace-switch-wraparound
+      gnome.gnome-tweaks
 
-      # Development
-      ## Editors
-      unstable.vscode
-      unstable.helix
-      ## Git
-      gh
-      ## Nix
-      nixpkgs-fmt
-      nixpkgs-review
-      nil
-      direnv
-      agenix.packages.x86_64-linux.default
-      ## Databases
-      dbeaver
-      ## Others
-      rpi-imager
-      yubikey-touch-detector
-      ## Android
-      heimdall
-      pmbootstrap
-
-    ];
+      # Misc
+      neofetch
+      ];
+    };
   };
 
   virtualisation.podman.enable = true;
