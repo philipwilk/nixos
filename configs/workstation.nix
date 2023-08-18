@@ -82,7 +82,6 @@
       dbeaver
 
       # Gnome extensions
-      gnomeExtensions.gsnap
       gnomeExtensions.appindicator
       gnomeExtensions.emoji-selector
       gnomeExtensions.vitals
