@@ -56,6 +56,10 @@
       # Browsers
       firefox-devedition
       # Communication
+      (unstable.discord.override {
+        withOpenASAR = true;
+        withVencord = true;
+      })
       unstable.thunderbird
       minicom
       # Games
