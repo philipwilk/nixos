@@ -35,6 +35,22 @@
           specialArgs = inputs;
           modules = [ ./configs/machines/hp-dl380p-g8-LFF/configuration.nix ./configs/boot/grub.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/server.nix agenix.nixosModules.default ];
         };
+        hp-dl380p-g8-sff-2 = nixpkgs.lib.nixosSystem {
+          specialArgs = inputs;
+          modules = [ ./configs/machines/hp-dl380p-g8-sff-2/configuration.nix ./configs/boot/grub.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/server.nix agenix.nixosModules.default ];
+        };
+        hp-dl380p-g8-sff-3 = nixpkgs.lib.nixosSystem {
+          specialArgs = inputs;
+          modules = [ ./configs/machines/hp-dl380p-g8-sff-3/configuration.nix ./configs/boot/grub.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/server.nix agenix.nixosModules.default ];
+        };
+        hp-dl380p-g8-sff-4 = nixpkgs.lib.nixosSystem {
+          specialArgs = inputs;
+          modules = [ ./configs/machines/hp-dl380p-g8-sff-4/configuration.nix ./configs/boot/grub.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/server.nix agenix.nixosModules.default ];
+        };
+        hp-dl380p-g8-sff-5 = nixpkgs.lib.nixosSystem {
+          specialArgs = inputs;
+          modules = [ ./configs/machines/hp-dl380p-g8-sff-5/configuration.nix ./configs/boot/grub.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/server.nix agenix.nixosModules.default ];
+        };
       };
     };
 }
