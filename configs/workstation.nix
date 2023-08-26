@@ -55,6 +55,8 @@
       packages = with pkgs; [
       # Browsers
       firefox-devedition
+      tor-browser-bundle-bin
+      qbittorrent
       # Communication
       (unstable.discord.override {
         withOpenASAR = true;
