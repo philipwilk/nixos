@@ -64,6 +64,7 @@
       })
       unstable.thunderbird
       minicom
+      heimdall
       # Games
       prismlauncher
       # Media creation
