@@ -93,7 +93,8 @@
       gnomeExtensions.emoji-selector
       gnomeExtensions.vitals
       gnomeExtensions.forge
-      gnomeExtensions.workspace-switch-wraparound
+      gnomeExtensions.just-perfection
+      gnomeExtensions.rounded-window-corners
       gnome.gnome-tweaks
 
       # Misc
