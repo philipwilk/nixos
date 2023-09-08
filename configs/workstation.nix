@@ -67,6 +67,7 @@
       heimdall
       # Games
       prismlauncher
+      unstable.xivlauncher
       # Media creation
       obs-studio
       gimp
