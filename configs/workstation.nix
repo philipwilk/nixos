@@ -58,9 +58,9 @@
       tor-browser-bundle-bin
       qbittorrent
       # Communication
-      (unstable.discord.override {
+      (discord.override {
         withOpenASAR = true;
-        withVencord = true;
+        withVencord = false;
       })
       unstable.thunderbird
       minicom

@@ -33,4 +33,9 @@
       ppfeaturemask = "0xffffffff";
     };
   };
+
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "amd";
+  };
 }
