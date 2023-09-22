@@ -80,8 +80,6 @@
       # Development
       ## Editors
       vscode
-      ## Github auth manager
-      gh
       ## Nix
       nixpkgs-review
       direnv
