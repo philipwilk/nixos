@@ -19,11 +19,11 @@
     } @ inputs:
     {
       nixosConfigurations = {
-        nixowos = nixpkgs.lib.nixosSystem {
+        nixowos = nixpkgs-unstable.lib.nixosSystem {
           specialArgs = inputs;
           modules = [ ./configs/machines/nixowos/configuration.nix ./configs/boot/systemd.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/workstation.nix agenix.nixosModules.default ];
         };
-        nixowos-laptop = nixpkgs.lib.nixosSystem {
+        nixowos-laptop = nixpkgs-unstable.lib.nixosSystem {
           specialArgs = inputs;
           modules = [ ./configs/machines/nixowos-laptop/configuration.nix ./configs/boot/systemd.nix ./configs/nix-settings.nix ./configs/uk-region.nix ./configs/workstation.nix agenix.nixosModules.default ];
         };
