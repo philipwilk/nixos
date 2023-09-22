@@ -34,24 +34,24 @@
       gnome-console
     ];
     shells = with pkgs; [
-      unstable.fish
+      fish
     ];
     binsh = "${pkgs.dash}/bin/dash";
     systemPackages = with pkgs; [
       # Terminals and shells
-      unstable.kitty
+      kitty
       dash
       # Global editor
-      unstable.helix
+      helix
     ];
   };
 
   users = {
-    defaultUserShell = pkgs.unstable.fish;
+    defaultUserShell = pkgs.fish;
     users.philip = {
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" ];
-      passwordFile = config.age.secrets.workstation_password.path;
+      hashedPasswordFile = config.age.secrets.workstation_password.path;
       packages = with pkgs; [
       # Browsers
       firefox-devedition
@@ -62,12 +62,12 @@
         withOpenASAR = true;
         withVencord = false;
       })
-      unstable.thunderbird
+      thunderbird
       minicom
       heimdall
       # Games
       prismlauncher
-      unstable.xivlauncher
+      xivlauncher
       # Media creation
       obs-studio
       gimp
@@ -79,11 +79,11 @@
       
       # Development
       ## Editors
-      unstable.vscode
+      vscode
       ## Github auth manager
       gh
       ## Nix
-      unstable.nixpkgs-review
+      nixpkgs-review
       direnv
       agenix.packages.x86_64-linux.default
       ## Database Management
@@ -148,7 +148,7 @@
   };
 
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs.unstable; [
       corefonts
       noto-fonts-emoji-blob-bin
       noto-fonts-emoji
@@ -160,7 +160,7 @@
       fira-code-symbols
     ];
     fontDir.enable = true;
-    enableDefaultFonts = true;
+    enableDefaultPackages = true;
     fontconfig = {
       enable = true;
       defaultFonts = {
