@@ -103,10 +103,13 @@
       neofetch
       ];
     };
+    extraGroups.vboxusers.members = ["philip"];
   };
 
-  virtualisation.podman.enable = true;
-
+  virtualisation = {
+    podman.enable = true;
+    virtualbox.host.enable = true;
+  };
   programs = {
     fish.enable = true;
     adb.enable = true;
