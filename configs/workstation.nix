@@ -55,6 +55,7 @@
       packages = with pkgs; [
       # Browsers
       firefox-devedition
+      ungoogled-chromium
       tor-browser-bundle-bin
       qbittorrent
       # Communication
@@ -68,14 +69,23 @@
       # Games
       prismlauncher
       xivlauncher
+      heroic
       # Media creation
       obs-studio
       gimp
       krita
       rawtherapee
       ardour
+      kdenlive
+      kolourpaint
+      video-trimmer
+      picard
+      sound-juicer
+      blender-hip
       # Media consumption
       vlc
+      # Office stuff
+      onlyoffice-bin_7_4
       
       # Development
       ## Editors
