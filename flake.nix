@@ -8,6 +8,10 @@
       url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-matlab = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "gitlab:doronbehar/nix-matlab";
+    };
   };
 
   outputs =
@@ -15,6 +19,7 @@
     , nixpkgs
     , nixpkgs-unstable
     , agenix
+    , nix-matlab
     , ...
     } @ inputs:
     {
