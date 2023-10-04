@@ -1,6 +1,7 @@
 { pkgs
 , agenix
 , config
+, nix-matlab
 , ...
 }: {
   age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
@@ -13,6 +14,8 @@
   security.rtkit.enable = true;
 
   networking.networkmanager.enable = true;
+
+  nixpkgs.overlays = [nix-matlab.overlay];
 
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
@@ -88,6 +91,7 @@
       easyeffects
       # Office stuff
       onlyoffice-bin_7_4
+      matlab
       
       # Development
       ## Editors
