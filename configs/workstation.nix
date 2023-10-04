@@ -61,7 +61,7 @@
       # Communication
       (discord.override {
         withOpenASAR = true;
-        withVencord = false;
+        withVencord = true;
       })
       thunderbird
       minicom
