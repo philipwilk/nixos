@@ -84,6 +84,7 @@
       blender-hip
       # Media consumption
       vlc
+      easyeffects
       # Office stuff
       onlyoffice-bin_7_4
       
