@@ -12,6 +12,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "gitlab:doronbehar/nix-matlab";
     };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
@@ -20,6 +24,7 @@
     , nixpkgs-unstable
     , agenix
     , nix-matlab
+    , home-manager
     , ...
     } @ inputs: {
       nixosConfigurations = {
@@ -32,6 +37,8 @@
             ./configs/uk-region.nix
             ./configs/workstation.nix
             agenix.nixosModules.default
+            home-manager.nixosModules.home-manager
+            ./configs/home-manager/hm-settings.nix
           ];
         };
         nixowos-laptop = nixpkgs-unstable.lib.nixosSystem {
@@ -43,6 +50,8 @@
             ./configs/uk-region.nix
             ./configs/workstation.nix
             agenix.nixosModules.default
+            home-manager.nixosModules.home-manager
+            ./configs/home-manager/hm-settings.nix
           ];
         };
         nixos-thinkcentre-tiny = nixpkgs.lib.nixosSystem {
