@@ -15,7 +15,7 @@
 
   networking.networkmanager.enable = true;
 
-  nixpkgs.overlays = [nix-matlab.overlay];
+  nixpkgs.overlays = [ nix-matlab.overlay ];
 
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
@@ -56,70 +56,70 @@
       extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" ];
       hashedPasswordFile = config.age.secrets.workstation_password.path;
       packages = with pkgs; [
-      # Browsers
-      firefox-devedition
-      ungoogled-chromium
-      tor-browser-bundle-bin
-      qbittorrent
-      # Communication
-      (discord.override {
-        withOpenASAR = true;
-        withVencord = true;
-      })
-      thunderbird
-      minicom
-      heimdall
-      # Games
-      prismlauncher
-      xivlauncher
-      heroic
-      # Media creation
-      obs-studio
-      gimp
-      krita
-      rawtherapee
-      ardour
-      kdenlive
-      kolourpaint
-      video-trimmer
-      picard
-      sound-juicer
-      blender-hip
-      # Media consumption
-      vlc
-      lollypop
-      easyeffects
-      # Office stuff
-      onlyoffice-bin_7_4
-      matlab
-      
-      # Development
-      ## Editors
-      vscode
-      ## Nix
-      nixpkgs-review
-      direnv
-      agenix.packages.x86_64-linux.default
-      ## Database Management
-      dbeaver
+        # Browsers
+        firefox-devedition
+        ungoogled-chromium
+        tor-browser-bundle-bin
+        qbittorrent
+        # Communication
+        (discord.override {
+          withOpenASAR = true;
+          withVencord = true;
+        })
+        thunderbird
+        minicom
+        heimdall
+        # Games
+        prismlauncher
+        xivlauncher
+        heroic
+        # Media creation
+        obs-studio
+        gimp
+        krita
+        rawtherapee
+        ardour
+        kdenlive
+        kolourpaint
+        video-trimmer
+        picard
+        sound-juicer
+        blender-hip
+        # Media consumption
+        vlc
+        lollypop
+        easyeffects
+        # Office stuff
+        onlyoffice-bin_7_4
+        matlab
 
-      # Gnome extensions
-      gnomeExtensions.appindicator
-      gnomeExtensions.emoji-selector
-      gnomeExtensions.vitals
-      gnomeExtensions.forge
-      gnomeExtensions.just-perfection
-      gnomeExtensions.rounded-window-corners
-      gnomeExtensions.search-light
-      gnomeExtensions.duckduckgo-search-provider
-      gnomeExtensions.fuzzy-app-search
-      gnome.gnome-tweaks
+        # Development
+        ## Editors
+        vscode
+        ## Nix
+        nixpkgs-review
+        direnv
+        agenix.packages.x86_64-linux.default
+        ## Database Management
+        dbeaver
 
-      # Misc
-      neofetch
+        # Gnome extensions
+        gnomeExtensions.appindicator
+        gnomeExtensions.emoji-selector
+        gnomeExtensions.vitals
+        gnomeExtensions.forge
+        gnomeExtensions.just-perfection
+        gnomeExtensions.rounded-window-corners
+        gnomeExtensions.search-light
+        gnomeExtensions.duckduckgo-search-provider
+        gnomeExtensions.fuzzy-app-search
+        gnome.gnome-tweaks
+
+        # Misc
+        neofetch
       ];
     };
-    extraGroups.vboxusers.members = ["philip"];
+    extraGroups.vboxusers.members = [ "philip" ];
   };
 
   virtualisation = {

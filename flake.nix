@@ -26,7 +26,12 @@
     , nix-matlab
     , home-manager
     , ...
-    } @ inputs: {
+    } @ inputs:
+    let
+      systems = [ "x86_64-linux" ];
+      forAllSystems = fn: nixpkgs.lib.genAttrs systems (sys: fn nixpkgs.legacyPackages.${sys});
+    in
+    {
       nixosConfigurations = {
         nixowos = nixpkgs-unstable.lib.nixosSystem {
           specialArgs = inputs;
@@ -124,5 +129,6 @@
           ];
         };
       };
+      formatter = forAllSystems (pkgs: pkgs.nixpkgs-fmt);
     };
 }
