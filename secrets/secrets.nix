@@ -9,7 +9,7 @@ let
   hp-dl380p-g8-sff-3 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFOE/BZJYLIUcGzfrPjG3TciXKQrFhWrm6Imwkf+vRfO philip@hp-dl380p-g8-sff-3";
   hp-dl380p-g8-sff-4 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJyHEr8Xgfvh/eLir8wWLabqSH7laWNrw7/Uo2MWT2NF philip@hp-dl380p-g8-sff-4";
   hp-dl380p-g8-sff-5 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPsb8pRSRiBZaPv/7VBYnPmSMjL15dzhRwZrbcOkJ2eb philip@hp-dl380p-g8-sff-5";
-  servers = [ nixos-thinkcentre-tiny hp-dl380p-g8-LFF hp-dl380p-g8-sff-2 hp-dl380p-g8-sff-3 hp-dl380p-g8-sff-4 hp-dl380p-g8-sff-5];
+  servers = [ nixos-thinkcentre-tiny hp-dl380p-g8-LFF hp-dl380p-g8-sff-2 hp-dl380p-g8-sff-3 hp-dl380p-g8-sff-4 hp-dl380p-g8-sff-5 ];
 in
 {
   "openldap_cloudflare_creds.age".publicKeys = servers;
