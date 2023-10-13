@@ -92,6 +92,7 @@
         # Office stuff
         onlyoffice-bin_7_4
         matlab
+        nextcloud-client
 
         # Development
         ## Editors
