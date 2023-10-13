@@ -212,11 +212,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1696863671,
-        "narHash": "sha256-c5FED/5E4SFSJPZcoYjEAzg932vIzLBQlBjU0U9ulPg=",
+        "lastModified": 1697122868,
+        "narHash": "sha256-/WM6qqMiI+4rHgalDn8P+bHgzJPmLV4d/r4goP4m9iI=",
         "owner": "doronbehar",
         "repo": "nix-matlab",
-        "rev": "005958bb6977008f970f8785f8500ff79d01472d",
+        "rev": "f074d90735c0adec2b1d34884ad2e81d8fb82af2",
         "type": "gitlab"
       },
       "original": {
@@ -242,11 +242,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1696879762,
-        "narHash": "sha256-Ud6bH4DMcYHUDKavNMxAhcIpDGgHMyL/yaDEAVSImQY=",
+        "lastModified": 1697059129,
+        "narHash": "sha256-9NJcFF9CEYPvHJ5ckE8kvINvI84SZZ87PvqMbH6pro0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f99e5f03cc0aa231ab5950a15ed02afec45ed51a",
+        "rev": "5e4c2ada4fcd54b99d56d7bd62f384511a7e2593",
         "type": "github"
       },
       "original": {
