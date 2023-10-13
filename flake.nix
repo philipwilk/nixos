@@ -16,6 +16,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    catppuccin.url = "github:Stonks3141/ctp-nix";
   };
 
   outputs =
@@ -25,6 +26,7 @@
     , agenix
     , nix-matlab
     , home-manager
+    , catppuccin
     , ...
     } @ inputs:
     let
@@ -44,6 +46,7 @@
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             ./configs/home-manager/hm-settings.nix
+            catppuccin.nixosModules.catppuccin
           ];
         };
         nixowos-laptop = nixpkgs-unstable.lib.nixosSystem {
@@ -57,6 +60,7 @@
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             ./configs/home-manager/hm-settings.nix
+            catppuccin.nixosModules.catppuccin
           ];
         };
         nixos-thinkcentre-tiny = nixpkgs.lib.nixosSystem {
