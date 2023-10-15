@@ -47,6 +47,12 @@
       # Global editor
       helix
     ];
+    shellAliases = {
+      ls = "eza";
+      find = "fd";
+      cat = "bat";
+      grep = "rg";
+    };
   };
 
   users = {
@@ -103,6 +109,13 @@
         agenix.packages.x86_64-linux.default
         ## Database Management
         dbeaver
+        ## Cli utils
+        eza
+        bat
+        fd
+        ripgrep
+        wl-clipboard
+        wl-clip-persist
 
         # Gnome extensions
         gnomeExtensions.appindicator
