@@ -52,6 +52,7 @@
       find = "fd";
       cat = "bat";
       grep = "rg";
+      tree = "tre";
     };
   };
 
@@ -114,6 +115,7 @@
         bat
         fd
         ripgrep
+        tre-command
         wl-clipboard
         wl-clip-persist
 
