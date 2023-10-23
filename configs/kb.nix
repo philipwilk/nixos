@@ -3,7 +3,11 @@
   ...
 }:
 {
-  i18n.inputMethod.ibus.engines = with pkgs; [
-    rime
-  ];
+  i18n.inputMethod = {
+    enabled = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [
+      rime
+      hangul
+    ];
+  };
 }
