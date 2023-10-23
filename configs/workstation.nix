@@ -71,6 +71,8 @@
         # Communication
         vesktop
         thunderbird
+        slack
+        # TTY/serial
         minicom
         heimdall
         # Games
