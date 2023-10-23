@@ -42,6 +42,7 @@
             ./configs/boot/systemd.nix
             ./configs/nix-settings.nix
             ./configs/uk-region.nix
+            ./configs/kb.nix
             ./configs/workstation.nix
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
@@ -56,6 +57,7 @@
             ./configs/boot/systemd.nix
             ./configs/nix-settings.nix
             ./configs/uk-region.nix
+            ./configs/kb.nix
             ./configs/workstation.nix
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
