@@ -117,6 +117,8 @@
         tre-command
         wl-clipboard
         wl-clip-persist
+        ## Phone stuff
+        pmbootstrap
 
         # Gnome extensions
         gnomeExtensions.appindicator
