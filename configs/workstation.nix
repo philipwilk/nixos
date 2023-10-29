@@ -138,7 +138,11 @@
   };
 
   virtualisation = {
-    podman.enable = true;
+    podman = {
+      enable = true;
+      dockerSocket.enable = true;
+      dockerCompat = true;
+    };
     virtualbox.host.enable = true;
   };
   programs = {
