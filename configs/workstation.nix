@@ -78,7 +78,7 @@
         # Games
         prismlauncher
         xivlauncher
-        heroic
+        #heroic
         # Media creation
         obs-studio
         gimp
