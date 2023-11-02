@@ -75,6 +75,7 @@
             ./configs/server.nix
             ./configs/services/nextcloud.nix
             ./configs/services/openldap.nix
+            ./configs/services/navidrome.nix
             ./configs/services/factorio.nix
             agenix.nixosModules.default
           ];
