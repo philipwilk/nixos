@@ -111,7 +111,6 @@
         dbeaver
         ## Cli utils
         eza
-        bat
         fd
         ripgrep
         tre-command

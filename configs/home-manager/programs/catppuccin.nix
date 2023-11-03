@@ -18,5 +18,9 @@
       enable = true;
       catppuccin.enable = true;
     };
+    bat = {
+      enable = true;
+      catppuccin.enable = true;
+    };
   };
 }
