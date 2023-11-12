@@ -65,7 +65,7 @@
       packages = with pkgs; [
         # Browsers
         firefox-devedition
-        ungoogled-chromium
+        google-chrome
         tor-browser-bundle-bin
         qbittorrent
         # Communication
