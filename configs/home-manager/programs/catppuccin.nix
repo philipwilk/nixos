@@ -22,5 +22,9 @@
       enable = true;
       catppuccin.enable = true;
     };
+    zoxide = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
   };
 }

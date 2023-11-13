@@ -17,6 +17,10 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     catppuccin.url = "github:Stonks3141/ctp-nix";
+    nix-your-shell = {
+      url = "github:MercuryTechnologies/nix-your-shell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =

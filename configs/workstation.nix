@@ -2,6 +2,7 @@
 , agenix
 , config
 , nix-matlab
+, nix-your-shell
 , ...
 }: {
   age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
@@ -15,7 +16,7 @@
 
   networking.networkmanager.enable = true;
 
-  nixpkgs.overlays = [ nix-matlab.overlay ];
+  nixpkgs.overlays = [ nix-matlab.overlay nix-your-shell.overlays.default ];
 
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
@@ -37,7 +38,7 @@
       gnome-console
     ];
     shells = with pkgs; [
-      fish
+      nushellFull
     ];
     binsh = "${pkgs.dash}/bin/dash";
     systemPackages = with pkgs; [
@@ -53,11 +54,13 @@
       cat = "bat";
       grep = "rg";
       tree = "tre";
+      cd = "z";
+      cl = "printf '\033[2J\033[3J\033[1;1H' ";
     };
   };
 
   users = {
-    defaultUserShell = pkgs.fish;
+    defaultUserShell = pkgs.nushellFull;
     users.philip = {
       isNormalUser = true;
       extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" ];
@@ -147,7 +150,13 @@
     #virtualbox.host.enable = true;
   };
   programs = {
-    fish.enable = true;
+    /*fish = {
+      enable = true;
+      promptInit = ''
+        nix-your-shell fish | source
+      '';
+    };*/
+
     adb.enable = true;
     steam = {
       enable = true;
