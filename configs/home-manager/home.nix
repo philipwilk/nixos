@@ -3,7 +3,7 @@
 , ...
 }:
 {
-  imports = [ programs/git.nix programs/nys.nix ];
+  imports = [ programs/git.nix programs/nys.nix programs/nix.nix ];
 
   home = {
     username = "philip";
