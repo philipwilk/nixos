@@ -4,7 +4,13 @@
 }:
 {
   catppuccin.flavour = "latte";
-  gtk.catppuccin.enable = true;
+  gtk.catppuccin = {
+    enable = true;
+    cursor = {
+      enable = true;
+      accent = "peach";
+    };
+  };
   programs = {
     starship = {
       enable = true;
@@ -22,9 +28,9 @@
       enable = true;
       catppuccin.enable = true;
     };
-    zoxide = {
+    bottom = {
       enable = true;
-      enableNushellIntegration = true;
+      catppuccin.enable = true;
     };
   };
 }
