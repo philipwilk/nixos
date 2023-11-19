@@ -138,7 +138,6 @@
         neofetch
       ];
     };
-    #extraGroups.vboxusers.members = [ "philip" ];
   };
 
   virtualisation = {
@@ -147,7 +146,6 @@
       dockerSocket.enable = true;
       dockerCompat = true;
     };
-    #virtualbox.host.enable = true;
   };
   programs = {
     /*fish = {
