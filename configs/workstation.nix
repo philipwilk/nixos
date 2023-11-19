@@ -148,13 +148,6 @@
     };
   };
   programs = {
-    /*fish = {
-      enable = true;
-      promptInit = ''
-        nix-your-shell fish | source
-      '';
-    };*/
-
     adb.enable = true;
     steam = {
       enable = true;
