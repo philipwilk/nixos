@@ -99,7 +99,7 @@
         lollypop
         easyeffects
         # Office stuff
-        onlyoffice-bin_7_4
+        libreoffice
         matlab
         nextcloud-client
 
