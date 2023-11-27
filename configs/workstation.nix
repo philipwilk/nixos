@@ -107,6 +107,8 @@
         # Development
         ## Editors
         vscode
+        # Source control
+        darcs
         ## Nix
         nixpkgs-review
         direnv
