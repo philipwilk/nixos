@@ -81,6 +81,7 @@
         # Games
         prismlauncher
         xivlauncher
+        moonlight-qt
         #heroic
         # Media creation
         obs-studio
