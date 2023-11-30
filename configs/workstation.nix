@@ -63,7 +63,7 @@
     defaultUserShell = pkgs.nushellFull;
     users.philip = {
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" ];
+      extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" "libvirtd" ];
       hashedPasswordFile = config.age.secrets.workstation_password.path;
       packages = with pkgs; [
         # Browsers
@@ -145,6 +145,7 @@
   };
 
   virtualisation = {
+    libvirtd.enable = true;
     podman = {
       enable = true;
       dockerSocket.enable = true;
@@ -158,6 +159,7 @@
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
     };
+    virt-manager.enable = true;
   };
 
   services = {
