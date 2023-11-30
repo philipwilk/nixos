@@ -103,7 +103,8 @@
         libreoffice
         matlab
         nextcloud-client
-
+        rnote
+        
         # Development
         ## Editors
         vscode
