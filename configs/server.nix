@@ -12,7 +12,7 @@
     isNormalUser = true;
     description = "philip";
     extraGroups = [ "networkmanager" "wheel" ];
-    passwordFile = config.age.secrets.server_password.path;
+    hashedPasswordFile = config.age.secrets.server_password.path;
   };
 
   environment.systemPackages = with pkgs; [
