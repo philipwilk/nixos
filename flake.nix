@@ -2,7 +2,7 @@
   description = "system definitions";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.05";
+    nixpkgs.url = "nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     agenix = {
       url = "github:yaxitech/ragenix";
