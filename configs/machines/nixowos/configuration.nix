@@ -3,9 +3,7 @@
 }: {
   imports = [ ./hardware-configuration.nix ];
 
-  boot.kernelParams = [ "amd_pstate=guided" ];
   networking.hostName = "nixowos";
-  powerManagement.cpuFreqGovernor = "ondemand";
 
   hardware = {
     cpu.amd = {
