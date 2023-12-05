@@ -23,7 +23,5 @@
       user = "philip";
       enable = true;
     };
-    tlp.enable = true;
-    power-profiles-daemon.enable = false;
   };
 }
