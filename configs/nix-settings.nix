@@ -38,7 +38,7 @@
   environment.systemPackages = with pkgs; [ git ];
 
   services.fwupd.enable = true;
-  
+
   system = {
     autoUpgrade.enable = true;
     stateVersion = "23.05";
