@@ -18,18 +18,9 @@
   };
 
   users.users.philip = {
-    extraGroups = [ "corectrl" ];
     packages = with pkgs; [
       via # for keyboards
     ];
-  };
-
-  programs.corectrl = {
-    enable = true;
-    gpuOverclock = {
-      enable = true;
-      ppfeaturemask = "0xffffffff";
-    };
   };
 
   services.hardware.openrgb = {
