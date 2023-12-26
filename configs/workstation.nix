@@ -86,7 +86,7 @@
         prismlauncher
         xivlauncher
         moonlight-qt
-        #heroic
+        heroic
         # Media creation
         obs-studio
         gimp
