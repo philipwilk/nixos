@@ -15,6 +15,6 @@
       LC_TIME = "en_GB.UTF-8";
     };
   };
-  console.keyMap = "uk";
+  console.keyMap = "colemak";
   services.xserver.layout = "gb";
 }
