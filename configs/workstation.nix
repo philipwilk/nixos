@@ -82,6 +82,7 @@
         # TTY/serial
         minicom
         heimdall
+        rustdesk
         # Games
         prismlauncher
         xivlauncher
