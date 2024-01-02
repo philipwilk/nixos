@@ -69,6 +69,15 @@
             catppuccin.nixosModules.catppuccin
           ];
         };
+        mini = nixpkgs-unstable.lib.nixosSystem {
+          specialArgs = inputs;
+          modules = [
+            ./configs/machines/mini/configuration.nix
+            ./configs/boot/systemd.nix
+            ./configs/nix-settings.nix
+            ./configs/uk-region.nix
+          ];
+        };
         nixos-thinkcentre-tiny = nixpkgs.lib.nixosSystem {
           specialArgs = inputs;
           modules = [

@@ -1,4 +1,6 @@
-{ ...
+{ 
+  lib,
+  ...
 }: {
   time.timeZone = "Europe/London";
   i18n = {
@@ -15,6 +17,6 @@
       LC_TIME = "en_GB.UTF-8";
     };
   };
-  console.keyMap = "colemak";
+  console.keyMap = lib.mkDefault "colemak";
   services.xserver.layout = "gb";
 }

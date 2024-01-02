@@ -41,6 +41,6 @@
 
   system = {
     autoUpgrade.enable = true;
-    stateVersion = "23.05";
+    stateVersion = lib.mkDefault "23.05";
   };
 }
