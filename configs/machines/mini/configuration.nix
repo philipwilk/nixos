@@ -23,6 +23,7 @@
       firefox
       helix
       thunderbird
+      rustdesk
     ];
   };
 
