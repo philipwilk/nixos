@@ -88,6 +88,7 @@
         xivlauncher
         moonlight-qt
         heroic
+        packwiz
         # Media creation
         obs-studio
         gimp
@@ -145,6 +146,8 @@
 
         # Misc
         neofetch
+        usbutils
+        pciutils
       ];
     };
   };
