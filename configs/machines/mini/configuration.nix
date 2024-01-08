@@ -24,6 +24,8 @@
       helix
       thunderbird
       rustdesk
+      libreoffice
+      chromium
     ];
   };
 
