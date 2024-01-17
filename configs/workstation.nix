@@ -55,7 +55,6 @@
     shellAliases = {
       ls = "eza";
       find = "fd";
-      cat = "bat";
       grep = "rg";
       tree = "tre";
       cd = "z";
