@@ -3,7 +3,14 @@
 , ...
 }:
 {
-  imports = [ programs/git.nix programs/nys.nix programs/nix.nix programs/zoxide.nix programs/virtman.nix ];
+  imports = [
+    programs/git.nix
+    programs/nys.nix
+    programs/nix.nix
+    programs/zoxide.nix
+    programs/virtman.nix
+    programs/ssh.nix
+  ];
 
   home = {
     username = "philip";

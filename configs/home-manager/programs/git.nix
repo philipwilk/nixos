@@ -18,7 +18,6 @@
     extraConfig = {
       core = {
         editor = "hx";
-        sshCommand = "ssh -i /home/philip/.ssh/gitKey";
       };
       gpg = {
         format = "ssh";
@@ -28,9 +27,6 @@
       };
       push = {
         autoSetupRemote = true;
-      };
-      ssh = {
-        identity = "/home/philip/.ssh/gitKey";
       };
       init = {
         defaultBranch = "main";
