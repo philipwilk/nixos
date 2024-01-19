@@ -31,7 +31,7 @@
         utf8mb4 = true;
       };
     };
-    package = pkgs.nextcloud27;
+    package = pkgs.nextcloud28;
   };
 
   services.mysql = {
