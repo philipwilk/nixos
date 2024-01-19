@@ -111,8 +111,6 @@
         rnote
 
         # Development
-        ## Editors
-        vscode
         # Source control
         darcs
         ## Nix
