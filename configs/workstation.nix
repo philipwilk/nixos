@@ -75,7 +75,10 @@
         tor-browser-bundle-bin
         qbittorrent
         # Communication
-        vesktop
+        (discord.override {
+          withOpenASAR = true;
+          withVencord = true;
+        })
         thunderbird
         slack
         # TTY/serial
