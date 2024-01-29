@@ -32,12 +32,6 @@
     };
   };
 
-  users.users.philip = {
-    packages = with pkgs; [
-      via # for keyboards
-    ];
-  };
-
   services.hardware.openrgb = {
     enable = true;
     motherboard = "amd";

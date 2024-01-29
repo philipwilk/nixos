@@ -15,6 +15,11 @@
   hardware = {
     opentabletdriver.enable = true;
     pulseaudio.enable = false;
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+      settings.General.Experimental = true;
+    };
   };
   security.rtkit.enable = true;
 
@@ -58,7 +63,6 @@
       grep = "rg";
       tree = "tre";
       cd = "z";
-      cl = "printf '\033[2J\033[3J\033[1;1H' ";
     };
   };
 
@@ -66,7 +70,7 @@
     defaultUserShell = pkgs.nushellFull;
     users.philip = {
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" "libvirtd" ];
+      extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" "libvirtd" "video" "input" ];
       hashedPasswordFile = config.age.secrets.workstation_password.path;
       packages = with pkgs; [
         # Browsers
@@ -98,7 +102,6 @@
         rawtherapee
         ardour
         kdenlive
-        kolourpaint
         video-trimmer
         picard
         sound-juicer
@@ -106,7 +109,6 @@
         # Media consumption
         vlc
         lollypop
-        easyeffects
         # Office stuff
         libreoffice
         matlab
@@ -126,9 +128,11 @@
         eza
         fd
         ripgrep
+        ripgrep-all
         tre-command
         wl-clipboard
         wl-clip-persist
+        networkmanager-openvpn
         ## Phone stuff
         pmbootstrap
 
@@ -148,6 +152,11 @@
         neofetch
         usbutils
         pciutils
+        # Theming
+        (catppuccin.override {
+          accent = "peach";
+          variant = "latte";
+        })
       ];
     };
   };
@@ -212,6 +221,7 @@
       noto-fonts-cjk-serif
       fira-code
       fira-code-symbols
+      font-awesome
     ];
     fontDir.enable = true;
     enableDefaultPackages = true;
@@ -220,7 +230,7 @@
       defaultFonts = {
         serif = [ "Noto Serif" "Noto Serif CJK" ];
         sansSerif = [ "Noto Sans" "Noto Sans CJK" ];
-        emoji = [ "Blobmoji" "Noto Color Emoji" ];
+        emoji = [ "Blobmoji" "Noto Color Emoji" "FontAwesome" ];
         monospace = [ "Fira Code" ];
       };
     };

@@ -10,6 +10,7 @@
     programs/zoxide.nix
     programs/virtman.nix
     programs/ssh.nix
+    programs/easyeffects.nix
   ];
 
   home = {
