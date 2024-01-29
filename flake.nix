@@ -91,6 +91,7 @@
             ./configs/services/navidrome.nix
             ./configs/services/factorio.nix
             agenix.nixosModules.default
+            ./homelab
           ];
         };
         hp-dl380p-g8-LFF = nixpkgs.lib.nixosSystem {
