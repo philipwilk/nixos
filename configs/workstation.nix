@@ -114,6 +114,7 @@
         matlab
         nextcloud-client
         rnote
+        foliate
 
         # Development
         # Source control
