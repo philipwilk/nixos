@@ -35,9 +35,24 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [ git ];
+  environment.systemPackages = with pkgs; [
+    git
+    helix
+  ];
 
+  # Ensure firmware is up to date
   services.fwupd.enable = true;
+  hardware.cpu = {
+    amd = {
+      updateMicrocode = true;
+      sev.enable = true;
+      sevGuest.enable = true;
+    };
+    intel = {
+      updateMicrocode = true;
+      sgx.provision.enable = true;
+    };
+  };
 
   system = {
     autoUpgrade.enable = true;

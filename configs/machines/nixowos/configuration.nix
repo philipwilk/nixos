@@ -21,10 +21,6 @@
   };
 
   hardware = {
-    cpu.amd = {
-      updateMicrocode = true;
-      sev.enable = true;
-    };
     bluetooth.settings.General = {
       FastConnectable = true;
       ReconnectAttempts = 7;
