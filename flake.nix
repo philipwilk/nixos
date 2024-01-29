@@ -5,7 +5,7 @@
     nixpkgs.url = "nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     agenix = {
-      url = "github:yaxitech/ragenix";
+      url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-matlab = {
