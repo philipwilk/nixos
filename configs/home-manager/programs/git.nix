@@ -9,6 +9,8 @@
     userEmail = "p.wilk@student.reading.ac.uk";
     aliases = {
       pl = "log --graph --abbrev-commit --decorate --stat";
+      dh = "diff HEAD";
+      dhp = "diff HEAD~";
     };
     diff-so-fancy.enable = true;
     signing = {
