@@ -85,7 +85,6 @@
             ./configs/boot/systemd.nix
             ./configs/nix-settings.nix
             ./configs/uk-region.nix
-            ./configs/server.nix
             ./configs/services/nextcloud.nix
             ./configs/services/openldap.nix
             ./configs/services/navidrome.nix
@@ -101,8 +100,8 @@
             ./configs/boot/grub.nix
             ./configs/nix-settings.nix
             ./configs/uk-region.nix
-            ./configs/server.nix
             agenix.nixosModules.default
+            ./homelab
           ];
         };
         hp-dl380p-g8-sff-2 = nixpkgs.lib.nixosSystem {
@@ -112,8 +111,8 @@
             ./configs/boot/grub.nix
             ./configs/nix-settings.nix
             ./configs/uk-region.nix
-            ./configs/server.nix
             agenix.nixosModules.default
+            ./homelab
           ];
         };
         hp-dl380p-g8-sff-3 = nixpkgs.lib.nixosSystem {
@@ -123,8 +122,8 @@
             ./configs/boot/grub.nix
             ./configs/nix-settings.nix
             ./configs/uk-region.nix
-            ./configs/server.nix
             agenix.nixosModules.default
+            ./homelab
           ];
         };
         hp-dl380p-g8-sff-4 = nixpkgs.lib.nixosSystem {
@@ -134,8 +133,8 @@
             ./configs/boot/grub.nix
             ./configs/nix-settings.nix
             ./configs/uk-region.nix
-            ./configs/server.nix
             agenix.nixosModules.default
+            ./homelab
           ];
         };
         hp-dl380p-g8-sff-5 = nixpkgs.lib.nixosSystem {
@@ -145,8 +144,8 @@
             ./configs/boot/grub.nix
             ./configs/nix-settings.nix
             ./configs/uk-region.nix
-            ./configs/server.nix
             agenix.nixosModules.default
+            ./homelab
           ];
         };
       };
