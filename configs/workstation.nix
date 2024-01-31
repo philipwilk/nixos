@@ -200,7 +200,7 @@
     printing.enable = true;
     flatpak.enable = true;
     pcscd.enable = true;
-    openssh.settings.extraConfig = "+PubkeyAuthOptions verify-required+";
+    openssh.settings.extraConfig = "+PubkeyAuthOptions touch-required+";
     udev.extraRules = ''
       KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
       SUBSYSTEM=="hidraw*", ATTRS{idVendor}=="256c", MODE="0666"
