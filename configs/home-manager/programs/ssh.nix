@@ -10,7 +10,7 @@
       };
       github = {
         host = "github.com";
-        identityFile = [ "~/.ssh/gitKey" ];
+        identityFile = [ "~/.ssh/id_ed25519" ];
         identitiesOnly = true;
       };
     };
