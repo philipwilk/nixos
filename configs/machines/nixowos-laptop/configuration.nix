@@ -4,9 +4,7 @@
 
   # Setup keyfile
   boot = {
-    initrd.secrets = {
-      "/crypto_keyfile.bin" = null;
-    };
+    initrd.luks.devices."luks-ad203aa1-6766-4952-b43a-08478b322dfa".device = "/dev/disk/by-uuid/ad203aa1-6766-4952-b43a-08478b322dfa";
     kernelParams = [ "mem_sleep_default=deep" ];
   };
   networking.hostName = "nixowos-laptop";
