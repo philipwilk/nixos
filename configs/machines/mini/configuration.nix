@@ -8,7 +8,7 @@
   boot.loader.efi.efiSysMountPoint = "/boot";
 
   networking = {
-    hostName = "mini"; 
+    hostName = "mini";
     networkmanager.enable = true;
   };
 
@@ -52,7 +52,7 @@
     printing.enable = true;
     flatpak.enable = true;
   };
-  
+
   fonts = {
     packages = with pkgs.unstable; [
       corefonts

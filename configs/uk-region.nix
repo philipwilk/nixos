@@ -1,6 +1,5 @@
-{ 
-  lib,
-  ...
+{ lib
+, ...
 }: {
   time.timeZone = "Europe/London";
   i18n = {
