@@ -21,8 +21,11 @@
       settings.General.Experimental = true;
     };
   };
-  security.rtkit.enable = true;
-
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+  };
+  
   networking.networkmanager.enable = true;
 
   nixpkgs.overlays = [ nix-matlab.overlay nix-your-shell.overlays.default ];
@@ -189,6 +192,7 @@
       excludePackages = with pkgs; [ xterm ];
       xkb.variant = "colemak";
     };
+    fprintd.enable = true;
     pipewire = {
       enable = true;
       alsa.enable = true;
