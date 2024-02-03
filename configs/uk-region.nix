@@ -17,5 +17,5 @@
     };
   };
   console.keyMap = lib.mkDefault "colemak";
-  services.xserver.layout = "gb";
+  services.xserver.xkb.layout = "gb";
 }

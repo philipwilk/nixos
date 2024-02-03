@@ -187,7 +187,7 @@
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
       excludePackages = with pkgs; [ xterm ];
-      xkbVariant = "colemak";
+      xkb.variant = "colemak";
     };
     pipewire = {
       enable = true;
