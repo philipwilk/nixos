@@ -15,12 +15,20 @@
     bluetooth = {
       enable = true;
       powerOnBoot = true;
-      settings.General.Experimental = true;
+      settings.General = {
+        FastConnectable = true;
+        JustWorksRepairing = "always";
+        Experimental = true;
+      };
     };
   };
   security = {
     rtkit.enable = true;
     polkit.enable = true;
+    pam.services = {
+      swaylock.fprintAuth = true;
+      greetd.fprintAuth = false;
+    };
   };
 
   networking.networkmanager.enable = true;
@@ -29,23 +37,6 @@
 
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
-    gnome.excludePackages = with pkgs; [
-      gnome-tour
-      gnome-photos
-      gnome.gnome-maps
-      gnome.geary
-      epiphany
-      gnome.gnome-weather
-      gnome.gnome-contacts
-      gnome.totem
-      gnome.cheese
-      gnome.gnome-calendar
-      gnome.yelp
-      gnome-text-editor
-      gnome.gnome-music
-      gnome.gnome-software
-      gnome-console
-    ];
     shells = with pkgs; [
       nushellFull
     ];
@@ -134,20 +125,17 @@
         wl-clipboard
         wl-clip-persist
         networkmanager-openvpn
+        wmname
+        ripunzip
         ## Phone stuff
         pmbootstrap
 
-        # Gnome extensions
-        gnomeExtensions.appindicator
-        gnomeExtensions.emoji-selector
-        gnomeExtensions.vitals
-        gnomeExtensions.forge
-        gnomeExtensions.just-perfection
-        gnomeExtensions.rounded-window-corners
-        gnomeExtensions.search-light
-        gnomeExtensions.duckduckgo-search-provider
-        gnomeExtensions.fuzzy-app-search
-        gnome.gnome-tweaks
+        # Desktop chore replacements
+        loupe
+        gnome.nautilus
+        gcr
+        gnome.seahorse
+        pavucontrol
 
         powertop
 
@@ -180,16 +168,40 @@
       dedicatedServer.openFirewall = true;
     };
     virt-manager.enable = true;
+    dconf.enable = true;
+  };
+
+
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    wlr.enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
+  };
+
+  # https://github.com/apognu/tuigreet/issues/68#issuecomment-1586359960
+  systemd.services.greetd.serviceConfig = {
+    Type = "idle";
+    StandardInput = "tty";
+    StandardOutput = "tty";
+    StandardError = "journal";
+    TTYReset = true;
+    TTYVHangup = true;
+    TTYVTDisallocate = true;
   };
 
   services = {
-    xserver = {
+    gnome.gnome-keyring.enable = true;
+    greetd = {
       enable = true;
-      libinput.mouse.accelProfile = "flat";
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
-      excludePackages = with pkgs; [ xterm ];
-      xkb.variant = "colemak";
+      package = pkgs.greetd.tuigreet;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd sway";
+        };
+      };
     };
     fprintd.enable = true;
     pipewire = {
@@ -199,7 +211,12 @@
       pulse.enable = true;
       wireplumber.enable = true;
     };
-    gnome.gnome-keyring.enable = true;
+    blueman.enable = true;
+    geoclue2 = {
+      enable = true;
+      enableWifi = true;
+      submitData = true;
+    };
     printing.enable = true;
     flatpak.enable = true;
     pcscd.enable = true;
@@ -226,7 +243,7 @@
       noto-fonts-cjk-serif
       fira-code
       fira-code-symbols
-      font-awesome
+      font-awesome_6
     ];
     fontDir.enable = true;
     enableDefaultPackages = true;
@@ -235,7 +252,7 @@
       defaultFonts = {
         serif = [ "Noto Serif" "Noto Serif CJK" ];
         sansSerif = [ "Noto Sans" "Noto Sans CJK" ];
-        emoji = [ "Blobmoji" "Noto Color Emoji" "FontAwesome" ];
+        emoji = [ "Blobmoji" "Noto Color Emoji" "Font Awesome 6 Free" ];
         monospace = [ "Fira Code" ];
       };
     };

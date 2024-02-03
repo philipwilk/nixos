@@ -3,15 +3,22 @@
 , ...
 }:
 {
-  imports = [
-    programs/git.nix
-    programs/nys.nix
-    programs/nix.nix
-    programs/zoxide.nix
-    programs/virtman.nix
-    programs/ssh.nix
-    programs/easyeffects.nix
-  ];
+  imports =
+    let
+      join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
+    in
+    join-dirfile "programs" [
+      "git"
+      "nys"
+      "nix"
+      "zoxide"
+      "virtman"
+      "ssh"
+      "easyeffects"
+    ] ++
+    join-dirfile "de" [
+      "swayfx"
+    ];
 
   home = {
     username = "philip";
