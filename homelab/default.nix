@@ -114,17 +114,18 @@
               {
                 job_name = "node";
                 static_configs = [{
-                  targets = 
-                  let 
-                    p = toString config.services.prometheus.exporters.node.port;
-                  in [
-                    "localhost:${p}"
-                    "192.168.2.1:${p}"
-                    "192.168.2.2:${p}"
-                    "192.168.2.3:${p}"
-                    "192.168.2.4:${p}"
-                    "192.168.2.5:${p}"
-                  ];
+                  targets =
+                    let
+                      p = toString config.services.prometheus.exporters.node.port;
+                    in
+                    [
+                      "localhost:${p}"
+                      "192.168.2.1:${p}"
+                      "192.168.2.2:${p}"
+                      "192.168.2.3:${p}"
+                      "192.168.2.4:${p}"
+                      "192.168.2.5:${p}"
+                    ];
                 }];
               }
             ];
