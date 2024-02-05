@@ -7,6 +7,20 @@
   homelab = {
     enable = true;
     isLeader = true;
+    tld = "fogbox.uk";
+    acme.mail = "wiryfuture@gmail.com";
+    services = {
+      nextcloud = {
+        enable = true;
+        domain = "nextcloud.philipw.uk";
+      };
+      navidrome.enable = true;
+      factorio = {
+        enable = true;
+        admins = [ "wiryfuture" ];
+      };
+      openldap.enable = true;
+    };
   };
 
   networking = {
