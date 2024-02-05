@@ -162,9 +162,8 @@
         users.users.philip.openssh.authorizedKeys.keys =
           let
             pc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
-            pc-2fac = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILzOvLWJmyZdEKTg/LqKbIpQaukWof26OT29Qi7M8h1gAAAABHNzaDo= pc key";
             laptop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
-            workstations = [ pc pc-2fac laptop ];
+            workstations = [ pc laptop ];
           in
           workstations;
 
