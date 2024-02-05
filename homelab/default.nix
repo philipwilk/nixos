@@ -8,7 +8,7 @@
   let
     join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
   in
-  join-dirfile "./services" [ "nextcloud" "openldap" "factorio" "navidrome" ];
+  join-dirfile "./services" [ "nextcloud" "openldap" "factorio" "navidrome" "uptime-kuma" ];
 
   options.homelab =
     let
@@ -130,6 +130,14 @@
               List of game admins that can run commands/pause etc.
             '';
           };
+        };
+        uptime-kuma.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          example = true;
+          description = ''
+            Whether to eanble the uptime kuma monitor.
+          '';
         };
       };
     };

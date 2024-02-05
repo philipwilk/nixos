@@ -20,6 +20,7 @@
         admins = [ "wiryfuture" ];
       };
       openldap.enable = true;
+      uptime-kuma.enable = true;
     };
   };
 
