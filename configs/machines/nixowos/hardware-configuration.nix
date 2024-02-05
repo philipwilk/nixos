@@ -13,7 +13,6 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   fileSystems."/" =
     {
@@ -23,7 +22,7 @@
 
   boot.initrd.luks.devices."luks-02a8e4f1-370a-4bed-ba04-7d7950dbe564".device = "/dev/disk/by-uuid/02a8e4f1-370a-4bed-ba04-7d7950dbe564";
 
-  fileSystems."/boot/efi" =
+  fileSystems."/boot" =
     {
       device = "/dev/disk/by-uuid/E8BC-1121";
       fsType = "vfat";
