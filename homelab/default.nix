@@ -4,6 +4,12 @@
 , ...
 }:
 {
+  imports =
+  let
+    join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
+  in
+  join-dirfile "./services" [ "nextcloud" "openldap" "factorio" "navidrome" ];
+
   options.homelab =
     let
       join-dirfiles = builtins.map (folder: file: ./${folder}/${file}.nix);
@@ -82,7 +88,7 @@
           };
         };
         navidrome.enable = lib.mkOption {
-          type = lib.types.str;
+          type = lib.types.bool;
           default = false;
           example = true;
           description = ''

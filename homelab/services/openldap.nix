@@ -87,4 +87,5 @@ in
     users.groups.certs.members = [ "openldap" ];
 
     networking.firewall.interfaces."eno1".allowedTCPPorts = [ 389 636 ];
-  }
+  };
+}
