@@ -28,14 +28,121 @@
           Whether this server should act as a host for the key lab services
         '';
       };
+      tld = lib.mkOption {
+        type = lib.types.str;
+        default = null;
+        example = "example.com";
+        description = lib.mdDoc ''
+          Default top level domain for services.
+        '';
+      };
+      acme.mail = lib.mkOption {
+        type = lib.types.str;
+        default = null;
+        example = "joe.bloggs@example.com";
+        description = lib.mdDoc ''
+          Email for acme cert renewals.
+        '';
+      };
+      services = {
+        grafana = {
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            example = false;
+            description = ''
+              Whether to enable the homelab grafana instance
+            '';
+          };
+          domain = lib.mkOption {
+            type = lib.types.str;
+            default = "grafana.${config.homelab.tld}";
+            example = "grafana.example.com";
+            description = ''
+              Domain for homelab grafana instance.
+            '';
+          };
+        };
+        nextcloud = {
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            example = true;
+            description = ''
+              Whether to enable the nextcloud service.
+            '';
+          };
+          domain = lib.mkOption {
+            type = lib.types.str;
+            default = "nextcloud.${config.homelab.tld}";
+            example = "nextcloud.example.com";
+            description = ''
+              Domain for homelab nextcloud instance.
+            '';
+          };
+        };
+        navidrome.enable = lib.mkOption {
+          type = lib.types.str;
+          default = false;
+          example = true;
+          description = ''
+            Whether to enable the navidrome service.
+          '';
+        };
+        openldap = {
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            example = true;
+            description = ''
+              Whether to enable the openldap server.
+            '';
+          };
+          domain = lib.mkOption {
+            type = lib.types.str;
+            default = "ldap.${config.homelab.tld}";
+            example = "ldap.example.com";
+            description = ''
+              Domain for the ldap instance.
+            '';
+          };
+        };
+        factorio = {
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            example = true;
+            description = ''
+              Whether to enable the factorio game server.
+            '';
+          };
+          admins = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            example = [ "username" ];
+            description = ''
+              List of game admins that can run commands/pause etc.
+            '';
+          };
+        };
+      };
     };
 
   config =
-    let
-      domain = "fogbox.uk";
-    in
     lib.mkIf config.homelab.enable
       {
+        # Assertions        
+        assertions = [
+          {
+            assertion = config.homelab.enable -> config.homelab.tld != null;
+            message = "A top level domain must be set, so services know where to redirect to.";
+          }
+          {
+            assertion = config.homelab.services.openldap.enable -> config.homelab.acme.mail != null;
+            message = "Openldap requires a cert for ldaps, and acme requires an email to get a cert.";
+          }
+        ];
+
         # Enable podman container support
         virtualisation.podman = {
           enable = true;
@@ -85,7 +192,7 @@
         # Grafana and prometheus monithoring
         services = {
           grafana = lib.mkIf config.homelab.isLeader {
-            enable = true;
+            enable = config.homelab.services.grafana.enable;
             provision = {
               enable = true;
               datasources.settings.datasources = [
@@ -101,13 +208,13 @@
               server = {
                 enable_gzip = true;
                 enforce_domain = true;
-                domain = "grafana.${domain}";
+                domain = config.homelab.services.grafana.domain;
                 http_addr = "0.0.0.0";
               };
             };
           };
           prometheus = {
-            enable = config.homelab.isLeader;
+            enable = config.homelab.isLeader && config.homelab.services.grafana.enable;
             enableReload = true;
             webExternalUrl = "http://192.168.1.10:${toString config.services.prometheus.port}/";
             scrapeConfigs = lib.mkIf config.homelab.isLeader [
@@ -131,7 +238,7 @@
             ];
             exporters = {
               node = {
-                enable = true;
+                enable = config.homelab.services.grafana.enable;
                 openFirewall = true;
               };
             };
