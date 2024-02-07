@@ -21,6 +21,7 @@
       };
       openldap.enable = true;
       uptime-kuma.enable = true;
+      vaultwarden.enable = true;
     };
   };
 
