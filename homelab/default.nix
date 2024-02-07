@@ -8,7 +8,7 @@
   let
     join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
   in
-  join-dirfile "./services" [ "nextcloud" "openldap" "factorio" "navidrome" "uptime-kuma" ];
+  join-dirfile "./services" [ "nextcloud" "openldap" "factorio" "navidrome" "uptime-kuma" "vaultwarden" ];
 
   options.homelab =
     let
@@ -137,6 +137,14 @@
           example = true;
           description = ''
             Whether to eanble the uptime kuma monitor.
+          '';
+        };
+        vaultwarden.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          example = true;
+          description = ''
+            Whether to enable the vaultwarden bitwarden-compatible server.
           '';
         };
       };
