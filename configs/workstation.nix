@@ -8,10 +8,7 @@
   age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
   age.secrets.workstation_password.file = ../secrets/workstation_password.age;
 
-  powerManagement = {
-    enable = true;
-    powertop.enable = true;
-  };
+  powerManagement.enable = true;
   hardware = {
     opentabletdriver.enable = true;
     pulseaudio.enable = false;
@@ -152,6 +149,8 @@
         gnomeExtensions.fuzzy-app-search
         gnome.gnome-tweaks
 
+        powertop
+
         # Misc
         neofetch
         usbutils
@@ -204,6 +203,7 @@
     printing.enable = true;
     flatpak.enable = true;
     pcscd.enable = true;
+    auto-cpufreq.enable = true;    
     openssh.settings.extraConfig = "+PubkeyAuthOptions touch-required+";
     udev.extraRules = ''
       KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
