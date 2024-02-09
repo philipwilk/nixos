@@ -23,7 +23,7 @@
       firefox
       helix
       thunderbird
-      rustdesk
+      rustdesk-flutter
       libreoffice
       chromium
     ];
