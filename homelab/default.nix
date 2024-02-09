@@ -256,6 +256,16 @@
                     ];
                 }];
               }
+              {
+                job_name = "haproxy";
+                scrape_interval = "30s";
+                scrape_timeout = "20s";
+                static_configs = [{
+                  targets = [
+                    "192.168.1.0:8404"
+                  ];
+                }];
+              }
             ];
             exporters = {
               node = {
