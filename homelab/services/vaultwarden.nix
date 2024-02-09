@@ -12,6 +12,7 @@
         ROCKET_PORT = 8222;
         DOMAIN = "https://vault.fogbox.uk";
         SIGNUPS_ALLOWED = false;
+        SHOW_PASSWORD_HINT=false;
       };
     };
     networking.firewall.interfaces."eno1".allowedTCPPorts = [ 8222 ];
