@@ -36,7 +36,7 @@
       };
       tld = lib.mkOption {
         type = lib.types.str;
-        default = null;
+        default = "fogbox.uk";
         example = "example.com";
         description = lib.mdDoc ''
           Default top level domain for services.
@@ -54,10 +54,10 @@
         grafana = {
           enable = lib.mkOption {
             type = lib.types.bool;
-            default = true;
+            default = config.homelab.isLeader;
             example = false;
             description = ''
-              Whether to enable the homelab grafana instance
+              Whether to enable the homelab grafana instance.
             '';
           };
           domain = lib.mkOption {
@@ -68,6 +68,14 @@
               Domain for homelab grafana instance.
             '';
           };
+        };
+        prometheus.enable = lib.mkOption {
+          type = lib.types.bool;
+          default = config.homelab.isLeader;
+          example = false;
+          description = ''
+            Whether to enable the homelab prometheus instance.
+          '';
         };
         nextcloud = {
           enable = lib.mkOption {
@@ -156,10 +164,6 @@
         # Assertions        
         assertions = [
           {
-            assertion = config.homelab.enable -> config.homelab.tld != null;
-            message = "A top level domain must be set, so services know where to redirect to.";
-          }
-          {
             assertion = config.homelab.services.openldap.enable -> config.homelab.acme.mail != null;
             message = "Openldap requires a cert for ldaps, and acme requires an email to get a cert.";
           }
@@ -212,7 +216,7 @@
 
         # Grafana and prometheus monithoring
         services = {
-          grafana = lib.mkIf config.homelab.isLeader {
+          grafana = {
             enable = config.homelab.services.grafana.enable;
             provision = {
               enable = true;
@@ -235,7 +239,7 @@
             };
           };
           prometheus = {
-            enable = config.homelab.isLeader && config.homelab.services.grafana.enable;
+            enable = config.homelab.services.prometheus.enable;
             enableReload = true;
             webExternalUrl = "http://192.168.1.10:${toString config.services.prometheus.port}/";
             scrapeConfigs = lib.mkIf config.homelab.isLeader [
@@ -269,7 +273,7 @@
             ];
             exporters = {
               node = {
-                enable = config.homelab.services.grafana.enable;
+                enable = true;
                 openFirewall = true;
               };
             };
