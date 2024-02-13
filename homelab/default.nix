@@ -5,10 +5,10 @@
 }:
 {
   imports =
-  let
-    join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
-  in
-  join-dirfile "./services" [ "nextcloud" "openldap" "factorio" "navidrome" "uptime-kuma" "vaultwarden" ];
+    let
+      join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
+    in
+    join-dirfile "./services" [ "nextcloud" "openldap" "factorio" "navidrome" "uptime-kuma" "vaultwarden" ];
 
   options.homelab =
     let

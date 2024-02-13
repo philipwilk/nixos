@@ -1,10 +1,7 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 {
-  config = lib.mkIf config.homelab.services.email.enable {
-    
-  };
+  config = lib.mkIf config.homelab.services.email.enable { };
 }
