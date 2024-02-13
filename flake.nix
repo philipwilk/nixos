@@ -35,7 +35,7 @@
     } @ inputs:
     let
       systems = [ "x86_64-linux" ];
-      forAllSystems = fn: nixpkgs.lib.genAttrs systems (sys: fn nixpkgs.legacyPackages.${sys});    
+      forAllSystems = fn: nixpkgs.lib.genAttrs systems (sys: fn nixpkgs.legacyPackages.${sys});
       join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
 
       # Regional and nix settings for all machines
@@ -73,40 +73,41 @@
       nixosConfigurations = {
         # Systemd machines
         nixowos = unstableSystem ([
-            ./configs/machines/nixowos/configuration.nix
-          ] ++ workstationModules);
-        
+          ./configs/machines/nixowos/configuration.nix
+        ] ++ workstationModules);
+
         nixowos-laptop = unstableSystem ([
-            ./configs/machines/nixowos-laptop/configuration.nix
-          ] ++ workstationModules);
-        
-        mini = unstableSystem  ([
-            ./configs/machines/mini/configuration.nix ./configs/boot/systemd.nix
-          ] ++ commonModules);
-        
+          ./configs/machines/nixowos-laptop/configuration.nix
+        ] ++ workstationModules);
+
+        mini = unstableSystem ([
+          ./configs/machines/mini/configuration.nix
+          ./configs/boot/systemd.nix
+        ] ++ commonModules);
+
         nixos-thinkcentre-tiny = stableSystem ([
-            ./homelab/infra/nixos-thinkcentre-tiny/configuration.nix
-          ] ++ systemdLab);
-        
+          ./homelab/infra/nixos-thinkcentre-tiny/configuration.nix
+        ] ++ systemdLab);
+
 
         # Grub machines (DO NOT SUPPORT EFI BOOT)
         hp-dl380p-g8-LFF = stableSystem ([
           ./homelab/infra/hp-dl380p-g8-LFF/configuration.nix
         ] ++ grubLab);
-        
-        hp-dl380p-g8-sff-2 = stableSystem([
+
+        hp-dl380p-g8-sff-2 = stableSystem ([
           ./homelab/infra/hp-dl380p-g8-sff-2/configuration.nix
         ] ++ grubLab);
-        
+
         hp-dl380p-g8-sff-3 = stableSystem ([
           ./homelab/infra/hp-dl380p-g8-sff-3/configuration.nix
         ] ++ grubLab);
-        
-        hp-dl380p-g8-sff-4 =stableSystem([
+
+        hp-dl380p-g8-sff-4 = stableSystem ([
           ./homelab/infra/hp-dl380p-g8-sff-4/configuration.nix
         ] ++ grubLab);
-        
-        hp-dl380p-g8-sff-5 = stableSystem([
+
+        hp-dl380p-g8-sff-5 = stableSystem ([
           ./homelab/infra/hp-dl380p-g8-sff-5/configuration.nix
         ] ++ grubLab);
       };

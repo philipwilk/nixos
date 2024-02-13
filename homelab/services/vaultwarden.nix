@@ -1,7 +1,6 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 {
   config = lib.mkIf config.homelab.services.vaultwarden.enable {
@@ -12,7 +11,7 @@
         ROCKET_PORT = 8222;
         DOMAIN = "https://vault.fogbox.uk";
         SIGNUPS_ALLOWED = false;
-        SHOW_PASSWORD_HINT=false;
+        SHOW_PASSWORD_HINT = false;
       };
     };
     networking.firewall.interfaces."eno1".allowedTCPPorts = [ 8222 ];

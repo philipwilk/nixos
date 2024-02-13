@@ -22,7 +22,7 @@
     rtkit.enable = true;
     polkit.enable = true;
   };
-  
+
   networking.networkmanager.enable = true;
 
   nixpkgs.overlays = [ nix-matlab.overlay nix-your-shell.overlays.default ];
@@ -203,7 +203,7 @@
     printing.enable = true;
     flatpak.enable = true;
     pcscd.enable = true;
-    auto-cpufreq.enable = true;    
+    auto-cpufreq.enable = true;
     openssh.settings.extraConfig = "+PubkeyAuthOptions touch-required+";
     udev.extraRules = ''
       KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
