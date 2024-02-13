@@ -60,48 +60,55 @@
         agenix.nixosModules.default
         catppuccin.nixosModules.catppuccin
       ];
+
+      buildSys = nxpkgs: mods: nxpkgs.lib.nixosSystem {
+        modules = mods;
+        specialArgs = inputs;
+      };
+
+      unstableSystem = buildSys nixpkgs-unstable;
+      stableSystem = buildSys nixpkgs;
     in
     {
       nixosConfigurations = {
         # Systemd machines
-        nixowos = nixpkgs-unstable.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./configs/machines/nixowos/configuration.nix ] ++ workstationModules;
-        };
-        nixowos-laptop = nixpkgs-unstable.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./configs/machines/nixowos-laptop/configuration.nix ] ++ workstationModules;
-        };
-        mini = nixpkgs-unstable.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./configs/machines/mini/configuration.nix ./configs/boot/systemd.nix ] ++ commonModules;
-        };
-        nixos-thinkcentre-tiny = nixpkgs.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./homelab/infra/nixos-thinkcentre-tiny/configuration.nix ] ++ systemdLab;
-        };
+        nixowos = unstableSystem ([
+            ./configs/machines/nixowos/configuration.nix
+          ] ++ workstationModules);
+        
+        nixowos-laptop = unstableSystem ([
+            ./configs/machines/nixowos-laptop/configuration.nix
+          ] ++ workstationModules);
+        
+        mini = unstableSystem  ([
+            ./configs/machines/mini/configuration.nix ./configs/boot/systemd.nix
+          ] ++ commonModules);
+        
+        nixos-thinkcentre-tiny = stableSystem ([
+            ./homelab/infra/nixos-thinkcentre-tiny/configuration.nix
+          ] ++ systemdLab);
+        
 
         # Grub machines (DO NOT SUPPORT EFI BOOT)
-        hp-dl380p-g8-LFF = nixpkgs.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./homelab/infra/hp-dl380p-g8-LFF/configuration.nix ] ++ grubLab;
-          };
-        hp-dl380p-g8-sff-2 = nixpkgs.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./homelab/infra/hp-dl380p-g8-sff-2/configuration.nix ] ++ grubLab;
-        };
-        hp-dl380p-g8-sff-3 = nixpkgs.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./homelab/infra/hp-dl380p-g8-sff-3/configuration.nix ] ++ grubLab;
-        };
-        hp-dl380p-g8-sff-4 = nixpkgs.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./homelab/infra/hp-dl380p-g8-sff-4/configuration.nix ] ++ grubLab;
-        };
-        hp-dl380p-g8-sff-5 = nixpkgs.lib.nixosSystem {
-          specialArgs = inputs;
-          modules = [ ./homelab/infra/hp-dl380p-g8-sff-5/configuration.nix ] ++ grubLab;
-        };
+        hp-dl380p-g8-LFF = stableSystem ([
+          ./homelab/infra/hp-dl380p-g8-LFF/configuration.nix
+        ] ++ grubLab);
+        
+        hp-dl380p-g8-sff-2 = stableSystem([
+          ./homelab/infra/hp-dl380p-g8-sff-2/configuration.nix
+        ] ++ grubLab);
+        
+        hp-dl380p-g8-sff-3 = stableSystem ([
+          ./homelab/infra/hp-dl380p-g8-sff-3/configuration.nix
+        ] ++ grubLab);
+        
+        hp-dl380p-g8-sff-4 =stableSystem([
+          ./homelab/infra/hp-dl380p-g8-sff-4/configuration.nix
+        ] ++ grubLab);
+        
+        hp-dl380p-g8-sff-5 = stableSystem([
+          ./homelab/infra/hp-dl380p-g8-sff-5/configuration.nix
+        ] ++ grubLab);
       };
       formatter = forAllSystems (pkgs: pkgs.nixpkgs-fmt);
     };
