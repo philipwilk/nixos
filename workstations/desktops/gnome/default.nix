@@ -4,7 +4,7 @@
 , ...
 }:
 {
-  config = lib.mkIf config.workstation.desktop.gnome.enable {
+  config = lib.mkIf (config.workstation.desktop == "gnome") {
 
     # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
     systemd.services = {

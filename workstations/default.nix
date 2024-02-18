@@ -35,39 +35,17 @@ in
       '';
     };
 
-    desktop = {
-      sway.enable = mkOpt {
-        type = t.bool;
-        default = true;
-        example = false;
-        description = mdDoc ''
-          Whether to enable the sway window manager.
-        '';
-      };
-      gnome.enable = mkOpt {
-        type = t.bool;
-        default = false;
-        example = true;
-        description = mdDoc ''
-          Whether to enable the gnome desktop environment.
-        '';
-      };
+    desktop = mkOpt {
+      type = t.enum [ "gnome" "sway" ];
+      default = "sway";
+      example = false;
+      description = mdDoc ''
+        Which desktop environment or window manager to enable.
+      '';
     };
   };
 
   config = lib.mkIf config.workstation.enable {
-    # Assertions        
-    assertions =
-      let
-        dsktp = config.workstation.desktop;
-      in
-      [
-        {
-          assertion = dsktp.sway.enable -> dsktp.gnome.enable != true;
-          message = "Sway and gnome cannot be enabled simultaneously.";
-        }
-      ];
-
     home-manager = lib.mkIf config.workstation.isManaged {
       useGlobalPkgs = true;
       useUserPackages = true;

@@ -9,7 +9,7 @@ let
   waybar-style = builtins.readFile ./waybar.css;
 in
 {
-  config = lib.mkIf config.workstation.desktop.sway.enable {
+  config = lib.mkIf (config.workstation.desktop == "sway") {
     # Nixos config
     security.pam.services = {
       swaylock.fprintAuth = true;
