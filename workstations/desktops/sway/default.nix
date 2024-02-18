@@ -142,10 +142,7 @@ in
         libappindicator-gtk3
       ];
 
-      xdg.userDirs = {
-        enable = true;
-        createDirectories = true;
-      };
+      xdg.userDirs.createDirectories = true;
 
       wayland.windowManager.sway = {
         enable = true;
