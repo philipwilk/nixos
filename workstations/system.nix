@@ -25,10 +25,6 @@
   security = {
     rtkit.enable = true;
     polkit.enable = true;
-    pam.services = {
-      swaylock.fprintAuth = true;
-      greetd.fprintAuth = false;
-    };
   };
 
   networking.networkmanager.enable = true;
@@ -125,18 +121,12 @@
         wl-clipboard
         wl-clip-persist
         networkmanager-openvpn
-        wmname
         ripunzip
         ## Phone stuff
         pmbootstrap
 
-        # Desktop chore replacements
-        loupe
-        gnome.nautilus
-        gcr
-        gnome.seahorse
+        # Chore replacements
         pavucontrol
-
         powertop
 
         # Misc
@@ -168,41 +158,10 @@
       dedicatedServer.openFirewall = true;
     };
     virt-manager.enable = true;
-    dconf.enable = true;
-  };
-
-
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    wlr.enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-    ];
-  };
-
-  # https://github.com/apognu/tuigreet/issues/68#issuecomment-1586359960
-  systemd.services.greetd.serviceConfig = {
-    Type = "idle";
-    StandardInput = "tty";
-    StandardOutput = "tty";
-    StandardError = "journal";
-    TTYReset = true;
-    TTYVHangup = true;
-    TTYVTDisallocate = true;
   };
 
   services = {
     gnome.gnome-keyring.enable = true;
-    greetd = {
-      enable = true;
-      package = pkgs.greetd.tuigreet;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd sway";
-        };
-      };
-    };
     fprintd.enable = true;
     pipewire = {
       enable = true;
@@ -210,12 +169,6 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       wireplumber.enable = true;
-    };
-    blueman.enable = true;
-    geoclue2 = {
-      enable = true;
-      enableWifi = true;
-      submitData = true;
     };
     printing.enable = true;
     flatpak.enable = true;

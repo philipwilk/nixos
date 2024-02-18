@@ -13,6 +13,8 @@ in
 {
   imports = [
     ./system.nix
+    ./desktops/gnome
+    ./desktops/sway
   ];
 
   options.workstation = {
@@ -82,8 +84,6 @@ in
           "ssh"
           "easyeffects"
           "catppuccin"
-        ] ++ [
-          ./desktops/sway
         ];
 
         home = {
