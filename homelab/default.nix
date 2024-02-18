@@ -3,160 +3,166 @@
 , config
 , ...
 }:
-{
-  imports =
-    let
-      join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
-    in
-    join-dirfile "./services" [ "nextcloud" "openldap" "factorio" "navidrome" "uptime-kuma" "vaultwarden" ];
+let
+  join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
 
-  options.homelab =
-    let
-      join-dirfiles = builtins.map (folder: file: ./${folder}/${file}.nix);
-    in
-    {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        example = true;
-        description = lib.mdDoc ''
-          Enable the default homelab options:
-            - ssh using key access
-            - podman enabled
-            - prometheus and grafana monitoring
-        '';
-      };
-      isLeader = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        example = true;
-        description = lib.mdDoc ''
-          Whether this server should act as a host for the key lab services
-        '';
-      };
-      tld = lib.mkOption {
-        type = lib.types.str;
-        default = "fogbox.uk";
-        example = "example.com";
-        description = lib.mdDoc ''
-          Default top level domain for services.
-        '';
-      };
-      acme.mail = lib.mkOption {
-        type = lib.types.str;
-        default = null;
-        example = "joe.bloggs@example.com";
-        description = lib.mdDoc ''
-          Email for acme cert renewals.
-        '';
-      };
-      services = {
-        grafana = {
-          enable = lib.mkOption {
-            type = lib.types.bool;
-            default = config.homelab.isLeader;
-            example = false;
-            description = ''
-              Whether to enable the homelab grafana instance.
-            '';
-          };
-          domain = lib.mkOption {
-            type = lib.types.str;
-            default = "grafana.${config.homelab.tld}";
-            example = "grafana.example.com";
-            description = ''
-              Domain for homelab grafana instance.
-            '';
-          };
-        };
-        prometheus.enable = lib.mkOption {
-          type = lib.types.bool;
+  mkOpt = lib.mkOption;
+  t = lib.types;
+  mdDoc = lib.mdDoc;
+in
+{
+  imports = join-dirfile "./services" [
+    "nextcloud"
+    "openldap"
+    "factorio"
+    "navidrome"
+    "uptime-kuma"
+    "vaultwarden"
+  ];
+
+  options.homelab = {
+    enable = mkOpt {
+      type = t.bool;
+      default = false;
+      example = true;
+      description = mdDoc ''
+        Enable the default homelab options:
+          - ssh using key access
+          - podman enabled
+          - prometheus and grafana monitoring
+      '';
+    };
+    isLeader = mkOpt {
+      type = t.bool;
+      default = false;
+      example = true;
+      description = mdDoc ''
+        Whether this server should act as a host for the key lab services
+      '';
+    };
+    tld = mkOpt {
+      type = t.str;
+      default = "fogbox.uk";
+      example = "example.com";
+      description = mdDoc ''
+        Default top level domain for services.
+      '';
+    };
+    acme.mail = mkOpt {
+      type = t.str;
+      default = null;
+      example = "joe.bloggs@example.com";
+      description = mdDoc ''
+        Email for acme cert renewals.
+      '';
+    };
+    services = {
+      grafana = {
+        enable = mkOpt {
+          type = t.bool;
           default = config.homelab.isLeader;
           example = false;
-          description = ''
-            Whether to enable the homelab prometheus instance.
+          description = mdDoc ''
+            Whether to enable the homelab grafana instance.
           '';
         };
-        nextcloud = {
-          enable = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            example = true;
-            description = ''
-              Whether to enable the nextcloud service.
-            '';
-          };
-          domain = lib.mkOption {
-            type = lib.types.str;
-            default = "nextcloud.${config.homelab.tld}";
-            example = "nextcloud.example.com";
-            description = ''
-              Domain for homelab nextcloud instance.
-            '';
-          };
-        };
-        navidrome.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          example = true;
-          description = ''
-            Whether to enable the navidrome service.
-          '';
-        };
-        openldap = {
-          enable = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            example = true;
-            description = ''
-              Whether to enable the openldap server.
-            '';
-          };
-          domain = lib.mkOption {
-            type = lib.types.str;
-            default = "ldap.${config.homelab.tld}";
-            example = "ldap.example.com";
-            description = ''
-              Domain for the ldap instance.
-            '';
-          };
-        };
-        factorio = {
-          enable = lib.mkOption {
-            type = lib.types.bool;
-            default = false;
-            example = true;
-            description = ''
-              Whether to enable the factorio game server.
-            '';
-          };
-          admins = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [ ];
-            example = [ "username" ];
-            description = ''
-              List of game admins that can run commands/pause etc.
-            '';
-          };
-        };
-        uptime-kuma.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          example = true;
-          description = ''
-            Whether to eanble the uptime kuma monitor.
-          '';
-        };
-        vaultwarden.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          example = true;
-          description = ''
-            Whether to enable the vaultwarden bitwarden-compatible server.
+        domain = mkOpt {
+          type = t.str;
+          default = "grafana.${config.homelab.tld}";
+          example = "grafana.example.com";
+          description = mdDoc ''
+            Domain for homelab grafana instance.
           '';
         };
       };
+      prometheus.enable = mkOpt {
+        type = t.bool;
+        default = config.homelab.isLeader;
+        example = false;
+        description = mdDoc ''
+          Whether to enable the homelab prometheus instance.
+        '';
+      };
+      nextcloud = {
+        enable = mkOpt {
+          type = t.bool;
+          default = false;
+          example = true;
+          description = mdDoc ''
+            Whether to enable the nextcloud service.
+          '';
+        };
+        domain = mkOpt {
+          type = t.str;
+          default = "nextcloud.${config.homelab.tld}";
+          example = "nextcloud.example.com";
+          description = mdDoc ''
+            Domain for homelab nextcloud instance.
+          '';
+        };
+      };
+      navidrome.enable = mkOpt {
+        type = t.bool;
+        default = false;
+        example = true;
+        description = mdDoc ''
+          Whether to enable the navidrome service.
+        '';
+      };
+      openldap = {
+        enable = mkOpt {
+          type = t.bool;
+          default = false;
+          example = true;
+          description = mdDoc ''
+            Whether to enable the openldap server.
+          '';
+        };
+        domain = mkOpt {
+          type = t.str;
+          default = "ldap.${config.homelab.tld}";
+          example = "ldap.example.com";
+          description = mdDoc ''
+            Domain for the ldap instance.
+          '';
+        };
+      };
+      factorio = {
+        enable = mkOpt {
+          type = t.bool;
+          default = false;
+          example = true;
+          description = mdDoc ''
+            Whether to enable the factorio game server.
+          '';
+        };
+        admins = mkOpt {
+          type = t.listOf t.str;
+          default = [ ];
+          example = [ "username" ];
+          description = mdDoc ''
+            List of game admins that can run commands/pause etc.
+          '';
+        };
+      };
+      uptime-kuma.enable = mkOpt {
+        type = t.bool;
+        default = false;
+        example = true;
+        description = mdDoc ''
+          Whether to eanble the uptime kuma monitor.
+        '';
+      };
+      vaultwarden.enable = mkOpt {
+        type = t.bool;
+        default = false;
+        example = true;
+        description = mdDoc ''
+          Whether to enable the vaultwarden bitwarden-compatible server.
+        '';
+      };
     };
+  };
 
   config =
     lib.mkIf config.homelab.enable
