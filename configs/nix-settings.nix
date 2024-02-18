@@ -42,15 +42,18 @@
 
   # Ensure firmware is up to date
   services.fwupd.enable = true;
-  hardware.cpu = {
-    amd = {
-      updateMicrocode = true;
-      sev.enable = true;
-      sevGuest.enable = true;
-    };
-    intel = {
-      updateMicrocode = true;
-      sgx.provision.enable = true;
+  hardware = {
+    enableAllFirmware = true;
+    cpu = {
+      amd = {
+        updateMicrocode = true;
+        sev.enable = true;
+        sevGuest.enable = true;
+      };
+      intel = {
+        updateMicrocode = true;
+        sgx.provision.enable = true;
+      };
     };
   };
 

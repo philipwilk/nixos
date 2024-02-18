@@ -9,24 +9,32 @@
 }: {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    initrd = {
+      availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+      kernelModules = [ ];
+      luks.devices = {
+        # LUKS root
+        "luks-02a8e4f1-370a-4bed-ba04-7d7950dbe564".device = "/dev/disk/by-uuid/02a8e4f1-370a-4bed-ba04-7d7950dbe564";
+        # LUKS swapfile
+        "luks-56963998-41a4-4ca6-afc9-a9eadb2b93c9".device = "/dev/disk/by-uuid/56963998-41a4-4ca6-afc9-a9eadb2b93c9";
+      };
+    };
+    kernelModules = [ "kvm-amd" ];
+    extraModulePackages = [ ];
+  };
 
-  fileSystems."/" =
-    {
+  fileSystems = {
+    "/" = {
       device = "/dev/disk/by-uuid/d0a8b583-58ce-44d9-a94e-58a806fee3ec";
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."luks-02a8e4f1-370a-4bed-ba04-7d7950dbe564".device = "/dev/disk/by-uuid/02a8e4f1-370a-4bed-ba04-7d7950dbe564";
-
-  fileSystems."/boot" =
-    {
+    "/boot" = {
       device = "/dev/disk/by-uuid/E8BC-1121";
       fsType = "vfat";
     };
+  };
 
   swapDevices =
     [{ device = "/dev/disk/by-uuid/82815d0e-3e57-4c55-adad-d8373cebbd0f"; }];
@@ -39,6 +47,4 @@
   # networking.interfaces.enp10s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode =
-    lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
