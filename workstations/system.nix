@@ -8,6 +8,8 @@
   age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
   age.secrets.workstation_password.file = ../secrets/workstation_password.age;
 
+  boot.kernelParams = [ "mem_sleep_default=deep" ];
+
   powerManagement.enable = true;
   hardware = {
     opentabletdriver.enable = true;
@@ -96,6 +98,7 @@
         # Media consumption
         vlc
         lollypop
+        youtube-music
         # Office stuff
         libreoffice
         matlab
@@ -133,6 +136,7 @@
         neofetch
         usbutils
         pciutils
+        libva-utils
         # Theming
         (catppuccin.override {
           accent = "peach";
@@ -173,7 +177,6 @@
     printing.enable = true;
     flatpak.enable = true;
     pcscd.enable = true;
-    auto-cpufreq.enable = true;
     openssh.settings.extraConfig = "+PubkeyAuthOptions touch-required+";
     udev.extraRules = ''
       KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"

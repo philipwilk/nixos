@@ -43,6 +43,26 @@
         "type": "github"
       }
     },
+    "auto-cpufreq": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1708729600,
+        "narHash": "sha256-20qWysBdcK87uEWdf4Gb4U/2rhIw/A2ytW5YbL6dalk=",
+        "owner": "AdnanHodzic",
+        "repo": "auto-cpufreq",
+        "rev": "b4c5276feb49ad97323f18b288904a0e1e84956e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AdnanHodzic",
+        "repo": "auto-cpufreq",
+        "type": "github"
+      }
+    },
     "catppuccin": {
       "locked": {
         "lastModified": 1707140582,
@@ -285,6 +305,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "auto-cpufreq": "auto-cpufreq",
         "catppuccin": "catppuccin",
         "home-manager": "home-manager_2",
         "nix-matlab": "nix-matlab",

@@ -21,7 +21,7 @@
       };
     };
     kernelModules = [ "kvm-intel" ];
-    kernelParams = [ "mem_sleep_default=deep" "i915.enable_guc=3" "i915.enable_fbc=1" ];
+    kernelParams = [ "i915.enable_guc=3" "i915.enable_fbc=1" ];
     extraModulePackages = [ ];
   };
 

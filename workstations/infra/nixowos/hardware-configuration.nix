@@ -21,6 +21,7 @@
       };
     };
     kernelModules = [ "kvm-amd" ];
+    kernelParams = [ "amd_pstate=guided" ];
     extraModulePackages = [ ];
   };
 
