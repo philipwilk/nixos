@@ -21,6 +21,10 @@
       url = "github:MercuryTechnologies/nix-your-shell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    auto-cpufreq = {
+      url = "github:AdnanHodzic/auto-cpufreq";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
@@ -31,6 +35,7 @@
     , nix-matlab
     , home-manager
     , catppuccin
+    , auto-cpufreq
     , ...
     } @ inputs:
     let
@@ -76,6 +81,7 @@
 
         nixowos-laptop = unstableSystem ([
           ./workstations/infra/nixowos-laptop
+          auto-cpufreq.nixosModules.default
         ] ++ workstationModules);
 
         mini = unstableSystem ([
