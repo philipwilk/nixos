@@ -84,6 +84,9 @@ in
               "sway/mode"
               "sway/window"
             ];
+            "sway/window" = {
+              "format" = "{app_id}";
+            };
             modules-center = [
               "clock"
               "mpris"
