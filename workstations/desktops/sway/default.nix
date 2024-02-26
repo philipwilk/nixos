@@ -12,7 +12,7 @@ in
   config = lib.mkIf (config.workstation.desktop == "sway") {
     # Nixos config
     security.pam.services = {
-      swaylock.fprintAuth = true;
+      gtklock.fprintAuth = true;
       greetd.fprintAuth = false;
     };
 
@@ -127,7 +127,19 @@ in
           enable = true;
           components = [ "pkcs11" "secrets" "ssh" ];
         };
-        swayidle.enable = true;
+        swayidle = {
+          enable = true;
+          timeouts = [
+            {
+              timeout = 150;
+              command = "${pkgs.gtklock}/bin/gtklock";
+            }
+            {
+              timeout = 300;
+              command = "${pkgs.systemd}/bin/systemctl suspend-then-hibernate";
+            }
+          ];
+        };
       };
 
       home.packages = with pkgs; [
