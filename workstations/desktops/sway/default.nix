@@ -92,7 +92,7 @@ in
               "mpris"
             ];
             "mpris" = {
-              "format" = "{player_icon} {player}: {artist} {title} {position}";
+              "format" = "{player_icon} {player}: {artist} {title}";
             };
             modules-right = [
               "tray"
