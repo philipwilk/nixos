@@ -12,7 +12,6 @@ in
   config = lib.mkIf (config.workstation.desktop == "sway") {
     # Nixos config
     security.pam.services = {
-      gtklock.fprintAuth = true;
       greetd.fprintAuth = false;
     };
 
@@ -110,7 +109,6 @@ in
           style = catppuccin + waybar-style;
         };
         fuzzel.enable = true;
-        swaylock.enable = true;
         xplr.enable = true;
       };
 
@@ -129,19 +127,6 @@ in
         gnome-keyring = {
           enable = true;
           components = [ "pkcs11" "secrets" "ssh" ];
-        };
-        swayidle = {
-          enable = true;
-          timeouts = [
-            {
-              timeout = 150;
-              command = "${pkgs.gtklock}/bin/gtklock";
-            }
-            {
-              timeout = 300;
-              command = "${pkgs.systemd}/bin/systemctl suspend-then-hibernate";
-            }
-          ];
         };
       };
 
