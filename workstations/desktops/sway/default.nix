@@ -22,6 +22,8 @@ in
       gcr
       gnome.seahorse
       wmname
+
+      bluetuith
     ];
 
     services = {
