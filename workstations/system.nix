@@ -101,6 +101,7 @@
         youtube-music
         # Office stuff
         libreoffice
+        drawio
         matlab
         nextcloud-client
         rnote
