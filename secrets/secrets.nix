@@ -19,4 +19,5 @@ in
   "nextcloud_admin.age".publicKeys = servers ++ workstations;
   "nextcloud_sql.age".publicKeys = servers;
   "factorio_password.age".publicKeys = servers ++ workstations;
+  "mediawiki_password.age".publicKeys = servers;
 }
