@@ -64,6 +64,9 @@ in
 
         $wgGroupPermissions['*']['createaccount'] = false;
         $wgGroupPermissions['*']['edit'] = false;
+
+        $wgGroupPermissions['cancreateuser']['bot'] = false;
+        $wgGroupPermissions['cancreateuser']['createaccount'] = true;
       '';
     };
   };
