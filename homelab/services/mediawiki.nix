@@ -28,7 +28,7 @@ in
         # Apache config to rewrite the url to look nice
         extraConfig = ''
           RewriteEngine On
-          RewriteRule ^/?wiki(/.*)?$ %{DOCUMENT_ROOT}/index.php [L]
+          RewriteRule ^/([a-z]*)/(.*)$ %{DOCUMENT_ROOT}/index.php [L,QSA]
 
           RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
           RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
@@ -55,7 +55,29 @@ in
       # Actual wiki config
       extraConfig = ''
         $wgScriptPath = "";
-        $wgArticlePath = "/wiki/$1";
+        $actions = [
+        	'edit',
+        	'watch',
+        	'unwatch',
+        	'delete',
+        	'revert',
+        	'rollback',
+        	'protect',
+        	'unprotect',
+        	'markpatrolled',
+        	'render',
+        	'submit',
+        	'history',
+        	'purge',
+        	'info',
+        ];
+
+        foreach ( $actions as $action ) {
+          $wgActionPaths[$action] = "/$1/$action";
+        }
+        $wgActionPaths['view'] = "/wiki/$1";
+        $wgArticlePath = $wgActionPaths['view'];
+        
         $wgUsePathInfo = true;
         $wgEnableUploads = true;
         $wgGenerateThumbnailOnParse = false;
