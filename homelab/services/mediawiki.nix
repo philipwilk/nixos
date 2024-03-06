@@ -59,6 +59,8 @@ in
         $wgUsePathInfo = true;
         $wgEnableUploads = true;
         $wgGenerateThumbnailOnParse = false;
+
+        $wgAllowExternalImages = true;
       '';
     };
   };
