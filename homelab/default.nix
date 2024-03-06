@@ -18,6 +18,7 @@ in
     "navidrome"
     "uptime-kuma"
     "vaultwarden"
+    "mediawiki"
   ];
 
   options.homelab = {
@@ -160,6 +161,40 @@ in
         description = mdDoc ''
           Whether to enable the vaultwarden bitwarden-compatible server.
         '';
+      };
+      mediawiki = {
+        enable = mkOpt {
+          type = t.bool;
+          default = false;
+          example = true;
+          description = mdDoc ''
+            Whether to enable the mediawiki server.
+          '';
+        };
+        domain = mkOpt {
+          type = t.str;
+          default = "wiki.${config.homelab.tld}";
+          example = "wiki.example.com";
+          description = mdDoc ''
+            Domain of the wiki.
+          '';
+        };
+        name = mkOpt {
+          type = t.str;
+          default = "Mediawiki";
+          example = "Example wiki";
+          description = ''
+            Name of the wiki.
+          '';
+        };
+        adminMail = mkOpt {
+          type = t.str;
+          default = config.homelab.acme.mail;
+          example = "admin@example.com";
+          description = ''
+            Email of the admin of the wiki (for the web server)
+          '';
+        };
       };
     };
   };

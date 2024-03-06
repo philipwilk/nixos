@@ -8,7 +8,7 @@
     enable = true;
     isLeader = true;
     tld = "fogbox.uk";
-    acme.mail = "wiryfuture@gmail.com";
+    acme.mail = "philip.wilk10@gmail.com";
     services = {
       nextcloud = {
         enable = true;
@@ -22,6 +22,11 @@
       openldap.enable = true;
       uptime-kuma.enable = true;
       vaultwarden.enable = true;
+      mediawiki = {
+        enable = true;
+        name = "Reading CS lore";
+        domain = "lore.fogbox.uk"; 
+      };
     };
   };
 
