@@ -25,6 +25,19 @@ in
       httpd.virtualHost = {
         hostName = conf.domain;
         adminAddr = conf.adminMail;
+        # Apache config to rewrite the url to look nice
+        extraConfig = ''
+          RewriteEngine On
+          RewriteRule ^/?wiki(/.*)?$ %{DOCUMENT_ROOT}/index.php [L]
+
+          RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+          RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+          RewriteRule ^/?images/thumb/[0-9a-f]/[0-9a-f][0-9a-f]/([^/]+)/([0-9]+)px-.*$ %{DOCUMENT_ROOT}/thumb.php?f=$1&width=$2 [L,QSA,B]
+
+          RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+          RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+          RewriteRule ^/?images/thumb/archive/[0-9a-f]/[0-9a-f][0-9a-f]/([^/]+)/([0-9]+)px-.*$ %{DOCUMENT_ROOT}/thumb.php?f=$1&width=$2&archived=1 [L,QSA,B]
+        '';
         listen = let p = 9999; in [
           {
             ip = "0.0.0.0";
@@ -39,6 +52,14 @@ in
         ];
       };
       passwordFile = config.age.secrets.mediawiki_password.path;
+      # Actual wiki config
+      extraConfig = ''
+        $wgScriptPath = "";
+        $wgArticlePath = "/wiki/$1";
+        $wgUsePathInfo = true;
+        $wgEnableUploads = true;
+        $wgGenerateThumbnailOnParse = false;
+      '';
     };
   };
 }
