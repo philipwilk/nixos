@@ -61,6 +61,9 @@ in
         $wgGenerateThumbnailOnParse = false;
 
         $wgAllowExternalImages = true;
+
+        $wgGroupPermissions['*']['createaccount'] = false;
+        $wgGroupPermissions['*']['edit'] = false;
       '';
     };
   };
