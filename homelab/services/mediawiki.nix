@@ -73,7 +73,7 @@ in
         ];
 
         foreach ( $actions as $action ) {
-          $wgActionPaths[$action] = "/$1/$action";
+          $wgActionPaths[$action] = "/wiki/$1/$action";
         }
         $wgActionPaths['view'] = "/wiki/$1";
         $wgArticlePath = $wgActionPaths['view'];
