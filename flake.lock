@@ -243,15 +243,15 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1710348226,
-        "narHash": "sha256-nWI9vHOC+rOrfV9W9tAh5LAVEbAjWnlNbc06+4eTxCU=",
-        "owner": "philipwilk",
+        "lastModified": 1710525120,
+        "narHash": "sha256-Mv/kvGy/1a+fQvH6JThuPtXMUz4OcUm7K9XADO923lc=",
+        "owner": "MercuryTechnologies",
         "repo": "nix-your-shell",
-        "rev": "b5646a6ece9bb797d81c7423155b73bb04f7adbe",
+        "rev": "9b293631720398160f5db672a1b3d3b01c7a674d",
         "type": "github"
       },
       "original": {
-        "owner": "philipwilk",
+        "owner": "MercuryTechnologies",
         "repo": "nix-your-shell",
         "type": "github"
       }
