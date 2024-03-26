@@ -14,6 +14,13 @@
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   users.users.mini = {
+    openssh.authorizedKeys.keys =
+      let
+        pc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
+        laptop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
+        workstations = [ pc laptop ];
+      in
+      workstations;
     isNormalUser = true;
     description = "mini";
     extraGroups = [ "networkmanager" "wheel" ];
@@ -33,6 +40,13 @@
   };
 
   services = {
+    openssh = {
+      enable = true;
+      settings = {
+        PermitRootLogin = "no";
+        PasswordAuthentication = false;
+      };
+    };
     xserver = {
       enable = true;
       libinput.mouse.accelProfile = "flat";
