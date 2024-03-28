@@ -80,7 +80,6 @@
         rustdesk-flutter
         # Games
         prismlauncher
-        xivlauncher
         moonlight-qt
         heroic
         packwiz
@@ -173,7 +172,7 @@
       lidSwitchExternalPower = "suspend";
     };
     gnome.gnome-keyring.enable = true;
-    #fprintd.enable = true;
+    fprintd.enable = true;
     pipewire = {
       enable = true;
       alsa.enable = true;
