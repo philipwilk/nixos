@@ -1,21 +1,11 @@
-{ lib
-, pkgs
-, config
-, catppuccin
-, ...
-}:
+{ lib, pkgs, config, catppuccin, ... }:
 let
   mkOpt = lib.mkOption;
   t = lib.types;
   mdDoc = lib.mkDoc;
   join-dirfile = dir: map (file: ./${dir}/${file}.nix);
-in
-{
-  imports = [
-    ./system.nix
-    ./desktops/gnome
-    ./desktops/sway
-  ];
+in {
+  imports = [ ./system.nix ./desktops/gnome ./desktops/sway ];
 
   options.workstation = {
     enable = mkOpt {
@@ -50,20 +40,18 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       users.philip = {
-        imports = [
-          catppuccin.homeManagerModules.catppuccin
-        ] ++
-        join-dirfile "programs" [
-          "git"
-          "nys"
-          "direnv"
-          "nix"
-          "zoxide"
-          "virtman"
-          "ssh"
-          "easyeffects"
-          "catppuccin"
-        ];
+        imports = [ catppuccin.homeManagerModules.catppuccin ]
+          ++ join-dirfile "programs" [
+            "git"
+            "nys"
+            "direnv"
+            "nix"
+            "zoxide"
+            "virtman"
+            "ssh"
+            "easyeffects"
+            "catppuccin"
+          ];
 
         home = {
           username = "philip";

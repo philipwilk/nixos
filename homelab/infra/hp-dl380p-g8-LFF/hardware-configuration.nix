@@ -4,23 +4,20 @@
 { config, lib, modulesPath, ... }:
 
 {
-  imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "ehci_pci" "ata_piix" "uhci_hcd" "hpsa" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules =
+    [ "ehci_pci" "ata_piix" "uhci_hcd" "hpsa" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   boot.loader.grub.device = "/dev/sdb";
-  
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/b60a9faa-4226-491e-b2a9-f9303957216a";
-      fsType = "ext4";
-    };
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/b60a9faa-4226-491e-b2a9-f9303957216a";
+    fsType = "ext4";
+  };
 
   swapDevices = [ ];
 
@@ -35,5 +32,6 @@
   # networking.interfaces.eno4.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

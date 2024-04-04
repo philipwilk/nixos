@@ -1,24 +1,19 @@
-{
-  pkgs,
-  config,
-  lib,
-  agenix,
-  ...
-}:
+{ pkgs, config, lib, agenix, ... }:
 let
   homelab = config.homelab;
   conf = homelab.services.mediawiki;
-in
-{
+in {
   config = lib.mkIf conf.enable {
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
     age.secrets.mediawiki_password = {
       file = ../../secrets/mediawiki_password.age;
       owner = "mediawiki";
     };
-    
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [ (builtins.head config.services.mediawiki.httpd.virtualHost.listen).port ];
-  
+
+    networking.firewall.interfaces."eno1".allowedTCPPorts = [
+      (builtins.head config.services.mediawiki.httpd.virtualHost.listen).port
+    ];
+
     services.mediawiki = {
       enable = true;
       name = conf.name;
@@ -38,7 +33,8 @@ in
           RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
           RewriteRule ^/?images/thumb/archive/[0-9a-f]/[0-9a-f][0-9a-f]/([^/]+)/([0-9]+)px-.*$ %{DOCUMENT_ROOT}/thumb.php?f=$1&width=$2&archived=1 [L,QSA,B]
         '';
-        listen = let p = 9999; in [
+        listen = let p = 9999;
+        in [
           {
             ip = "0.0.0.0";
             port = p;
@@ -77,7 +73,7 @@ in
         }
         $wgActionPaths['view'] = "/wiki/$1";
         $wgArticlePath = $wgActionPaths['view'];
-        
+
         $wgUsePathInfo = true;
         $wgEnableUploads = true;
         $wgGenerateThumbnailOnParse = false;

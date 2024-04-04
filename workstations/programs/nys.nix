@@ -2,7 +2,7 @@
   programs = {
     nushell = {
       enable = true;
-      configFile.text = '' 
+      configFile.text = ''
         source "${config.xdg.configHome}/nushell/nix-your-shell.nu"
       '';
       shellAliases = osConfig.environment.shellAliases;
@@ -39,5 +39,6 @@
       enableNushellIntegration = true;
     };
   };
-  home.file."${config.xdg.configHome}/nushell/nix-your-shell.nu".source = pkgs.nix-your-shell.generate-config "nu";
+  home.file."${config.xdg.configHome}/nushell/nix-your-shell.nu".source =
+    pkgs.nix-your-shell.generate-config "nu";
 }

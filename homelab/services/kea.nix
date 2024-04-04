@@ -1,12 +1,6 @@
-{
-  config,
-  lib,
-  ...
-}
-let
-  domain = config.homelab.services.kea.hostDomain;
-in
-{
+{ config, lib, ... }:
+let domain = config.homelab.services.kea.hostDomain;
+in {
   config = mkIf config.homelab.services.kea.enable {
     services.kea = {
       dhcpv4 = {
@@ -26,16 +20,10 @@ in
           renew-timer = 1000;
           valid-lifetime = 4000;
           fqdn = domain;
-          subnet4 = [
-            {
-              pools = [
-                {
-                  pool = "192.168.1.101 - 192.168.1.245";
-                } 
-              ];
-              subnet = "192.168.1.0/16";
-            }
-          ];
+          subnet4 = [{
+            pools = [{ pool = "192.168.1.101 - 192.168.1.245"; }];
+            subnet = "192.168.1.0/16";
+          }];
         };
       };
       dhcpv6 = {
@@ -47,4 +35,3 @@ in
     };
   };
 }
-

@@ -1,9 +1,4 @@
-{ config
-, pkgs
-, lib
-, ...
-}:
-{
+{ config, pkgs, lib, ... }: {
   config = lib.mkIf (config.workstation.desktop == "gnome") {
 
     # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
@@ -42,7 +37,6 @@
       gnomeExtensions.fuzzy-app-search
       gnome.gnome-tweaks
     ];
-
 
     services = {
       gnome.gnome-keyring.enable = true;

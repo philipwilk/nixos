@@ -1,30 +1,25 @@
-{ nixpkgs
-, nixpkgs-unstable
-, pkgs
-, lib
-, config
-, ...
-}: {
+{ nixpkgs, nixpkgs-unstable, pkgs, lib, config, ... }: {
   nixpkgs = {
-    overlays =
-      let
-        overlay = _: _: {
-          unstable = import nixpkgs-unstable { system = "x86_64-linux"; inherit (config.nixpkgs) config; };
+    overlays = let
+      overlay = _: _: {
+        unstable = import nixpkgs-unstable {
+          system = "x86_64-linux";
+          inherit (config.nixpkgs) config;
         };
-      in
-      [ overlay ];
-    config = {
-      allowUnfree = true;
-    };
+      };
+    in [ overlay ];
+    config = { allowUnfree = true; };
   };
 
   nix = {
     # registry = lib.mapAttrs (_: value: { flake = value; }) {
     #   inherit nixpkgs nixpkgs-unstable;
     # };
-    nixPath = lib.mapAttrsToList (key: value: "${ key}=${ value. to. path}") config.nix.registry;
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}")
+      config.nix.registry;
     settings = {
-      experimental-features = "nix-command flakes auto-allocate-uids ca-derivations";
+      experimental-features =
+        "nix-command flakes auto-allocate-uids ca-derivations";
       auto-optimise-store = true;
     };
     gc = {
@@ -35,10 +30,7 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    helix
-  ];
+  environment.systemPackages = with pkgs; [ git helix ];
 
   # Ensure firmware is up to date
   services.fwupd.enable = true;

@@ -4,20 +4,20 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {
     initrd = {
-      availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
+      availableKernelModules =
+        [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
       kernelModules = [ ];
       luks.devices = {
         # LUKS root
-        "luks-2c091ef5-7caa-496c-aa43-7a85d4378ec0".device = "/dev/disk/by-uuid/2c091ef5-7caa-496c-aa43-7a85d4378ec0";
+        "luks-2c091ef5-7caa-496c-aa43-7a85d4378ec0".device =
+          "/dev/disk/by-uuid/2c091ef5-7caa-496c-aa43-7a85d4378ec0";
         # LUKS swapfile
-        "luks-ad203aa1-6766-4952-b43a-08478b322dfa".device = "/dev/disk/by-uuid/ad203aa1-6766-4952-b43a-08478b322dfa";
+        "luks-ad203aa1-6766-4952-b43a-08478b322dfa".device =
+          "/dev/disk/by-uuid/ad203aa1-6766-4952-b43a-08478b322dfa";
       };
     };
     kernelModules = [ "kvm-intel" ];

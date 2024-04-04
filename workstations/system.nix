@@ -1,10 +1,4 @@
-{ pkgs
-, agenix
-, config
-, nix-matlab
-, nix-your-shell
-, ...
-}: {
+{ pkgs, agenix, config, nix-matlab, nix-your-shell, ... }: {
   age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
   age.secrets.workstation_password.file = ../secrets/workstation_password.age;
 
@@ -35,9 +29,7 @@
 
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
-    shells = with pkgs; [
-      nushellFull
-    ];
+    shells = with pkgs; [ nushellFull ];
     binsh = "${pkgs.dash}/bin/dash";
     systemPackages = with pkgs; [
       # Terminals and shells
@@ -59,7 +51,15 @@
     defaultUserShell = pkgs.nushellFull;
     users.philip = {
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" "adbusers" "dialout" "libvirtd" "video" "input" ];
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "adbusers"
+        "dialout"
+        "libvirtd"
+        "video"
+        "input"
+      ];
       hashedPasswordFile = config.age.secrets.workstation_password.path;
       packages = with pkgs; [
         # Browsers
@@ -225,16 +225,8 @@
     enabled = "fcitx5";
     fcitx5 = {
       waylandFrontend = true;
-      addons = with pkgs; [
-          fcitx5-gtk
-          fcitx5-rime
-          fcitx5-hangul
-      ];
-      settings = {
-        addons = {
-          pinyin.globalSection.EmojiEnabled = "True";
-        };
-      };
+      addons = with pkgs; [ fcitx5-gtk fcitx5-rime fcitx5-hangul ];
+      settings = { addons = { pinyin.globalSection.EmojiEnabled = "True"; }; };
     };
   };
 }

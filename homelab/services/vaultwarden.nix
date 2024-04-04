@@ -1,8 +1,4 @@
-{ config
-, lib
-, ...
-}:
-{
+{ config, lib, ... }: {
   config = lib.mkIf config.homelab.services.vaultwarden.enable {
     services.vaultwarden = {
       enable = true;

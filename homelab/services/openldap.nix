@@ -1,17 +1,14 @@
-{ pkgs
-, config
-, lib
-, ...
-}:
+{ pkgs, config, lib, ... }:
 let
   ldapname = config.homelab.services.openldap.domain;
-  createSuffix =
-    domain: lib.strings.concatStringsSep "," (map (part: "dc=${part}") (lib.strings.splitString "." domain));
+  createSuffix = domain:
+    lib.strings.concatStringsSep ","
+    (map (part: "dc=${part}") (lib.strings.splitString "." domain));
   ldapSuffix = createSuffix ldapname;
-in
-{
+in {
   config = lib.mkIf config.homelab.services.openldap.enable {
-    age.secrets.openldap_cloudflare_creds.file = ../../secrets/openldap_cloudflare_creds.age;
+    age.secrets.openldap_cloudflare_creds.file =
+      ../../secrets/openldap_cloudflare_creds.age;
     age.secrets.ldap_admin_pw.file = ../../secrets/ldap_admin_pw.age;
     services.openldap = {
       enable = true;
@@ -21,7 +18,7 @@ in
         attrs = {
           olcLogLevel = "conns config";
 
-          /* settings for acme ssl */
+          # settings for acme ssl
           olcTLSCACertificateFile = "/var/lib/acme/${ldapname}/full.pem";
           olcTLSCertificateFile = "/var/lib/acme/${ldapname}/cert.pem";
           olcTLSCertificateKeyFile = "/var/lib/acme/${ldapname}/key.pem";
@@ -46,27 +43,29 @@ in
 
             olcSuffix = "${ldapSuffix}";
 
-            /* your admin account */
+            # your admin account
             olcRootDN = "cn=admin,${ldapSuffix}";
             olcRootPW = config.age.secrets.ldap_admin_pw.path;
 
             olcAccess = [
-              /* custom access rules for userPassword attributes */
-              ''{0}to attrs=userPassword
-	                by self write
-	                by anonymous auth
-	                by * none''
+              # custom access rules for userPassword attributes
+              ''
+                {0}to attrs=userPassword
+                	                by self write
+                	                by anonymous auth
+                	                by * none''
 
-              /* allow read on anything else */
-              ''{1}to *
-	                by * read''
+              # allow read on anything else
+              ''
+                {1}to *
+                	                by * read''
             ];
           };
         };
       };
     };
 
-    /* ensure openldap is launched after certificates are created */
+    # ensure openldap is launched after certificates are created
     systemd.services.openldap = {
       wants = [ "acme-${ldapname}.service" ];
       after = [ "acme-${ldapname}.service" ];
@@ -80,9 +79,7 @@ in
         dnsProvider = "cloudflare";
         credentialsFile = config.age.secrets.openldap_cloudflare_creds.path;
       };
-      certs."${ldapname}" = {
-        extraDomainNames = [ ];
-      };
+      certs."${ldapname}" = { extraDomainNames = [ ]; };
     };
     users.groups.certs.members = [ "openldap" ];
 
