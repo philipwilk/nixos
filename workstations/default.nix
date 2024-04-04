@@ -56,6 +56,7 @@ in
         join-dirfile "programs" [
           "git"
           "nys"
+          "direnv"
           "nix"
           "zoxide"
           "virtman"
