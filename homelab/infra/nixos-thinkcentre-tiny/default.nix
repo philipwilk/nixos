@@ -1,5 +1,4 @@
-{ ...
-}:
+{ ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -25,7 +24,7 @@
       mediawiki = {
         enable = true;
         name = "Reading CS lore";
-        domain = "lore.fogbox.uk"; 
+        domain = "lore.fogbox.uk";
       };
     };
   };

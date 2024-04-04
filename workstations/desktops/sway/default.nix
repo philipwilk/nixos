@@ -1,19 +1,15 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 let
   inherit (lib.meta) getExe getExe';
-  catppuccin = builtins.readFile (pkgs.catppuccin.override { accent = "rosewater"; variant = "latte"; } + "/waybar/latte.css");
+  catppuccin = builtins.readFile (pkgs.catppuccin.override {
+    accent = "rosewater";
+    variant = "latte";
+  } + "/waybar/latte.css");
   waybar-style = builtins.readFile ./waybar.css;
-in
-{
+in {
   config = lib.mkIf (config.workstation.desktop == "sway") {
     # Nixos config
-    security.pam.services = {
-      greetd.fprintAuth = false;
-    };
+    security.pam.services = { greetd.fprintAuth = false; };
 
     users.users.philip.packages = with pkgs; [
       # Desktop chore replacements
@@ -32,7 +28,8 @@ in
         package = pkgs.greetd.tuigreet;
         settings = {
           default_session = {
-            command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd sway";
+            command =
+              "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd sway";
           };
         };
       };
@@ -49,9 +46,7 @@ in
       enable = true;
       xdgOpenUsePortal = true;
       wlr.enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-gtk
-      ];
+      extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
     };
 
     # https://github.com/apognu/tuigreet/issues/68#issuecomment-1586359960
@@ -65,8 +60,6 @@ in
       TTYVTDisallocate = true;
     };
 
-
-
     # Home manager config
     home-manager.users.philip = {
       home.sessionVariables = {
@@ -74,7 +67,7 @@ in
         "GTK_IM_MODULE" = "fcitx";
         "QT_QPA_PLATFORM" = "xcb";
         "QT_IM_MODULE" = "ibus";
-        "XMODIFIERS "= "@im=fcitx";
+        "XMODIFIERS " = "@im=fcitx";
       };
 
       programs = {
@@ -86,31 +79,17 @@ in
           };
           settings.mainbar = {
             layer = "top";
-            modules-left = [
-              "sway/workspaces"
-              "sway/mode"
-              "sway/window"
-            ];
-            "sway/window" = {
-              "format" = "{app_id}";
-            };
-            modules-center = [
-              "clock"
-              "mpris"
-            ];
+            modules-left = [ "sway/workspaces" "sway/mode" "sway/window" ];
+            "sway/window" = { "format" = "{app_id}"; };
+            modules-center = [ "clock" "mpris" ];
             "mpris" = {
               "format" = "{player_icon} {player}: {artist} {title}";
             };
-            modules-right = [
-              "tray"
-              "network"
-              "backlight"
-              "wireplumber"
-              "battery"
-            ];
+            modules-right =
+              [ "tray" "network" "backlight" "wireplumber" "battery" ];
             "wireplumber" = {
               "format" = "{volume}%";
-              "format-muted" = "\uf6a9";
+              "format-muted" = "uf6a9";
               "on-click" = "volumectl toggle-mute";
             };
           };
@@ -167,7 +146,11 @@ in
           modifier = "Mod4";
           terminal = "kitty";
           # ugly, but this fixes most issues, until home-manager adopts environment.d
-          startup = [{ command = "${getExe' config.systemd.package "systemctl"} --user import-environment"; }];
+          startup = [{
+            command = "${
+                getExe' config.systemd.package "systemctl"
+              } --user import-environment";
+          }];
 
           input = {
             "type:keyboard" = {
@@ -193,9 +176,7 @@ in
             border = 0;
             hideEdgeBorders = "smart";
           };
-          gaps = {
-            inner = 8;
-          };
+          gaps = { inner = 8; };
 
           colors = {
             focused = {
@@ -223,33 +204,32 @@ in
             };
           };
 
-          keybindings =
-            let
-              mod = config.wayland.windowManager.sway.config.modifier;
+          keybindings = let
+            mod = config.wayland.windowManager.sway.config.modifier;
 
-              #pamixer = lib.getExe pkgs.pamixer;
-              #brightnessctl = lib.getExe pkgs.brightnessctl;
-              playerctl = lib.getExe pkgs.playerctl;
-              grim = lib.getExe pkgs.grim;
-              slurp = lib.getExe pkgs.slurp;
-            in
-            lib.mkOptionDefault {
-              # Volume
-              "XF86AudioMute" = "exec volumectl toggle-mute";
-              "XF86AudioRaiseVolume" = "exec volumectl -u up";
-              "XF86AudioLowerVolume" = "exec volumectl -u down";
-              # Brightness
-              "XF86MonBrightnessDown" = "exec lightctl down";
-              "XF86MonBrightnessUp" = "exec lightctl up";
-              # Media keys
-              "XF86AudioStop" = "exec ${playerctl} stop";
-              "XF86AudioPlay" = "exec ${playerctl} play-pause";
-              "XF86AudioPause" = "exec ${playerctl} play-pause";
-              "XF86AudioNext" = "exec ${playerctl} next";
-              "XF86AudioPrev" = "exec ${playerctl} previous";
-              # Screenshots
-              "Print" = "exec ${grim} -g \"$(${slurp} -d)\" - | wl-copy -t image/png && wl-paste > ~/Pictures/Screenshots/screenshot-$(date).png";
-            };
+            #pamixer = lib.getExe pkgs.pamixer;
+            #brightnessctl = lib.getExe pkgs.brightnessctl;
+            playerctl = lib.getExe pkgs.playerctl;
+            grim = lib.getExe pkgs.grim;
+            slurp = lib.getExe pkgs.slurp;
+          in lib.mkOptionDefault {
+            # Volume
+            "XF86AudioMute" = "exec volumectl toggle-mute";
+            "XF86AudioRaiseVolume" = "exec volumectl -u up";
+            "XF86AudioLowerVolume" = "exec volumectl -u down";
+            # Brightness
+            "XF86MonBrightnessDown" = "exec lightctl down";
+            "XF86MonBrightnessUp" = "exec lightctl up";
+            # Media keys
+            "XF86AudioStop" = "exec ${playerctl} stop";
+            "XF86AudioPlay" = "exec ${playerctl} play-pause";
+            "XF86AudioPause" = "exec ${playerctl} play-pause";
+            "XF86AudioNext" = "exec ${playerctl} next";
+            "XF86AudioPrev" = "exec ${playerctl} previous";
+            # Screenshots
+            "Print" = ''
+              exec ${grim} -g "$(${slurp} -d)" - | wl-copy -t image/png && wl-paste > ~/Pictures/Screenshots/screenshot-$(date).png'';
+          };
         };
         # Swayfx
         extraConfig = ''
@@ -257,7 +237,7 @@ in
           titlebar_separator disable
           titlebar_border_thickness 0
           shadows enable
-      
+
           bindgesture swipe:right workspace prev
           bindgesture swipe:left workspace next
 

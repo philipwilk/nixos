@@ -1,8 +1,4 @@
-{ pkgs
-, config
-, lib
-, ...
-}: {
+{ pkgs, config, lib, ... }: {
   config = lib.mkIf config.homelab.services.nextcloud.enable {
     age.secrets.nextcloud_admin = {
       file = ../../secrets/nextcloud_admin.age;
@@ -31,11 +27,7 @@
         dbname = "nextcloud";
         dbpassFile = config.age.secrets.nextcloud_sql.path;
       };
-      extraOptions = {
-        mysql = {
-          utf8mb4 = true;
-        };
-      };
+      extraOptions = { mysql = { utf8mb4 = true; }; };
       package = pkgs.nextcloud28;
     };
 
@@ -51,9 +43,7 @@
           character_set_server = "utf8mb4";
           collation_server = "utf8mb4_general_ci";
         };
-        client = {
-          "default-character-set" = "utf8mb4";
-        };
+        client = { "default-character-set" = "utf8mb4"; };
       };
     };
 
