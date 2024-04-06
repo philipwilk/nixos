@@ -30,6 +30,15 @@ in
           withOpenASAR = true;
           withVencord = true;
         })
+        gnomeExtensions.appindicator
+        gnomeExtensions.emoji-selector
+        gnomeExtensions.forge
+        gnomeExtensions.just-perfection
+        gnomeExtensions.rounded-window-corners
+        gnomeExtensions.search-light
+        gnomeExtensions.duckduckgo-search-provider
+        gnomeExtensions.fuzzy-app-search
+        gnome.gnome-tweaks
       ];
     };
     mini = {
