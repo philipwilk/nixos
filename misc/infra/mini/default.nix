@@ -1,4 +1,12 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }: 
+let
+  pc =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
+  laptop =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
+  workstations = [ pc laptop ];
+in
+{
   imports = [ ./hardware-configuration.nix ];
 
   networking = {
@@ -9,25 +17,34 @@
   console.keyMap = "uk";
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  users.users.mini = {
-    openssh.authorizedKeys.keys = let
-      pc =
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
-      laptop =
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
-      workstations = [ pc laptop ];
-    in workstations;
-    isNormalUser = true;
-    description = "mini";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      firefox
-      helix
-      thunderbird
-      rustdesk-flutter
-      libreoffice
-      chromium
-    ];
+  users.users = {
+    philip = {
+      openssh.authorizedKeys.keys = workstations;
+      isNormalUser = true;
+      description = "philip";
+      extraGroups = [ "networkmanager" "wheel" ];
+      packages = with pkgs; [
+        firefox
+        helix
+        (discord.override {
+          withOpenASAR = true;
+          withVencord = true;
+        })
+      ];
+    };
+    mini = {
+      isNormalUser = true;
+      description = "mini";
+      extraGroups = [ "networkmanager" "wheel" ];
+      packages = with pkgs; [
+        firefox
+        helix
+        thunderbird
+        rustdesk-flutter
+        libreoffice
+        chromium
+      ];
+    };
   };
 
   environment = {
