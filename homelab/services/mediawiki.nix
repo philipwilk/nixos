@@ -17,6 +17,19 @@ in {
     services.mediawiki = {
       enable = true;
       name = conf.name;
+      extensions = {
+        PluggableAuth = pkgs.fetchgit {
+          url = "https://gerrit.wikimedia.org/r/mediawiki/extensions/PluggableAuth";
+          rev = "refs/tags/7.1.0";
+          hash = "sha256-ZWLr3NgUGovykLlFB9rrQSWDzmZAMV19Ouvi0zj6G2c=";
+        };
+        SimpleSAMLphp = pkgs.fetchgit {
+          url = "https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleSAMLphp";
+          rev = "refs/tags/7.0.1";
+          hash = "sha256-JYEo2fPT53BgVLcaiaS+vhYmLlpsPk8NpjHRfeaaanI=";
+        };
+        ParserFunctions = null;
+      };
       httpd.virtualHost = {
         hostName = conf.domain;
         adminAddr = conf.adminMail;
@@ -80,11 +93,21 @@ in {
 
         $wgAllowExternalImages = true;
 
-        $wgGroupPermissions['*']['createaccount'] = false;
         $wgGroupPermissions['*']['edit'] = false;
 
         $wgGroupPermissions['cancreateuser']['bot'] = false;
-        $wgGroupPermissions['cancreateuser']['createaccount'] = true;
+
+        $wgPluggableAuth_EnableLocalLogin = true;
+        /*
+        $wgPluggableAuth_Config['Log in using Microsoft'] = [
+        	'plugin' => 'SimpleSAMLphp',
+        	'data' => [
+        		'authSourceId' => 'https://login.microsoftonline.com/230a2c93-d8e5-485a-8b9c-152e6165255c/saml2',
+        		'usernameAttribute' => 'signInNames.userName',
+        		'realNameAttribute' => 'displayName',
+        		'emailAttribute' => 'signInNames.emailAddress'
+        	]
+        ];*/
       '';
     };
   };
