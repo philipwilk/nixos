@@ -115,6 +115,7 @@
         agenix.packages.x86_64-linux.default
         ## Database Management
         dbeaver
+        openldap
         ## Cli utils
         eza
         fd
