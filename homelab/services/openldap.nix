@@ -29,7 +29,11 @@ in {
           olcTLSCipherSuite = "HIGH:MEDIUM:+3DES:+RC4:+aNULL";
           olcTLSCRLCheck = "none";
           olcTLSVerifyClient = "never";
-          olcTLSProtocolMin = "3.1";
+          # Use tls v1.3 only
+          olcTLSProtocolMin = "3.4";
+          # force use of tls
+          olcSecurity = "tls=1";
+          
         };
 
         children = {
