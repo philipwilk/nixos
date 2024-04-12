@@ -5,6 +5,7 @@ let
     lib.strings.concatStringsSep ","
     (map (part: "dc=${part}") (lib.strings.splitString "." domain));
   ldapSuffix = createSuffix ldapname;
+  adminDn = "cn=admin,${ldapSuffix}";
 in {
   config = lib.mkIf config.homelab.services.openldap.enable {
     age.secrets.openldap_cloudflare_creds.file =
@@ -44,21 +45,25 @@ in {
             olcSuffix = "${ldapSuffix}";
 
             # your admin account
-            olcRootDN = "cn=admin,${ldapSuffix}";
-            olcRootPW = config.age.secrets.ldap_admin_pw.path;
+            olcRootDN = adminDn;
+            olcRootPW = builtins.readFile config.age.secrets.ldap_admin_pw.path;
 
             olcAccess = [
               # custom access rules for userPassword attributes
               ''
-                {0}to attrs=userPassword
-                	                by self write
-                	                by anonymous auth
-                	                by * none''
+                to attrs=userPassword
+                  by self =xw
+                  by anonymous auth
+                  by dn.exact="${adminDn}" write
+                  by * none''
 
               # allow read on anything else
               ''
-                {1}to *
-                	                by * read''
+                to *
+                  by self write
+                  by dn.exact="${adminDn}" write
+                  by users read
+                  by * none''
             ];
           };
         };

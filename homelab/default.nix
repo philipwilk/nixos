@@ -117,7 +117,7 @@ in {
         domain = mkOpt {
           type = t.str;
           default = "ldap.${config.homelab.tld}";
-          example = "ldap.example.com";
+          example = "example.com";
           description = mdDoc ''
             Domain for the ldap instance.
           '';
