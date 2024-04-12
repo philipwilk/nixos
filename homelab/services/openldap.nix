@@ -10,7 +10,10 @@ in {
   config = lib.mkIf config.homelab.services.openldap.enable {
     age.secrets.openldap_cloudflare_creds.file =
       ../../secrets/openldap_cloudflare_creds.age;
-    age.secrets.ldap_admin_pw.file = ../../secrets/ldap_admin_pw.age;
+    age.secrets.ldap_admin_pw = {
+      file = ../../secrets/ldap_admin_pw.age;
+      owner = "openldap";
+    };
     services.openldap = {
       enable = true;
       urlList = [ "ldap://" "ldaps://" ];
@@ -46,7 +49,7 @@ in {
 
             # your admin account
             olcRootDN = adminDn;
-            olcRootPW = builtins.readFile config.age.secrets.ldap_admin_pw.path;
+            olcRootPW.path = config.age.secrets.ldap_admin_pw.path;
 
             olcAccess = [
               # custom access rules for userPassword attributes
