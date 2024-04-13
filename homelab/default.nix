@@ -14,6 +14,7 @@ in {
     "uptime-kuma"
     "vaultwarden"
     "mediawiki"
+    "sshBastion"
   ];
 
   options.homelab = {
@@ -191,6 +192,14 @@ in {
           '';
         };
       };
+      sshBastion.enable = mkOpt {
+        type = t.bool;
+        default = false;
+        example = true;
+        description = ''
+          Whether to enable ssh bastion/jumphost.
+        '';
+      };
     };
   };
 
@@ -297,6 +306,12 @@ in {
             scrape_interval = "30s";
             scrape_timeout = "20s";
             static_configs = [{ targets = [ "192.168.1.0:8404" ]; }];
+          }
+          {
+            job_name = "endlessh-go";
+            scrape_interval = "30s";
+            scrape_timeout = "20s";
+            static_configs = [{ targets = [ "192.168.1.10:${toString config.services.endlessh-go.prometheus.port}" ]; }];
           }
         ];
         exporters = {
