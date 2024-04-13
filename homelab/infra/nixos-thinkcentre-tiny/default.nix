@@ -26,6 +26,7 @@
         name = "Reading CS lore";
         domain = "lore.fogbox.uk";
       };
+      sshBastion.enable = true;
     };
   };
 
