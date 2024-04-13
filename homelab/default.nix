@@ -220,6 +220,12 @@ in {
       enableNvidia = true;
     };
 
+    # Fail2ban for ssh
+    services.fail2ban = {
+      enable = true;
+      extraPackages = with pkgs; [ ipset ];
+    };
+
     # Enable ssh access from only workstation ssh keys
     services.openssh = {
       enable = true;
