@@ -9,9 +9,9 @@ let
 in {
   config = lib.mkIf config.homelab.services.openldap.enable {
     age.secrets.openldap_cloudflare_creds.file =
-      ../../secrets/openldap_cloudflare_creds.age;
+      ../../../secrets/openldap_cloudflare_creds.age;
     age.secrets.ldap_admin_pw = {
-      file = ../../secrets/ldap_admin_pw.age;
+      file = ../../../secrets/ldap_admin_pw.age;
       owner = "openldap";
     };
     services.openldap = {
@@ -68,9 +68,9 @@ in {
               ''
                 to *
                   by self write
-                  by dn.exact="${adminDn}" write
+                  by dn="${adminDn}" manage
                   by users read
-                  by * none''
+                  by * break''
             ];
           };
         };

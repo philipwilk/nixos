@@ -8,7 +8,7 @@ let
 in {
   imports = join-dirfile "./services" [
     "nextcloud"
-    "openldap"
+    "openldap/default"
     "factorio"
     "navidrome"
     "uptime-kuma"
