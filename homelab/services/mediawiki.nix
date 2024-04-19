@@ -85,7 +85,6 @@ in {
         ];        
       '';
     };
-    security.acme.acceptTerms = true;
     services.nginx.virtualHosts.${conf.domain} = {
       enableACME = lib.mkDefault true;
       forceSSL = lib.mkDefault true;

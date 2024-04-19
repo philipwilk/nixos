@@ -3,13 +3,21 @@
     services.vaultwarden = {
       enable = true;
       config = {
-        ROCKET_ADDRESS = "0.0.0.0";
+        ROCKET_ADDRESS = "127.0.0.1";
         ROCKET_PORT = 8222;
         DOMAIN = "https://vault.fogbox.uk";
         SIGNUPS_ALLOWED = false;
         SHOW_PASSWORD_HINT = false;
       };
     };
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [ 8222 ];
+
+    services.nginx.virtualHosts."vault.${config.homelab.tld}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}";
+        proxyWebsockets = true;
+      };
+    };
   };
 }

@@ -15,6 +15,7 @@ in {
     "vaultwarden"
     "mediawiki"
     "sshBastion"
+    "nginx"
   ] ++ join-dirfile "./websites" [
     "fogbox"
   ];
@@ -202,6 +203,14 @@ in {
           Whether to enable ssh bastion/jumphost.
         '';
       };
+      nginx.enable = mkOpt {
+        type = t.bool;
+        default = false;
+        example = true;
+        description = ''
+          Whether to enable nginx for proxying/load balancing.
+        '';
+      };
     };
     websites.fogbox.enable = mkOpt {
       type = t.bool;
@@ -221,6 +230,12 @@ in {
       message =
         "Openldap requires a cert for ldaps, and acme requires an email to get a cert.";
     }];
+
+    # Accept acme terms
+    security.acme = {
+      acceptTerms = true;
+      defaults.email = config.homelab.acme.mail;
+    };
 
     # Enable podman container support
     virtualisation.podman = {
@@ -269,7 +284,6 @@ in {
 
     # Allow grafana in/out
     networking.firewall.interfaces."eno1".allowedTCPPorts = [
-      config.services.grafana.settings.server.http_port
       config.services.prometheus.port
     ];
 
@@ -292,8 +306,17 @@ in {
             enable_gzip = true;
             enforce_domain = true;
             domain = config.homelab.services.grafana.domain;
-            http_addr = "0.0.0.0";
+            http_addr = "127.0.0.1";
           };
+        };
+      };
+      # nginx to proxy grafana
+      nginx.virtualHosts.${config.homelab.services.grafana.domain} = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
+          proxyWebsockets = true;
         };
       };
       prometheus = {

@@ -14,7 +14,6 @@
     services.nextcloud = {
       enable = true;
       https = true;
-      nginx.recommendedHttpHeaders = true;
       autoUpdateApps.enable = true;
       maxUploadSize = "4096M";
       enableImagemagick = true;
@@ -47,6 +46,11 @@
         };
         client = { "default-character-set" = "utf8mb4"; };
       };
+    };
+
+    services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
+      forceSSL = true;
+      enableACME = true;
     };
 
     # ensure that mariadb is running *before* running the setup
