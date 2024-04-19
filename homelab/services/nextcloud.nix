@@ -3,10 +3,12 @@
     age.secrets.nextcloud_admin = {
       file = ../../secrets/nextcloud_admin.age;
       owner = "nextcloud";
+      group = "nextcloud";
     };
     age.secrets.nextcloud_sql = {
       file = ../../secrets/nextcloud_sql.age;
       owner = "nextcloud";
+      group = "nextcloud";
     };
     # Enable nextcloud
     services.nextcloud = {

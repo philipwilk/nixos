@@ -28,6 +28,7 @@
       };
       sshBastion.enable = true;
     };
+    # websites.fogbox.enable = true;
   };
 
   networking = {

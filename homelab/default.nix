@@ -15,6 +15,8 @@ in {
     "vaultwarden"
     "mediawiki"
     "sshBastion"
+  ] ++ join-dirfile "./websites" [
+    "fogbox"
   ];
 
   options.homelab = {
@@ -200,6 +202,14 @@ in {
           Whether to enable ssh bastion/jumphost.
         '';
       };
+    };
+    websites.fogbox.enable = mkOpt {
+      type = t.bool;
+      default = false;
+      example = true;
+      description = ''
+        Whether to enable static fogbox server.
+      '';
     };
   };
 
