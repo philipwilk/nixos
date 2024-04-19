@@ -5,9 +5,15 @@ let
 in {
   config = lib.mkIf conf.enable {
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
-    age.secrets.mediawiki_password = {
-      file = ../../secrets/mediawiki_password.age;
-      owner = "mediawiki";
+    age.secrets = {
+      mediawiki_sec = {
+        file = ../../secrets/mediawiki_sec.age;
+        owner = "mediawiki";
+      };
+      mediawiki_password = {
+        file = ../../secrets/mediawiki_password.age;
+        owner = "mediawiki";
+      };
     };
 
     networking.firewall.interfaces."eno1".allowedTCPPorts = [
@@ -18,17 +24,15 @@ in {
       enable = true;
       name = conf.name;
       extensions = {
-        PluggableAuth = pkgs.fetchgit {
-          url = "https://gerrit.wikimedia.org/r/mediawiki/extensions/PluggableAuth";
-          rev = "refs/tags/7.1.0";
-          hash = "sha256-ZWLr3NgUGovykLlFB9rrQSWDzmZAMV19Ouvi0zj6G2c=";
+        AuthManagerOAuth = pkgs.fetchzip {
+          url = "https://github.com/mohe2015/AuthManagerOAuth/releases/download/v0.3.2/AuthManagerOAuth.zip";
+          hash = "sha256-hr/DLyL6IzQs67eA46RdmuVlfCiAbq+eZCRLfjLxUpc=";
         };
-        SimpleSAMLphp = pkgs.fetchgit {
-          url = "https://gerrit.wikimedia.org/r/mediawiki/extensions/SimpleSAMLphp";
-          rev = "refs/tags/7.0.1";
-          hash = "sha256-JYEo2fPT53BgVLcaiaS+vhYmLlpsPk8NpjHRfeaaanI=";
-        };
+        SyntaxHighlight_GeSHi = null;
         ParserFunctions = null;
+        Cite = null;
+        VisualEditor = null;
+        ConfirmEdit = null;
       };
       httpd.virtualHost = {
         hostName = conf.domain;
@@ -97,17 +101,20 @@ in {
 
         $wgGroupPermissions['cancreateuser']['bot'] = false;
 
-        $wgPluggableAuth_EnableLocalLogin = true;
-        /*
-        $wgPluggableAuth_Config['Log in using Microsoft'] = [
-        	'plugin' => 'SimpleSAMLphp',
-        	'data' => [
-        		'authSourceId' => 'https://login.microsoftonline.com/230a2c93-d8e5-485a-8b9c-152e6165255c/saml2',
-        		'usernameAttribute' => 'signInNames.userName',
-        		'realNameAttribute' => 'displayName',
-        		'emailAttribute' => 'signInNames.emailAddress'
-        	]
-        ];*/
+        # for visual editor
+        $wgGroupPermissions['user']['writeapi'] = true;
+
+        // oauth2 config
+        $wgAuthManagerOAuthConfig = [
+          'microsoft' => [
+            'clientId'                => '266cf23c-39a4-4aa5-a407-6f481a1cc9fe',
+            'clientSecret'            => file_get_contents("${config.age.secrets.mediawiki_sec.path}"),
+            'urlAuthorize'            => 'https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize',
+            'urlAccessToken'          => 'https://login.microsoftonline.com/organizations/oauth2/v2.0/token',
+            'urlResourceOwnerDetails' => 'https://graph.microsoft.com',
+            'scopes' => 'openid email profile'
+          ],
+        ];        
       '';
     };
   };
