@@ -34,4 +34,5 @@ in {
   "nextcloud_sql.age".publicKeys = servers;
   "factorio_password.age".publicKeys = servers ++ workstations;
   "mediawiki_password.age".publicKeys = servers;
+  "mediawiki_sec.age".publicKeys = servers;
 }

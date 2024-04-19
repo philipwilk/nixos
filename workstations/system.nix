@@ -31,6 +31,7 @@
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
       FLAKE = "/home/philip/repos/nixconf";
+      EDITOR = "hx";
     };
     shells = with pkgs; [ nushellFull ];
     binsh = "${pkgs.dash}/bin/dash";
