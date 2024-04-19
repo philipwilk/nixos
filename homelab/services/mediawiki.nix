@@ -35,31 +35,8 @@ in {
       passwordFile = config.age.secrets.mediawiki_password.path;
       # Actual wiki config
       extraConfig = ''
-        $wgScriptPath = "";
-        $actions = [
-        	'edit',
-        	'watch',
-        	'unwatch',
-        	'delete',
-        	'revert',
-        	'rollback',
-        	'protect',
-        	'unprotect',
-        	'markpatrolled',
-        	'render',
-        	'submit',
-        	'history',
-        	'purge',
-        	'info',
-        ];
-
-        foreach ( $actions as $action ) {
-          $wgActionPaths[$action] = "/wiki/$1/$action";
-        }
-        $wgActionPaths['view'] = "/wiki/$1";
-        $wgArticlePath = $wgActionPaths['view'];
-
         $wgUsePathInfo = true;
+      
         $wgEnableUploads = true;
         $wgGenerateThumbnailOnParse = false;
 
