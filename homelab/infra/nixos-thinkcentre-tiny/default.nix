@@ -9,6 +9,7 @@
     tld = "fogbox.uk";
     acme.mail = "philip.wilk10@gmail.com";
     services = {
+      nginx.enable = true;
       nextcloud = {
         enable = true;
         domain = "nextcloud.philipw.uk";

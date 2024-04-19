@@ -3,7 +3,7 @@
     services.navidrome = {
       enable = true;
       settings = {
-        Address = "0.0.0.0";
+        Address = "127.0.0.1";
         Port = 4533;
         MusicFolder = "/var/music";
         DataFolders = "/var/navidrome";
@@ -12,6 +12,14 @@
         ImageCacheSize = "250MB";
       };
     };
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [ 4533 ];
+
+    services.nginx.virtualHosts."navi.${config.homelab.tld}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${toString config.services.navidrome.settings.Port}";
+        proxyWebsockets = true;
+      };
+    };
   };
 }
