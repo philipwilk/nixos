@@ -28,7 +28,10 @@
   nixpkgs.overlays = [ nix-matlab.overlay nix-your-shell.overlays.default ];
 
   environment = {
-    sessionVariables.NIXOS_OZONE_WL = "1";
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+      FLAKE = "/home/philip/repos/nixconf";
+    };
     shells = with pkgs; [ nushellFull ];
     binsh = "${pkgs.dash}/bin/dash";
     systemPackages = with pkgs; [
@@ -116,6 +119,7 @@
         ## Database Management
         dbeaver
         openldap
+        
         ## Cli utils
         eza
         fd
@@ -126,6 +130,11 @@
         wl-clip-persist
         networkmanager-openvpn
         ripunzip
+        ### nix stuff
+        nix-output-monitor
+        nh
+        nvd
+        
         ## Phone stuff
         pmbootstrap
 
