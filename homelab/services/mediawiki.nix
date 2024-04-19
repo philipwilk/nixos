@@ -16,13 +16,11 @@ in {
       };
     };
 
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [
-      (builtins.head config.services.mediawiki.httpd.virtualHost.listen).port
-    ];
-
     services.mediawiki = {
       enable = true;
       name = conf.name;
+      webserver = "nginx";
+      nginx.hostName = conf.domain;
       extensions = {
         AuthManagerOAuth = pkgs.fetchzip {
           url = "https://github.com/mohe2015/AuthManagerOAuth/releases/download/v0.3.2/AuthManagerOAuth.zip";
@@ -33,36 +31,6 @@ in {
         Cite = null;
         VisualEditor = null;
         ConfirmEdit = null;
-      };
-      httpd.virtualHost = {
-        hostName = conf.domain;
-        adminAddr = conf.adminMail;
-        # Apache config to rewrite the url to look nice
-        extraConfig = ''
-          RewriteEngine On
-          RewriteRule ^/([a-z]*)/(.*)$ %{DOCUMENT_ROOT}/index.php [L,QSA]
-
-          RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
-          RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
-          RewriteRule ^/?images/thumb/[0-9a-f]/[0-9a-f][0-9a-f]/([^/]+)/([0-9]+)px-.*$ %{DOCUMENT_ROOT}/thumb.php?f=$1&width=$2 [L,QSA,B]
-
-          RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
-          RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
-          RewriteRule ^/?images/thumb/archive/[0-9a-f]/[0-9a-f][0-9a-f]/([^/]+)/([0-9]+)px-.*$ %{DOCUMENT_ROOT}/thumb.php?f=$1&width=$2&archived=1 [L,QSA,B]
-        '';
-        listen = let p = 9999;
-        in [
-          {
-            ip = "0.0.0.0";
-            port = p;
-            ssl = false;
-          }
-          {
-            ip = "::";
-            port = p;
-            ssl = false;
-          }
-        ];
       };
       passwordFile = config.age.secrets.mediawiki_password.path;
       # Actual wiki config
@@ -116,6 +84,11 @@ in {
           ],
         ];        
       '';
+    };
+    security.acme.acceptTerms = true;
+    services.nginx.virtualHosts.${conf.domain} = {
+      enableACME = lib.mkDefault true;
+      forceSSL = lib.mkDefault true;
     };
   };
 }
