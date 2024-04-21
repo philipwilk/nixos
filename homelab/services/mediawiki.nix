@@ -58,8 +58,8 @@ in {
           'microsoft' => [
             'clientId'                => '2f2cd144-8aec-4852-8571-e52903438ef2',
             'clientSecret'            => file_get_contents("${config.age.secrets.mediawiki_sec.path}"),
-            'urlAuthorize'            => 'https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize',
-            'urlAccessToken'          => 'https://login.microsoftonline.com/organizations/oauth2/v2.0/token',
+            'urlAuthorize'            => 'https://login.microsoftonline.com/organizations/oauth2/authorize',
+            'urlAccessToken'          => 'https://login.microsoftonline.com/organizations/oauth2/token',
             'urlResourceOwnerDetails' => 'https://graph.microsoft.com',
             'scopes' => 'openid email profile'
           ],
