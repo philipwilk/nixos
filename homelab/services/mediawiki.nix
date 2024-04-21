@@ -14,6 +14,10 @@ in {
         file = ../../secrets/mediawiki_password.age;
         owner = "mediawiki";
       };
+      mediawiki_gh_sec = {
+        file = ../../secrets/mediawiki_gh_sec.age;
+        owner = "mediawiki";
+      };
     };
 
     services.mediawiki = {
@@ -58,6 +62,13 @@ in {
             'urlAccessToken'          => 'https://login.microsoftonline.com/organizations/oauth2/v2.0/token',
             'urlResourceOwnerDetails' => 'https://graph.microsoft.com',
             'scopes' => 'openid email profile'
+          ],
+          'github' => [
+            'clientId'                => 'Iv1.7af0811556d82ff5',
+            'clientSecret'            => file_get_contents("${config.age.secrets.mediawiki_gh_sec.path}"),
+            'urlAuthorize'            => 'https://github.com/login/oauth/authorize',
+            'urlAccessToken'          => 'https://github.com/login/oauth/access_token',
+            'urlResourceOwnerDetails' => 'https://api.github.com/user'
           ],
         ];        
       '';
