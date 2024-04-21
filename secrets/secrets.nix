@@ -35,4 +35,5 @@ in {
   "factorio_password.age".publicKeys = servers ++ workstations;
   "mediawiki_password.age".publicKeys = servers;
   "mediawiki_sec.age".publicKeys = servers;
+  "mediawiki_gh_sec.age".publicKeys = servers;
 }
