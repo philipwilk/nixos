@@ -149,7 +149,6 @@
         pciutils
         libva-utils
         dnsutils
-        glxinfo
         # Theming
         (catppuccin.override {
           accent = "peach";
