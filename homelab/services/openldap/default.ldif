@@ -2,11 +2,11 @@ dn: dc=ldap,dc=fogbox,dc=uk
 objectclass: domain
 dc: ldap
 
-dn: ou=Users,dc=ldap,dc=fogbox,dc=uk
+dn: ou=users,dc=ldap,dc=fogbox,dc=uk
 objectclass: organizationalUnit
-ou: Users
+ou: users
 
-dn: uid=philipwilk,ou=Users,dc=ldap,dc=fogbox,dc=uk
+dn: uid=philipwilk,ou=users,dc=ldap,dc=fogbox,dc=uk
 objectclass: inetOrgPerson
 description: myself
 cn: Philip Wilk

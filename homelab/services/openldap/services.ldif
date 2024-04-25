@@ -1,0 +1,9 @@
+dn: ou=services,dc=ldap,dc=fogbox,dc=uk
+objectclass: organizationalUnit
+ou: services
+
+dn: uid=nextcloud,ou=services,dc=ldap,dc=fogbox,dc=uk
+objectclass: inetOrgPerson
+uid: nextcloud
+sn: nextcloud
+cn: nextcloud

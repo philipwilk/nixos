@@ -6,6 +6,7 @@ let
     (map (part: "dc=${part}") (lib.strings.splitString "." domain));
   ldapSuffix = createSuffix ldapname;
   adminDn = "cn=admin,${ldapSuffix}";
+  serviceOu = "ou=services,${ldapSuffix}";
 in {
   config = lib.mkIf config.homelab.services.openldap.enable {
     age.secrets.openldap_cloudflare_creds.file =
@@ -33,7 +34,6 @@ in {
           olcTLSProtocolMin = "3.4";
           # force use of tls
           olcSecurity = "tls=1";
-          
         };
 
         children = {
@@ -49,7 +49,7 @@ in {
             olcDatabase = "{1}mdb";
             olcDbDirectory = "/var/lib/openldap/data";
 
-            olcSuffix = "${ldapSuffix}";
+            olcSuffix = ldapSuffix;
 
             # your admin account
             olcRootDN = adminDn;
@@ -61,16 +61,23 @@ in {
                 to attrs=userPassword
                   by self =xw
                   by anonymous auth
-                  by dn.exact="${adminDn}" write
-                  by * none''
-
+                  by * none
+              ''
               # allow read on anything else
               ''
                 to *
                   by self write
-                  by dn="${adminDn}" manage
                   by users read
-                  by * break''
+                  by anonymous auth
+                  by * none
+              ''
+              # allow access to base by anyone
+              ''
+                to *
+                  by dn.exact="${adminDn}" write
+                  by anonymous read
+                  by * none
+              ''
             ];
           };
         };
