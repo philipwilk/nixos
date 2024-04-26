@@ -36,4 +36,5 @@ in {
   "mediawiki_password.age".publicKeys = servers;
   "mediawiki_sec.age".publicKeys = servers;
   "mediawiki_gh_sec.age".publicKeys = servers;
+  "mail_ldap.age".publicKeys = servers;
 }
