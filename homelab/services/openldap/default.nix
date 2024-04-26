@@ -73,7 +73,7 @@ in {
               ''
               # allow access to base by anyone
               ''
-                to *
+                to dn.exact=""
                   by dn.exact="${adminDn}" write
                   by anonymous read
                   by * none
