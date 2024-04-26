@@ -16,6 +16,7 @@ in {
     "mediawiki"
     "sshBastion"
     "nginx"
+    "mail"
   ] ++ join-dirfile "./websites" [
     "fogbox"
   ];
@@ -210,6 +211,32 @@ in {
         description = ''
           Whether to enable nginx for proxying/load balancing.
         '';
+      };
+      email = {
+        enable = mkOpt {
+          type = t.bool;
+          default = false;
+          example = true;
+          description = ''
+            Whether to enable the email server.
+          '';
+        };
+        domain = mkOpt {
+          type = t.str;
+          default = config.homelab.tld;
+          example = "fogbox.uk";
+          description = ''
+            Domain for postfix email server.
+          '';
+        };
+        webmail = mkOpt {
+          type = t.str;
+          default = "mail.${config.homelab.services.email.domain}";
+          example = "mail.fogbox.uk";
+          description = ''
+            Domain for webmail access.
+          '';
+        };
       };
     };
     websites.fogbox.enable = mkOpt {
