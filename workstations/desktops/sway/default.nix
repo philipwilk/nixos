@@ -95,7 +95,16 @@ in {
           };
           style = catppuccin + waybar-style;
         };
-        fuzzel.enable = true;
+        fuzzel = {
+          enable = true;
+          settings = {
+            main = {
+              exit-on-keyboard-focus-loss = false;
+              terminal = "${lib.getExe pkgs.nushell}";
+              layer = "overlay";
+            }; 
+          };
+        };
         xplr.enable = true;
       };
 
