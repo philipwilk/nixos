@@ -74,7 +74,6 @@
         # Communication
         (discord.override {
           withOpenASAR = true;
-          withVencord = true;
         })
         thunderbird
         slack
@@ -144,7 +143,7 @@
         powertop
 
         # Misc
-        neofetch
+        hyfetch
         usbutils
         pciutils
         libva-utils
