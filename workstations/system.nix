@@ -235,12 +235,12 @@
   };
 
   # Keyboard ime support
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5 = {
-      waylandFrontend = true;
-      addons = with pkgs; [ fcitx5-gtk fcitx5-rime fcitx5-hangul ];
-      settings = { addons = { pinyin.globalSection.EmojiEnabled = "True"; }; };
-    };
-  };
+  # i18n.inputMethod = {
+    # enabled = "fcitx5";
+  #   fcitx5 = {
+  #     waylandFrontend = true;
+  #     addons = with pkgs; [ fcitx5-gtk fcitx5-rime fcitx5-hangul ];
+  #     settings = { addons = { pinyin.globalSection.EmojiEnabled = "True"; }; };
+  #   };
+  # };
 }
