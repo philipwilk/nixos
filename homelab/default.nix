@@ -16,7 +16,7 @@ in {
     "mediawiki"
     "sshBastion"
     "nginx"
-    "mail"
+    # "mail"
   ] ++ join-dirfile "./websites" [
     "fogbox"
   ];
