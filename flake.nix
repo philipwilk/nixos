@@ -25,11 +25,10 @@
       url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.11";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, agenix, nix-matlab, home-manager
-    , catppuccin, auto-cpufreq, simple-nixos-mailserver, ... }@inputs:
+    , catppuccin, auto-cpufreq, ... }@inputs:
     let
       systems = [ "x86_64-linux" ];
       forAllSystems = fn:
@@ -79,7 +78,6 @@
         nixos-thinkcentre-tiny = stableSystem
           ([ 
             ./homelab/infra/nixos-thinkcentre-tiny 
-            simple-nixos-mailserver.nixosModule
           ] ++ systemdLab);
 
         # Grub machines (DO NOT SUPPORT EFI BOOT)
