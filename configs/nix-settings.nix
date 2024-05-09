@@ -12,7 +12,7 @@
   };
 
   nix = {
-    package = pkgs.unstable.nixVersions.unstable;
+    package = pkgs.unstable.nixVersions.latest;
     # registry = lib.mapAttrs (_: value: { flake = value; }) {
     #   inherit nixpkgs nixpkgs-unstable;
     # };
