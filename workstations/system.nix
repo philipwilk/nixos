@@ -116,6 +116,7 @@
         nixpkgs-review
         direnv
         agenix.packages.x86_64-linux.default
+        nixos-generators
         ## Database Management
         dbeaver
         openldap

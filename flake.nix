@@ -25,10 +25,14 @@
       url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, agenix, nix-matlab, home-manager
-    , catppuccin, auto-cpufreq, ... }@inputs:
+    , catppuccin, auto-cpufreq, nixos-generators, ... }@inputs:
     let
       systems = [ "x86_64-linux" ];
       forAllSystems = fn:
@@ -61,7 +65,21 @@
 
       unstableSystem = buildSys nixpkgs-unstable;
       stableSystem = buildSys nixpkgs;
+
+      buildIso = arch: mods: nixos-generators.nixosGenerate {
+        system = arch;
+        modules = [
+          ./cluster
+        ] ++ commonModules ++ mods;
+        specialArgs = inputs;
+        format = "iso";
+      };
+      buildX86Iso = buildIso "x86_64-linux";
     in {
+      packages.x86_64-linux = {
+        new-client = buildX86Iso [ ./cluster/client/new.nix ];
+      };
+
       nixosConfigurations = {
         # Systemd machines
         nixowos = unstableSystem
@@ -74,6 +92,8 @@
 
         mini = unstableSystem
           ([ ./misc/infra/mini ./configs/boot/systemd.nix ] ++ commonModules);
+
+        nixosvmtest= unstableSystem ([ ./misc/infra/nixosvmtest.nix ] ++ commonModules);
 
         nixos-thinkcentre-tiny = stableSystem
           ([ 
