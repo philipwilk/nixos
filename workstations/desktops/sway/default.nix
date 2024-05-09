@@ -150,6 +150,7 @@ in {
           base = true;
           gtk = true;
         };
+        checkConfig = false;
         config = {
           defaultWorkspace = "workspace number 1";
           modifier = "Mod4";
