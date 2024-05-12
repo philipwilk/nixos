@@ -30,7 +30,7 @@
         dbpassFile = config.age.secrets.nextcloud_sql.path;
       };
       extraOptions = { mysql = { utf8mb4 = true; }; };
-      package = pkgs.nextcloud28;
+      package = pkgs.nextcloud29;
     };
 
     services.mysql = {
