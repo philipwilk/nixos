@@ -29,10 +29,14 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.3.0";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, agenix, nix-matlab, home-manager
-    , catppuccin, auto-cpufreq, nixos-generators, ... }@inputs:
+    , catppuccin, auto-cpufreq, nixos-generators, lanzaboote, ... }@inputs:
     let
       systems = [ "x86_64-linux" ];
       forAllSystems = fn:
@@ -82,8 +86,11 @@
 
       nixosConfigurations = {
         # Systemd machines
-        nixowos = unstableSystem
-          ([ ./workstations/infra/nixowos ] ++ workstationModules);
+        nixowos = unstableSystem ([
+          ./workstations/infra/nixowos
+          lanzaboote.nixosModules.lanzaboote
+          ./configs/boot/lanzaboote.nix
+        ] ++ workstationModules);
 
         nixowos-laptop = unstableSystem ([
           ./workstations/infra/nixowos-laptop
