@@ -149,6 +149,8 @@
         pciutils
         libva-utils
         dnsutils
+        dmidecode
+        sbctl
         # Theming
         (catppuccin.override {
           accent = "peach";
