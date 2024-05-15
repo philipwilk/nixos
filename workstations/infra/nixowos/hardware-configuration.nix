@@ -16,6 +16,8 @@
         # LUKS swapfile
         "luks-56963998-41a4-4ca6-afc9-a9eadb2b93c9".device =
           "/dev/disk/by-uuid/56963998-41a4-4ca6-afc9-a9eadb2b93c9";
+        # Extra storage space
+        "n1p1".device = "/dev/disk/by-uuid/c86a86c1-d7d8-488d-b630-2a98b9bf539b";
       };
     };
     kernelModules = [ "kvm-amd" ];
@@ -27,6 +29,11 @@
     "/" = {
       device = "/dev/disk/by-uuid/d0a8b583-58ce-44d9-a94e-58a806fee3ec";
       fsType = "ext4";
+    };
+
+    "/mnt/extra" = {
+      device = "/dev/pool/extra";
+      fsType = "ext4"; 
     };
 
     "/boot" = {
