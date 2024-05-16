@@ -18,7 +18,6 @@
 				workstations;
 		client = {
 			awaitingEnroll = true;
-			otp = "sample";
 		};
 	};
 

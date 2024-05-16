@@ -7,7 +7,6 @@
 let
   mkOpt = lib.mkOption;
   t = lib.types;
-  mdDoc = lib.mkDoc;
 in
 {
   imports = [
@@ -20,7 +19,7 @@ in
       type = t.enum [ "client" "server" ];
       default = "client";
       example = "server";
-      description = mdDoc ''
+      description =  ''
         Server if this machine is creating images, serving them and acting as the control server.
         Client if this machine is taking an image, doing a fresh install and sending its hardware config.
       '';
@@ -29,7 +28,7 @@ in
       type = t.str;
       default = null;
       example = "deploy.fogbox.uk";
-      description = mdDoc ''
+      description =  ''
         The url to send client enrolls to (aka the server).
       '';
     };
@@ -37,7 +36,7 @@ in
       type = t.listOf t.str;
       default = [];
       example = [ "SHA256:RLy4JBv7jMK5qYhRKwHB3af0rpMKYwE2PBhALCBV3G8 username@hostname" ];
-      description = mdDoc ''
+      description =  ''
         Additional public keys to add to clients for ssh auth.
       '';
     };
@@ -63,6 +62,7 @@ in
     users.users.nixos = {
       isNormalUser = true;
       initialPassword = "";
+      extraGroups = [ "wheel" ];
       openssh.authorizedKeys.keys = config.autonix.additionalKeys;
     };
   	security.pam.services.nixos.allowNullPassword = true;

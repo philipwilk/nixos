@@ -2,7 +2,6 @@
 let
   mkOpt = lib.mkOption;
   t = lib.types;
-  mdDoc = lib.mkDoc;
   join-dirfile = dir: map (file: ./${dir}/${file}.nix);
 in {
   imports = [ ./system.nix ./desktops/gnome ./desktops/sway ];
@@ -12,7 +11,7 @@ in {
       type = t.bool;
       default = true;
       example = false;
-      description = mdDoc ''
+      description = ''
         Whether to enable the workstation app suite.
       '';
     };
@@ -20,7 +19,7 @@ in {
       type = t.bool;
       default = true;
       example = false;
-      description = mdDoc ''
+      description =  ''
         Whether to enable the use of home-manager to manage configs.
       '';
     };
@@ -29,7 +28,7 @@ in {
       type = t.enum [ "gnome" "sway" ];
       default = "sway";
       example = false;
-      description = mdDoc ''
+      description =  ''
         Which desktop environment or window manager to enable.
       '';
     };

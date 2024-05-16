@@ -7,7 +7,6 @@
 let
   mkOpt = lib.mkOption;
   t = lib.types;
-  mdDoc = lib.mkDoc;
 in
 {
 	options.autonix.client = {
@@ -15,7 +14,7 @@ in
 			type = t.str;
 			default = null;
 			example = "";
-			description = mdDoc ''
+			description =  ''
 				The otp to auth with the server to allow enrollment to the cluster.
 			'';
 		};
@@ -23,7 +22,7 @@ in
 			type = t.bool;
 			default = false;
 			example = true;
-			description = mdDoc ''
+			description = ''
 				Whether the system needs to enroll. Should only be true prior to registration.
 			'';
 		};
