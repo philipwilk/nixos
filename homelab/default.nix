@@ -4,7 +4,6 @@ let
 
   mkOpt = lib.mkOption;
   t = lib.types;
-  mdDoc = lib.mdDoc;
 in {
   imports = join-dirfile "./services" [
     "nextcloud"
@@ -26,7 +25,7 @@ in {
       type = t.bool;
       default = false;
       example = true;
-      description = mdDoc ''
+      description =  ''
         Enable the default homelab options:
           - ssh using key access
           - podman enabled
@@ -37,7 +36,7 @@ in {
       type = t.bool;
       default = false;
       example = true;
-      description = mdDoc ''
+      description =  ''
         Whether this server should act as a host for the key lab services
       '';
     };
@@ -45,7 +44,7 @@ in {
       type = t.str;
       default = "fogbox.uk";
       example = "example.com";
-      description = mdDoc ''
+      description =  ''
         Default top level domain for services.
       '';
     };
@@ -53,7 +52,7 @@ in {
       type = t.str;
       default = null;
       example = "joe.bloggs@example.com";
-      description = mdDoc ''
+      description =  ''
         Email for acme cert renewals.
       '';
     };
@@ -63,7 +62,7 @@ in {
           type = t.bool;
           default = config.homelab.isLeader;
           example = false;
-          description = mdDoc ''
+          description =  ''
             Whether to enable the homelab grafana instance.
           '';
         };
@@ -71,7 +70,7 @@ in {
           type = t.str;
           default = "grafana.${config.homelab.tld}";
           example = "grafana.example.com";
-          description = mdDoc ''
+          description =  ''
             Domain for homelab grafana instance.
           '';
         };
@@ -80,7 +79,7 @@ in {
         type = t.bool;
         default = config.homelab.isLeader;
         example = false;
-        description = mdDoc ''
+        description =  ''
           Whether to enable the homelab prometheus instance.
         '';
       };
@@ -89,7 +88,7 @@ in {
           type = t.bool;
           default = false;
           example = true;
-          description = mdDoc ''
+          description =  ''
             Whether to enable the nextcloud service.
           '';
         };
@@ -97,7 +96,7 @@ in {
           type = t.str;
           default = "nextcloud.${config.homelab.tld}";
           example = "nextcloud.example.com";
-          description = mdDoc ''
+          description =  ''
             Domain for homelab nextcloud instance.
           '';
         };
@@ -106,7 +105,7 @@ in {
         type = t.bool;
         default = false;
         example = true;
-        description = mdDoc ''
+        description =  ''
           Whether to enable the navidrome service.
         '';
       };
@@ -115,7 +114,7 @@ in {
           type = t.bool;
           default = false;
           example = true;
-          description = mdDoc ''
+          description =  ''
             Whether to enable the openldap server.
           '';
         };
@@ -123,7 +122,7 @@ in {
           type = t.str;
           default = "ldap.${config.homelab.tld}";
           example = "example.com";
-          description = mdDoc ''
+          description =  ''
             Domain for the ldap instance.
           '';
         };
@@ -133,7 +132,7 @@ in {
           type = t.bool;
           default = false;
           example = true;
-          description = mdDoc ''
+          description =  ''
             Whether to enable the factorio game server.
           '';
         };
@@ -141,7 +140,7 @@ in {
           type = t.listOf t.str;
           default = [ ];
           example = [ "username" ];
-          description = mdDoc ''
+          description =  ''
             List of game admins that can run commands/pause etc.
           '';
         };
@@ -150,7 +149,7 @@ in {
         type = t.bool;
         default = false;
         example = true;
-        description = mdDoc ''
+        description =  ''
           Whether to eanble the uptime kuma monitor.
         '';
       };
@@ -158,7 +157,7 @@ in {
         type = t.bool;
         default = false;
         example = true;
-        description = mdDoc ''
+        description =  ''
           Whether to enable the vaultwarden bitwarden-compatible server.
         '';
       };
@@ -167,7 +166,7 @@ in {
           type = t.bool;
           default = false;
           example = true;
-          description = mdDoc ''
+          description =  ''
             Whether to enable the mediawiki server.
           '';
         };
@@ -175,7 +174,7 @@ in {
           type = t.str;
           default = "wiki.${config.homelab.tld}";
           example = "wiki.example.com";
-          description = mdDoc ''
+          description =  ''
             Domain of the wiki.
           '';
         };
