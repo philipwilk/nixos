@@ -52,6 +52,10 @@ in
       AUTOPAUSE_TIMEOUT_EST = "30";
       UID = user;
       GID = user;
+      SYNC_CHUNK_WRITES = "false";
+      MODS = ''
+        https://mediafilez.forgecdn.net/files/5216/876/Chunk-Pregenerator-1.19.2-4.4.3.jar
+      '';
     };
     environmentFiles = [
       config.age.secrets.atm8.path
