@@ -25,16 +25,19 @@ let
     hp-dl380p-g8-sff-4
     hp-dl380p-g8-sff-5
   ];
+
+  s = x: "secrets/${x}.age";
 in {
-  "openldap_cloudflare_creds.age".publicKeys = servers;
-  "ldap_admin_pw.age".publicKeys = servers ++ workstations;
-  "server_password.age".publicKeys = servers ++ workstations;
-  "workstation_password.age".publicKeys = workstations;
-  "nextcloud_admin.age".publicKeys = servers ++ workstations;
-  "nextcloud_sql.age".publicKeys = servers;
-  "factorio_password.age".publicKeys = servers ++ workstations;
-  "mediawiki_password.age".publicKeys = servers;
-  "mediawiki_sec.age".publicKeys = servers;
-  "mediawiki_gh_sec.age".publicKeys = servers;
-  "mail_ldap.age".publicKeys = servers;
+  ${s "openldap_cloudflare_creds"}.publicKeys = servers;
+  ${s "ldap_admin_pw"}.publicKeys = servers ++ workstations;
+  ${s "server_password"}.publicKeys = servers ++ workstations;
+  ${s "workstation_password"}.publicKeys = workstations;
+  ${s "nextcloud_admin"}.publicKeys = servers ++ workstations;
+  ${s "nextcloud_sql"}.publicKeys = servers;
+  ${s "factorio_password"}.publicKeys = servers ++ workstations;
+  ${s "mediawiki_password"}.publicKeys = servers;
+  ${s "mediawiki_sec"}.publicKeys = servers;
+  ${s "mediawiki_gh_sec"}.publicKeys = servers;
+  ${s "mail_ldap"}.publicKeys = servers;
+  ${s "atm8"}.publicKeys = servers ++ workstations;
 }
