@@ -7,9 +7,20 @@ let
   name = "atm8";
   datadir = "/data/minecraft/servers";
   slug = "all-the-mods-8";
+  user = "podman";
 in
 {
-  age.secrets.atm8.file = ../../secrets/atm8.age; 
+  age.secrets.atm8 = {
+    file = ../../secrets/atm8.age;
+    owner  = user;
+    group = user;
+  }; 
+
+  users.users.${user} = {
+    isSystemUser = true;
+    group = user;
+  };
+  users.groups.${user} = {};
  
   virtualisation.oci-containers.containers.${name} = {
     image = "docker.io/itzg/minecraft-server:java17-alpine";
@@ -29,6 +40,8 @@ in
       MAX_TICK_TIME = "-1";
       AUTOPAUSE_TIMEOUT_INIT = "30";
       AUTOPAUSE_TIMEOUT_EST = "30";
+      UID = user;
+      GID = user;
     };
     environmentFiles = [
       config.age.secrets.atm8.path
