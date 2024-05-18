@@ -8,6 +8,7 @@ let
   datadir = "/data/minecraft/servers";
   slug = "all-the-mods-8";
   user = "podman";
+  port = 10565;
 in
 {
   age.secrets.atm8 = {
@@ -21,6 +22,10 @@ in
     group = user;
   };
   users.groups.${user} = {};
+
+  networking.firewall.allowedTCPPorts = [
+    port
+  ];
  
   virtualisation.oci-containers.containers.${name} = {
     image = "docker.io/itzg/minecraft-server:java17-alpine";
@@ -34,6 +39,11 @@ in
       ALLOW_FLIGHT = "true";
       SERVER_NAME = "${name} server";
       TYPE = "AUTO_CURSEFORGE";
+      ENABLE_WHITELIST = "true";
+      EXISTING_WHITELIST_FILE = "MERGE";
+      WHITELIST = "wiryfuture";
+      EXISTING_OPS_FILE = "MERGE";
+      OPS = "wiryfuture";
       CF_SLUG = slug;
       AUTOPAUSE_KNOCK_INTERFACE = "tap0";
       ENABLE_AUTOPAUSE = "true";
@@ -50,7 +60,7 @@ in
       "--cap-add=CAP_NET_RAW"
       "--network=slirp4netns:port_handler=slirp4netns"
     ];
-    ports = [ "25565:25565" ];
+    ports = [ "${toString port}:25565" ];
     volumes = [ "${datadir}/${name}:/data:Z" ];
   };
 }
