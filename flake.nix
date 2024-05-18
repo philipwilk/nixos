@@ -109,7 +109,10 @@
 
         # Grub machines (DO NOT SUPPORT EFI BOOT)
         hp-dl380p-g8-LFF =
-          stableSystem ([ ./homelab/infra/hp-dl380p-g8-LFF ] ++ grubLab);
+          stableSystem ([
+            ./homelab/infra/hp-dl380p-g8-LFF
+            ./homelab/services/minecraft.nix
+          ] ++ grubLab);
 
         hp-dl380p-g8-sff-2 =
           stableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-2 ] ++ grubLab);
