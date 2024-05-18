@@ -48,6 +48,7 @@
       grep = "rg";
       tree = "tre";
       cd = "z";
+      windows = "systemctl reboot --boot-loader-entry=auto-windows";
     };
   };
 
