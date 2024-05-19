@@ -49,6 +49,8 @@
       tree = "tre";
       cd = "z";
       windows = "systemctl reboot --boot-loader-entry=auto-windows";
+      ssh-home = "ssh -A -J bastion.fogbox.uk:22420";
+      ssh-insecure = "ssh -A -J bastion.fogbox.uk:22420 -oKexAlgorithms=+diffie-hellman-group14-sha1 -oHostKeyAlgorithms=+ssh-rsa";
     };
   };
 
