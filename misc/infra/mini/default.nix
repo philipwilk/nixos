@@ -31,7 +31,6 @@ in
           withVencord = true;
         })
         gnomeExtensions.appindicator
-        gnomeExtensions.emoji-selector
         gnomeExtensions.forge
         gnomeExtensions.just-perfection
         gnomeExtensions.rounded-window-corners
@@ -69,9 +68,9 @@ in
         PasswordAuthentication = false;
       };
     };
+    libinput.mouse.accelProfile = "flat";
     xserver = {
       enable = true;
-      libinput.mouse.accelProfile = "flat";
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
       excludePackages = with pkgs; [ xterm ];
