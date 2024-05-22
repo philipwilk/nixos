@@ -82,7 +82,12 @@ in
       pulse.enable = true;
       wireplumber.enable = true;
     };
-    printing.enable = true;
+    printing = {
+      enable = true;
+      drivers = with pkgs; [
+        cnijfilter2
+      ];
+    };
     flatpak.enable = true;
   };
 
