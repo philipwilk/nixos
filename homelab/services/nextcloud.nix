@@ -20,16 +20,18 @@
       enableImagemagick = true;
       hostName = config.homelab.services.nextcloud.domain;
       config = {
-        extraTrustedDomains = [ "192.168.1.10" ];
         adminpassFile = config.age.secrets.nextcloud_admin.path;
         adminuser = "philip";
-        trustedProxies = [ "192.168.1.0" ];
         dbtype = "mysql";
         dbhost = "localhost";
         dbname = "nextcloud";
         dbpassFile = config.age.secrets.nextcloud_sql.path;
       };
-      extraOptions = { mysql = { utf8mb4 = true; }; };
+      settings = {
+        trusted_domains = [ "192.168.1.10" ];
+        trusted_proxies = [ "127.0.0.1" ];
+        mysql.utf8mb4 = true;
+      };
       package = pkgs.nextcloud29;
     };
 

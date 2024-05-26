@@ -268,7 +268,6 @@ in {
       enable = true;
       dockerSocket.enable = true;
       dockerCompat = true;
-      enableNvidia = true;
     };
 
     # Fail2ban for ssh

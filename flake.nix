@@ -102,7 +102,7 @@
 
         nixosvmtest= unstableSystem ([ ./misc/infra/nixosvmtest.nix ] ++ commonModules);
 
-        nixos-thinkcentre-tiny = stableSystem
+        nixos-thinkcentre-tiny = unstableSystem
           ([ 
             ./homelab/infra/nixos-thinkcentre-tiny 
           ] ++ systemdLab);
