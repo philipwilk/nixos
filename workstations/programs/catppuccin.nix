@@ -1,5 +1,5 @@
 { pkgs, lib, ... }: {
-  catppuccin.flavour = "latte";
+  catppuccin.flavor = "latte";
   gtk.catppuccin = {
     enable = true;
     cursor = {
