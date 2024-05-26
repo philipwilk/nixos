@@ -121,7 +121,7 @@
         agenix.packages.x86_64-linux.default
         nixos-generators
         ## Database Management
-        dbeaver
+        dbeaver-bin
         openldap
         
         ## Cli utils
