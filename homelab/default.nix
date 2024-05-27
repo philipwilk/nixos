@@ -15,7 +15,7 @@ in {
     "mediawiki"
     "sshBastion"
     "nginx"
-    # "mail"
+    "mail"
   ] ++ join-dirfile "./websites" [
     "fogbox"
   ];
@@ -228,7 +228,7 @@ in {
             Domain for postfix email server.
           '';
         };
-        webmail = mkOpt {
+        web = mkOpt {
           type = t.str;
           default = "mail.${config.homelab.services.email.domain}";
           example = "mail.fogbox.uk";

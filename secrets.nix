@@ -40,4 +40,5 @@ in {
   ${s "mediawiki_gh_sec"}.publicKeys = servers;
   ${s "mail_ldap"}.publicKeys = servers;
   ${s "atm8"}.publicKeys = servers ++ workstations;
+  ${s "mail_admin"}.publicKeys = servers;
 }
