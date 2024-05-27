@@ -108,7 +108,7 @@ in
 
         directory.default = {
           type = "ldap";
-          url = "ldap://ldap.fogbox.uk";
+          url = "ldaps://ldap.fogbox.uk";
           base-dn = "${ldapSuffix}";
           timeout = "5s";
           tls.enable = true;

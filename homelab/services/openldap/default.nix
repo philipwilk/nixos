@@ -27,7 +27,7 @@ in {
           olcTLSCACertificateFile = "/var/lib/acme/${ldapname}/full.pem";
           olcTLSCertificateFile = "/var/lib/acme/${ldapname}/cert.pem";
           olcTLSCertificateKeyFile = "/var/lib/acme/${ldapname}/key.pem";
-          olcTLSCipherSuite = "HIGH:MEDIUM:+3DES:+RC4:+aNULL";
+          olcTLSCipherSuite = "kEECDH+aECDSA+AES:kEECDH+AES+aRSA:kEDH+aRSA+AES";
           olcTLSCRLCheck = "none";
           olcTLSVerifyClient = "never";
           # Use tls v1.3 only
@@ -63,19 +63,17 @@ in {
                   by anonymous auth
                   by * none
               ''
+              # allow access to base by anyone
+              ''
+                to dn.exact=""
+                  by dn.exact="${adminDn}" write
+                  by * read
+              ''
               # allow read on anything else
               ''
                 to *
                   by self write
                   by users read
-                  by anonymous auth
-                  by * none
-              ''
-              # allow access to base by anyone
-              ''
-                to dn.exact=""
-                  by dn.exact="${adminDn}" write
-                  by anonymous read
                   by * none
               ''
             ];
