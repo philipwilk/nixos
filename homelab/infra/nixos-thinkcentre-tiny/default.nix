@@ -28,7 +28,7 @@
         domain = "lore.fogbox.uk";
       };
       sshBastion.enable = true;
-      # email.enable = true;
+      email.enable = true;
     };
     # websites.fogbox.enable = true;
   };
