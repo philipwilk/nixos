@@ -23,9 +23,8 @@ in {
           
           subnet4 = [
             {
-              id = 1;
               pools = [{ pool = "192.168.1.101 - 192.168.1.245"; }];
-              subnet = "192.168.1.0/16";
+              subnet = config.homelab.services.router.kea.lanRange.ip4;
               option-data = {
                 domain-name-servers = [ "192.168.1.0" ];
                 domain-search = [ "opnsense.fog.fogbox.uk" ];
@@ -101,9 +100,41 @@ in {
         };
       };
       dhcpv6 = {
-        enable = false;
+        enable = true;
         settings = {
-          # dont have this setup on opnsense yet so idk
+          interfaces-config = {
+            interfaces = [
+              config.homelab.services.router.devices.lan
+            ];
+          };
+          lease-database = {
+            name = "/var/lib/kea/dhcp6.leases";
+            persist = true;
+            type = "memfile";
+          };
+          rebind-timer = 2000;
+          renew-timer = 1000;
+          valid-lifetime = 4000;
+          fqdn = domain;
+
+          subnet6 = [
+            {
+              pools =  [
+                {
+                  pool = "2001:db8:1::1-2001:db8:1::ffff";
+                }
+              ];
+              subnet = config.homelab.services.router.kea.lanRange.ip6;
+              option-data = {
+                domain-name-servers = [ "2001:db8:1::0" ];
+                domain-search = [ "opnsense.fog.fogbox.uk" ];
+                routers = [ "2001:db8:1::0" ];
+                domain-name = domain;
+                ntp-servers = [ "2001:db8:1::0" ];
+              };
+              interface = config.homelab.devices.router.devices.lan;
+            }
+          ];
         };
       };
     };
