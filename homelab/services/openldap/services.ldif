@@ -13,3 +13,9 @@ objectclass: inetOrgPerson
 uid: mail
 sn: mail
 cn: mail
+
+dn: uid=opnsense,ou=services,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: opnsense
+sn: opnsense
+cn: opnsense
