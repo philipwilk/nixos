@@ -279,6 +279,14 @@ in {
     # Enable ssh access from only workstation ssh keys
     services.openssh = {
       enable = true;
+      listenAddresses = [
+        {
+          addr = "0.0.0.0";
+        }
+        {
+          addr = "[::]";
+        }
+      ];
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;
