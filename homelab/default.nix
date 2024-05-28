@@ -21,6 +21,8 @@ in {
   ] ++ join-dirfile "./router" [
     "kea"
     "ntpd-rs"
+    "kresd"
+    "nat"
   ];
 
   options.homelab = {
@@ -97,6 +99,23 @@ in {
               Domain for hosts on the local net.
             '';
           };
+          lanRange= {
+            ip4 = mkOpt {
+              type = t.str;
+              default = "192.168.1.0/16";
+              example = "192.168.1.0/24";
+              description = ''
+                IP4 address range to use for the lan
+              '';
+            };
+            ip6 = mkOpt {
+              type = t.str;
+              default = "2001:db8:1::/64";
+              description = ''
+                IP6 address range to use for the lan
+              '';
+            };
+          };
         };
         ntpd-rs.enable = mkOpt {
           type = t.bool;
@@ -104,6 +123,22 @@ in {
           example = true;
           description = ''
             Whether to enable the ntpd-rs NTP server.
+          '';
+        };
+        kresd.enable = mkOpt {
+          type = t.bool;
+          default = config.homelab.services.router.enable;
+          example = true;
+          description = ''
+            Whether to enable the knot-resolver domain name server.
+          '';
+        };
+        nat.enable = mkOpt {
+          type = t.bool;
+          default = config.homelab.services.router.enable;
+          example = true;
+          description = ''
+            Whether to enable network address translation.
           '';
         };
       };
