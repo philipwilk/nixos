@@ -96,13 +96,13 @@
           auto-cpufreq.nixosModules.default
         ] ++ workstationModules);
 
-        mini = unstableSystem
-          ([ ./misc/infra/mini ./configs/boot/systemd.nix ] ++ commonModules);
+        mini = unstableSystem ([ 
+          ./workstations/infra/mini
+        ] ++ workstationModules);
 
-        nixosvmtest= unstableSystem ([ ./misc/infra/nixosvmtest.nix ] ++ commonModules);
+        nixosvmtest= unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
 
-        nixos-thinkcentre-tiny = unstableSystem
-          ([ 
+        nixos-thinkcentre-tiny = unstableSystem ([ 
             ./homelab/infra/nixos-thinkcentre-tiny 
           ] ++ systemdLab);
 

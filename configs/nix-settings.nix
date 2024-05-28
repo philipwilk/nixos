@@ -31,8 +31,14 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [ git helix ];
-
+  environment = {
+    systemPackages = with pkgs; [ git helix ];
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+      EDITOR = "hx";
+    };
+  };
+  
   # Ensure firmware is up to date
   services.fwupd.enable = true;
   hardware = {
