@@ -18,6 +18,9 @@ in {
     "mail"
   ] ++ join-dirfile "./websites" [
     "fogbox"
+  ] ++ join-dirfile "./router" [
+    "kea"
+    "ntpd-rs"
   ];
 
   options.homelab = {
@@ -57,6 +60,53 @@ in {
       '';
     };
     services = {
+      router = {
+        enable = lib.mkEnableOption "Router components";
+        devices = {
+          wan = mkOpt {
+            type = t.str;
+            default = "eth0";
+            example = "eth1";
+            description = ''
+              Network to use as the "wan" interface.
+            '';
+          };
+          lan = mkOpt {
+            type = t.str;
+            default = "eth1";
+            example = "eth0";
+            description = ''
+              Network to use as the "lan" interface.
+            '';
+          };
+        };
+        kea = {
+          enable = mkOpt {
+            type = t.bool;
+            default = config.homelab.services.router.enable;
+            example = true;
+            description = ''
+              Whether to enable the Kea dhcp server.
+            '';
+          };
+          hostDomain = mkOpt {
+            type = t.str;
+            default = "fog.${config.homelab.tld}";
+            example = "lan.example.com";
+            description = ''
+              Domain for hosts on the local net.
+            '';
+          };
+        };
+        ntpd-rs.enable = mkOpt {
+          type = t.bool;
+          default = config.homelab.services.router.enable;
+          example = true;
+          description = ''
+            Whether to enable the ntpd-rs NTP server.
+          '';
+        };
+      };
       grafana = {
         enable = mkOpt {
           type = t.bool;
