@@ -43,7 +43,7 @@ in {
     };
     tld = mkOpt {
       type = t.str;
-      default = "fogbox.uk";
+      default = null;
       example = "example.com";
       description =  ''
         Default top level domain for services.
@@ -251,17 +251,29 @@ in {
 
   config = lib.mkIf config.homelab.enable {
     # Assertions        
-    assertions = [{
-      assertion = config.homelab.services.openldap.enable
-        -> config.homelab.acme.mail != null;
-      message =
-        "Openldap requires a cert for ldaps, and acme requires an email to get a cert.";
-    }];
+    assertions = [
+      {
+        assertion = config.homelab.services.openldap.enable
+          -> config.homelab.acme.mail != null;
+        message =
+          "Openldap requires a cert for ldaps, and acme requires an email to get a cert.";
+      }
+      {
+        assertion = config.homelab.enable
+          -> config.homelab.tld != null;
+          message =
+            "Homelab module needs a tld for certs and nginx routing etc.";
+      }
+    ];
 
     # Accept acme terms
     security.acme = {
       acceptTerms = true;
-      defaults.email = config.homelab.acme.mail;
+      defaults = {
+        email = config.homelab.acme.mail;
+        dnsProvider = "cloudflare";
+        credentialsFile = config.age.secrets.openldap_cloudflare_creds.path;
+      };
     };
 
     # Enable podman container support

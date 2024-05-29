@@ -47,8 +47,11 @@
       commonModules = join-dirfile "configs" [ "nix-settings" "uk-region" ];
 
       # Homelab
-      homelabModules = commonModules
-        ++ [ ./homelab agenix.nixosModules.default ];
+      homelabModules = commonModules ++ [
+        ./homelab
+        agenix.nixosModules.default
+        ./homelab/config.nix
+      ];
       systemdLab = homelabModules ++ [ ./configs/boot/systemd.nix ];
       grubLab = homelabModules ++ [ ./configs/boot/grub.nix ];
 
@@ -108,7 +111,7 @@
 
         # Grub machines (DO NOT SUPPORT EFI BOOT)
         hp-dl380p-g8-LFF =
-          stableSystem ([
+          unstableSystem ([
             ./homelab/infra/hp-dl380p-g8-LFF
             ./homelab/services/minecraft.nix
           ] ++ grubLab);

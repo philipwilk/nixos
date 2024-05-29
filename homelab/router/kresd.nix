@@ -22,15 +22,13 @@ in
 				net.tls("cert.pem", "key.pem")
 			'';
 		};
-		systemd.services."kresd@".serviceConfig = {
+		systemd.services."kresd@" = {
       wants = [ "acme-${domain}.service" ];
       after = [ "acme-${domain}.service" ];
-      serviceConfig = {
-        LoadCredential = [
-          "cert.pem:/var/lib/acme/${domain}/cert.pem"
-          "key.pem:/var/lib/acme/${domain}/key.pem"
-        ];
-			};
+      serviceConfig.LoadCredential = [
+        "cert.pem:${config.security.acme.certs.${domain}.directory}/cert.pem"
+        "key.pem:${config.security.acme.certs.${domain}.directory}/key.pem"
+      ];
 		};
 		security.acme.certs."${domain}" = {};
 

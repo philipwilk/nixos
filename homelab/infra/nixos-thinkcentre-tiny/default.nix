@@ -4,10 +4,7 @@
   imports = [ ./hardware-configuration.nix ];
 
   homelab = {
-    enable = true;
     isLeader = true;
-    tld = "fogbox.uk";
-    acme.mail = "philip.wilk10@gmail.com";
     services = {
       nginx.enable = true;
       nextcloud = {

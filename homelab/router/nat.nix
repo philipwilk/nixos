@@ -28,8 +28,8 @@ in
 			enable = true;
 			enableIPv6 = true;
 			externalInterface = config.homelab.router.devices.wan;
-			internalInterface = [ config.homelab.router.devices.lan ];
-			internalIps = [ config.homelab.router.kea.lanRange.ip4 ];
+			internalInterfaces = [ config.homelab.router.devices.lan ];
+			internalIPs = [ config.homelab.router.kea.lanRange.ip4 ];
 			internalIPv6s = [ config.homelab.router.kea.lanRange.ip6 ];
 			forwardPorts = lib.flatten [
 				# Http

@@ -3,7 +3,7 @@ let domain = config.homelab.router.kea.hostDomain;
 in {
   config = lib.mkIf config.homelab.router.kea.enable {
     services.kea = {
-      dhcpv4 = {
+      dhcp4 = {
         enable = true;
         settings = {
           interfaces-config = {
@@ -99,7 +99,7 @@ in {
           ];
         };
       };
-      dhcpv6 = {
+      dhcp6 = {
         enable = true;
         settings = {
           interfaces-config = {

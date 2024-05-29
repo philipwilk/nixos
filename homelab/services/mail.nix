@@ -20,8 +20,8 @@ in
       after = [ "acme-${domain}.service" ];
       serviceConfig = {
         LoadCredential = [
-          "cert.pem:/var/lib/acme/${domain}/cert.pem"
-          "key.pem:/var/lib/acme/${domain}/key.pem"
+          "cert.pem:${config.security.acme.certs.${domain}.directory}/cert.pem"
+          "key.pem:${config.security.acme.certs.${domain}.directory}/key.pem"
           "adminPwd:${config.age.secrets.mail_admin.path}"
           "ldapPwd:${config.age.secrets.mail_ldap.path}"
         ];
