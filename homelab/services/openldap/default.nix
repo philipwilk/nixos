@@ -9,8 +9,6 @@ let
   serviceOu = "ou=services,${ldapSuffix}";
 in {
   config = lib.mkIf config.homelab.services.openldap.enable {
-    age.secrets.openldap_cloudflare_creds.file =
-      ../../../secrets/openldap_cloudflare_creds.age;
     age.secrets.ldap_admin_pw = {
       file = ../../../secrets/ldap_admin_pw.age;
       owner = "openldap";
@@ -24,9 +22,9 @@ in {
           olcLogLevel = "conns config";
 
           # settings for acme ssl
-          olcTLSCACertificateFile = "/var/lib/acme/${ldapname}/full.pem";
-          olcTLSCertificateFile = "/var/lib/acme/${ldapname}/cert.pem";
-          olcTLSCertificateKeyFile = "/var/lib/acme/${ldapname}/key.pem";
+          olcTLSCACertificateFile = "full.pem";
+          olcTLSCertificateFile = "cert.pem";
+          olcTLSCertificateKeyFile = "key.pem";
           olcTLSCipherSuite = "kEECDH+aECDSA+AES:kEECDH+AES+aRSA:kEDH+aRSA+AES";
           olcTLSCRLCheck = "none";
           olcTLSVerifyClient = "never";
@@ -86,19 +84,16 @@ in {
     systemd.services.openldap = {
       wants = [ "acme-${ldapname}.service" ];
       after = [ "acme-${ldapname}.service" ];
+      serviceConfig = {
+        LoadCredential = [
+          "cert.pem:${config.security.acme.certs.${ldapname}.directory}/cert.pem"
+          "key.pem:${config.security.acme.certs.${ldapname}.directory}/key.pem"
+          "full.pem:${config.security.acme.certs.${ldapname}.directory}/full.pem"
+        ];
+      };
     };
 
-    security.acme = {
-      acceptTerms = true;
-      defaults = {
-        email = config.homelab.acme.mail;
-        group = "certs";
-        dnsProvider = "cloudflare";
-        credentialsFile = config.age.secrets.openldap_cloudflare_creds.path;
-      };
-      certs."${ldapname}" = { extraDomainNames = [ ]; };
-    };
-    users.groups.certs.members = [ "openldap" ];
+    security.acme.certs."${ldapname}" = {};   
 
     networking.firewall.interfaces."eno1".allowedTCPPorts = [ 389 636 ];
   };
