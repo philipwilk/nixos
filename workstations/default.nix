@@ -89,15 +89,6 @@ in {
           # Chore replacements
           pavucontrol
           powertop
-
-          # Misc
-          hyfetch
-          usbutils
-          pciutils
-          libva-utils
-          dnsutils
-          dmidecode
-          sbctl
         ];
       };
 

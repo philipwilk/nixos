@@ -35,7 +35,15 @@
     systemPackages = with pkgs; [
       git
       helix  
-      ### nix stuff
+      # cli utils
+      hyfetch
+      usbutils
+      pciutils
+      libva-utils
+      dnsutils
+      dmidecode
+      sbctl
+      # nix utils
       nix-output-monitor
       nh
       nvd
