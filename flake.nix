@@ -113,7 +113,7 @@
         hp-dl380p-g8-LFF =
           unstableSystem ([
             ./homelab/infra/hp-dl380p-g8-LFF
-            ./homelab/services/minecraft.nix
+            # ./homelab/services/minecraft.nix
           ] ++ grubLab);
 
         hp-dl380p-g8-sff-2 =

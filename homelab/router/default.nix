@@ -12,7 +12,7 @@ in
 	imports = join-dirfile "./" [
     "kea"
     "ntpd-rs"
-    "kresd"
+    "unbound"
     "nat"
   ];
   
@@ -21,7 +21,7 @@ in
     devices = {
       wan = mkOpt {
         type = t.str;
-        default = "eth0";
+        default = "eno1";
         example = "eth1";
         description = ''
           Network to use as the "wan" interface.
@@ -29,7 +29,7 @@ in
       };
       lan = mkOpt {
         type = t.str;
-        default = "eth1";
+        default = "eno2";
         example = "eth0";
         description = ''
           Network to use as the "lan" interface.
@@ -79,12 +79,12 @@ in
         Whether to enable the ntpd-rs NTP server.
       '';
     };
-    kresd.enable = mkOpt {
+    unbound.enable = mkOpt {
       type = t.bool;
       default = config.homelab.router.enable;
       example = true;
       description = ''
-        Whether to enable the knot-resolver domain name server.
+        Whether to enable the unbound domain name server.
       '';
     };
     nat.enable = mkOpt {

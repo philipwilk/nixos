@@ -20,15 +20,21 @@ let
 	# Uses same port for source and destination for ip4 and ip6
 	# ip4, ip6, proto, sourcePort
 	quickRule = dst4: dst6: protocol: source:
-		createRule "${dst4}:${toString source}" "[${dst6}]:${toString source}" protocol source;
+		createRule "${dst4}:${toString source}" "${dst6}:${toString source}" protocol source;
+	lan = config.homelab.router.devices.lan;
+	wan = config.homelab.router.devices.wan;
 in
 {
 	config = lib.mkIf config.homelab.router.nat.enable {
+		networking.nftables = {
+			enable = true;
+			flushRuleset = true;
+		};
 		networking.nat = {
 			enable = true;
 			enableIPv6 = true;
-			externalInterface = config.homelab.router.devices.wan;
-			internalInterfaces = [ config.homelab.router.devices.lan ];
+			externalInterface = wan;
+			internalInterfaces = [ lan ];
 			internalIPs = [ config.homelab.router.kea.lanRange.ip4 ];
 			internalIPv6s = [ config.homelab.router.kea.lanRange.ip6 ];
 			forwardPorts = lib.flatten [
