@@ -9,7 +9,6 @@
     nixpkgs.overlays = [ nix-matlab.overlay nix-your-shell.overlays.default ];
 
     environment = {
-      sessionVariables.FLAKE = "/home/philip/repos/nixconf";
       shells = with pkgs; [ nushellFull ];
       systemPackages = with pkgs; [
         # Terminals and shells

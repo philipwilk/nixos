@@ -32,10 +32,18 @@
   };
 
   environment = {
-    systemPackages = with pkgs; [ git helix ];
+    systemPackages = with pkgs; [
+      git
+      helix  
+      ### nix stuff
+      nix-output-monitor
+      nh
+      nvd
+    ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
       EDITOR = "hx";
+      FLAKE = lib.mkDefault "/home/philip/repos/nixconf";
     };
   };
   

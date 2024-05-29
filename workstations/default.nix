@@ -85,10 +85,6 @@ in {
           wl-clip-persist
           networkmanager-openvpn
           ripunzip
-          ### nix stuff
-          nix-output-monitor
-          nh
-          nvd
 
           # Chore replacements
           pavucontrol
