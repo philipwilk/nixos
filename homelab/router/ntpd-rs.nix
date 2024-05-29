@@ -4,7 +4,7 @@
   ...
 }:
 {
-  config = lib.mkIf config.homelab.services.router.ntpd-rs.enable {
+  config = lib.mkIf config.homelab.router.ntpd-rs.enable {
     services.ntpd-rs = {
       enable = true;
       useNetworkingTimeServers = false;
@@ -27,7 +27,7 @@
         ];
       };
     };
-    networking.firewall.interfaces.${config.homelab.services.router.devices.lan}.allowedUDPPorts = [
+    networking.firewall.interfaces.${config.homelab.router.devices.lan}.allowedUDPPorts = [
       123
     ];
   };

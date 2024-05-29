@@ -1,14 +1,14 @@
 { config, lib, ... }:
-let domain = config.homelab.services.kea.hostDomain;
+let domain = config.homelab.router.kea.hostDomain;
 in {
-  config = mkIf config.homelab.services.kea.enable {
+  config = lib.mkIf config.homelab.router.kea.enable {
     services.kea = {
       dhcpv4 = {
         enable = true;
         settings = {
           interfaces-config = {
             interfaces = [
-              config.homelab.services.router.devices.lan
+              config.homelab.router.devices.lan
             ];
           };
           lease-database = {
@@ -24,7 +24,7 @@ in {
           subnet4 = [
             {
               pools = [{ pool = "192.168.1.101 - 192.168.1.245"; }];
-              subnet = config.homelab.services.router.kea.lanRange.ip4;
+              subnet = config.homelab.router.kea.lanRange.ip4;
               option-data = {
                 domain-name-servers = [ "192.168.1.0" ];
                 domain-search = [ "opnsense.fog.fogbox.uk" ];
@@ -32,7 +32,7 @@ in {
                 domain-name = domain;
                 ntp-servers = [ "192.168.1.0" ];
               };
-              interface = config.homelab.devices.router.devices.lan;
+              interface = config.homelab.router.devices.lan;
               # ip and hostname reservations
               reservations = [
                 # Wifi AP
@@ -84,7 +84,7 @@ in {
                 }
                 {
                   hw-address = "ac:16:2d:70:bd:44";
-                  ip-address = "192.168.2.3"
+                  ip-address = "192.168.2.3";
                 }
                 {
                   hw-address = "40:a8:f0:25:28:fc";
@@ -104,7 +104,7 @@ in {
         settings = {
           interfaces-config = {
             interfaces = [
-              config.homelab.services.router.devices.lan
+              config.homelab.router.devices.lan
             ];
           };
           lease-database = {
@@ -124,7 +124,7 @@ in {
                   pool = "2001:db8:1::1-2001:db8:1::ffff";
                 }
               ];
-              subnet = config.homelab.services.router.kea.lanRange.ip6;
+              subnet = config.homelab.router.kea.lanRange.ip6;
               option-data = {
                 domain-name-servers = [ "2001:db8:1::0" ];
                 domain-search = [ "opnsense.fog.fogbox.uk" ];
@@ -132,7 +132,7 @@ in {
                 domain-name = domain;
                 ntp-servers = [ "2001:db8:1::0" ];
               };
-              interface = config.homelab.devices.router.devices.lan;
+              interface = config.homelab.router.devices.lan;
             }
           ];
         };

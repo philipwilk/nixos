@@ -7,7 +7,7 @@ let
 	domain = "dns.${config.homelab.tld}";
 in
 {
-	config = lib.mkIf config.homelab.services.router.kresd.enable {
+	config = lib.mkIf config.homelab.router.kresd.enable {
 		services.kresd = {
 			enable = true;
 			listenTLS = [
@@ -34,7 +34,7 @@ in
 		};
 		security.acme.certs."${domain}" = {};
 
-    networking.firewall.interfaces.${config.homelab.services.router.devices.lan}.allowedTCPPorts = [
+    networking.firewall.interfaces.${config.homelab.router.devices.lan}.allowedTCPPorts = [
 			53
 			853
     ];
