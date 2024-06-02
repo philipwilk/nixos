@@ -7,6 +7,7 @@ let
   ldapSuffix = createSuffix ldapname;
   adminDn = "cn=admin,${ldapSuffix}";
   serviceOu = "ou=services,${ldapSuffix}";
+  credPath = "/run/credentials/openldap.service";
 in {
   config = lib.mkIf config.homelab.services.openldap.enable {
     age.secrets.ldap_admin_pw = {
@@ -22,10 +23,9 @@ in {
           olcLogLevel = "conns config";
 
           # settings for acme ssl
-          olcTLSCACertificateFile = "full.pem";
-          olcTLSCertificateFile = "cert.pem";
-          olcTLSCertificateKeyFile = "key.pem";
-          olcTLSCipherSuite = "kEECDH+aECDSA+AES:kEECDH+AES+aRSA:kEDH+aRSA+AES";
+          olcTLSCACertificateFile = "${credPath}/full.pem";
+          olcTLSCertificateFile = "${credPath}/cert.pem";
+          olcTLSCertificateKeyFile = "${credPath}/key.pem";
           olcTLSCRLCheck = "none";
           olcTLSVerifyClient = "never";
           # Use tls v1.3 only

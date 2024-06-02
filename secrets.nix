@@ -28,7 +28,8 @@ let
 
   s = x: "secrets/${x}.age";
 in {
-  ${s "openldap_cloudflare_creds"}.publicKeys = servers;
+  ${s "cloudflare"}.publicKeys = servers;
+  ${s "desec"}.publicKeys = servers;
   ${s "ldap_admin_pw"}.publicKeys = servers ++ workstations;
   ${s "server_password"}.publicKeys = servers ++ workstations;
   ${s "workstation_password"}.publicKeys = workstations;

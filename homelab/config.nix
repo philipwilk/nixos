@@ -2,8 +2,10 @@
   ...
 }:
 {
-  age.secrets.openldap_cloudflare_creds.file =
-    .././secrets/openldap_cloudflare_creds.age;
+  age.secrets = {
+    cloudflare.file = .././secrets/cloudflare.age;
+    desec.file = .././secrets/desec.age;
+  };
   homelab = {
     enable = true;
     tld = "fogbox.uk";

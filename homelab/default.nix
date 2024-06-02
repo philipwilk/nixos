@@ -271,8 +271,8 @@ in {
       acceptTerms = true;
       defaults = {
         email = config.homelab.acme.mail;
-        dnsProvider = "cloudflare";
-        credentialsFile = config.age.secrets.openldap_cloudflare_creds.path;
+        dnsProvider = "desec";
+        credentialsFile = config.age.secrets.desec.path;
       };
     };
 
