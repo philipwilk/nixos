@@ -33,7 +33,11 @@
 
     "/mnt/extra" = {
       device = "/dev/pool/extra";
-      fsType = "ext4"; 
+      fsType = "ext4";
+      options = [
+        "users"
+        "x-gvfs-show"
+      ];
     };
 
     "/boot" = {
