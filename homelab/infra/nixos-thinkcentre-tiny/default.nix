@@ -28,13 +28,7 @@
       email.enable = true;
     };
     # websites.fogbox.enable = true;
-  };
-  
-  security.acme.certs.${config.services.nextcloud.hostName} = {
-    dnsProvider = "cloudflare";
-    credentialsFile = config.age.secrets.cloudflare.path;
-    webroot = null;
-  };
+  };  
   
   networking = {
     hostName = "nixos-thinkcentre-tiny";
