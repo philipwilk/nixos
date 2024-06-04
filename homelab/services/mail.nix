@@ -11,6 +11,7 @@ in
     age.secrets = {
       mail_ldap.file = ../../secrets/mail_ldap.age;
       mail_admin.file = ../../secrets/mail_admin.age;
+      mail_pwd.file = ../../secrets/mail_pwd.age;
     };
 
     security.acme.certs."${domain}" = {};
@@ -24,6 +25,7 @@ in
           "key.pem:${config.security.acme.certs.${domain}.directory}/key.pem"
           "adminPwd:${config.age.secrets.mail_admin.path}"
           "ldapPwd:${config.age.secrets.mail_ldap.path}"
+          "mailPwd:${config.age.secrets.mail_pwd.path}"
         ];
        ReadWritePaths = "${path}";
       };
@@ -99,39 +101,51 @@ in
         };
 
         storage = {
-          directory = "default";
+          directory = "memory";
           data = "data";
           blob = "blob";
           fts = "fts";
           lookup = "lookup";
         };
-
-        directory.default = {
-          type = "ldap";
-          url = "ldaps://ldap.fogbox.uk";
-          base-dn = "${ldapSuffix}";
-          timeout = "5s";
-          tls.enable = true;
-          bind = {
-            enable = true;
-            dn = "uid=mail,ou=services,${ldapSuffix}";
-            secret = "%{file:${credPath}/ldapPwd}%";
-            auth = {
-              enable = true;
-              dn = "uid=?,ou=users,${ldapSuffix}";
-            };
-          };
-          attributes = {
-            name = "uid";
-            class = "inetOrgPerson";
-            description = [ "principalName" "description" ];
-            secret = "userPassword";
-            email = "mail";
-            email-alias = "mailAlias";
-            groups = [ "memberOf" "otherGroups" ];
-            quota = "diskQuota";
-          };
+        
+        directory.memory = {
+          type = "memory";
+          principals = [
+            {
+              name = "philipwilk";
+              class = "individual";
+              secret = "{PLAIN}%{FILE:${credPath}/mailPwd}%";
+              email = [ "philipwilk@${domain}" ];
+            }
+          ];
         };
+
+        # directory.default = {
+        #   type = "ldap";
+        #   url = "ldaps://ldap.fogbox.uk";
+        #   base-dn = "${ldapSuffix}";
+        #   timeout = "5s";
+        #   tls.enable = true;
+        #   bind = {
+        #     enable = true;
+        #     dn = "uid=mail,ou=services,${ldapSuffix}";
+        #     secret = "%{file:${credPath}/ldapPwd}%";
+        #     auth = {
+        #       enable = true;
+        #       dn = "uid=?,ou=users,${ldapSuffix}";
+        #     };
+        #   };
+        #   attributes = {
+        #     name = "uid";
+        #     class = "inetOrgPerson";
+        #     description = [ "principalName" "description" ];
+        #     secret = "userPassword";
+        #     email = "mail";
+        #     email-alias = "mailAlias";
+        #     groups = [ "memberOf" "otherGroups" ];
+        #     quota = "diskQuota";
+        #   };
+        # };
         
         tracer.stdout = {
           type = "stdout";
