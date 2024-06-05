@@ -26,6 +26,7 @@
       };
       sshBastion.enable = true;
       email.enable = true;
+      harmonia.enable = true;
     };
     # websites.fogbox.enable = true;
   };  

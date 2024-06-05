@@ -43,4 +43,5 @@ in {
   ${s "atm8"}.publicKeys = servers ++ workstations;
   ${s "mail_admin"}.publicKeys = servers;
   ${s "mail_pwd"}.publicKeys = servers;
+  ${s "harmonia"}.publicKeys = servers;
 }
