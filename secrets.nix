@@ -43,5 +43,10 @@ in {
   ${s "atm8"}.publicKeys = servers ++ workstations;
   ${s "mail_admin"}.publicKeys = servers;
   ${s "mail_pwd"}.publicKeys = servers;
-  ${s "harmonia"}.publicKeys = servers;
+  ${s "harmonia"}.publickeys = servers;
+  ${s "buildbot/workers"}.publicKeys = servers ++ workstations;
+  ${s "buildbot/worker_sec"}.publicKeys = servers;
+  ${s "buildbot/oauth_sec"}.publicKeys = servers;
+  ${s "buildbot/user_sec"}.publicKeys = servers;
+  ${s "buildbot/webhook_sec"}.publicKeys = servers;
 }

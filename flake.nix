@@ -33,10 +33,14 @@
       url = "github:nix-community/lanzaboote/v0.3.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    buildbot-nix = {
+      url = "github:Mic92/buildbot-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-stable, agenix, nix-matlab, home-manager
-    , catppuccin, auto-cpufreq, nixos-generators, lanzaboote, ... }@inputs:
+    , catppuccin, auto-cpufreq, nixos-generators, lanzaboote, buildbot-nix, ... }@inputs:
     let
       systems = [ "x86_64-linux" ];
       forAllSystems = fn:
@@ -51,6 +55,8 @@
         ./homelab
         agenix.nixosModules.default
         ./homelab/config.nix
+        buildbot-nix.nixosModules.buildbot-master
+        buildbot-nix.nixosModules.buildbot-worker
       ];
       systemdLab = homelabModules ++ [ ./configs/boot/systemd.nix ];
       grubLab = homelabModules ++ [ ./configs/boot/grub.nix ];

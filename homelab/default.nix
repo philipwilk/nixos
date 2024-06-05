@@ -20,6 +20,7 @@ in {
     "fogbox"
   ] ++ [
     ./router
+    ./buildbot
   ];
 
   options.homelab = {
