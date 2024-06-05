@@ -1,18 +1,18 @@
-{ nixpkgs, nixpkgs-unstable, pkgs, lib, config, ... }: {
+{ nixpkgs, pkgs, lib, config, ... }: {
   nixpkgs = {
-    overlays = let
-      overlay = _: _: {
-        unstable = import nixpkgs-unstable {
-          system = "x86_64-linux";
-          inherit (config.nixpkgs) config;
-        };
-      };
-    in [ overlay ];
+    # overlays = let
+    #   overlay = _: _: {
+    #     unstable = import nixpkgs-unstable {
+    #       system = "x86_64-linux";
+    #       inherit (config.nixpkgs) config;
+    #     };
+    #   };
+    # in [ overlay ];
     config = { allowUnfree = true; };
   };
 
   nix = {
-    package = pkgs.unstable.nixVersions.latest;
+    package = pkgs.nixVersions.latest;
     # registry = lib.mapAttrs (_: value: { flake = value; }) {
     #   inherit nixpkgs nixpkgs-unstable;
     # };
