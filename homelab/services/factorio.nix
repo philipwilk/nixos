@@ -3,7 +3,7 @@
     age.secrets.factorio_password.file = ../../secrets/factorio_password.age;
     services.factorio = {
       enable = true;
-      package = pkgs.unstable.factorio-headless;
+      package = pkgs.factorio-headless;
       openFirewall = true;
       requireUserVerification = true;
       game-name = "broken bad";

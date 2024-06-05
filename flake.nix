@@ -2,40 +2,40 @@
   description = "system definitions";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-matlab = {
-      inputs.nixpkgs.follows = "nixpkgs";
       url = "gitlab:doronbehar/nix-matlab";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
     nix-your-shell = {
       url = "github:MercuryTechnologies/nix-your-shell";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     auto-cpufreq = {
       url = "github:AdnanHodzic/auto-cpufreq";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.3.0";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, agenix, nix-matlab, home-manager
+  outputs = { self, nixpkgs, nixpkgs-stable, agenix, nix-matlab, home-manager
     , catppuccin, auto-cpufreq, nixos-generators, lanzaboote, ... }@inputs:
     let
       systems = [ "x86_64-linux" ];
@@ -71,8 +71,8 @@
           specialArgs = inputs;
         };
 
-      unstableSystem = buildSys nixpkgs-unstable;
-      stableSystem = buildSys nixpkgs;
+      unstableSystem = buildSys nixpkgs;
+      stableSystem = buildSys nixpkgs-stable;
 
       buildIso = arch: mods: nixos-generators.nixosGenerate {
         system = arch;
@@ -117,17 +117,17 @@
           ] ++ grubLab);
 
         hp-dl380p-g8-sff-2 =
-          stableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-2 ] ++ grubLab);
+          unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-2 ] ++ grubLab);
 
         hp-dl380p-g8-sff-3 =
-          stableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-3 ] ++ grubLab);
+          unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-3 ] ++ grubLab);
 
         hp-dl380p-g8-sff-4 =
-          stableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-4 ] ++ grubLab);
+          unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-4 ] ++ grubLab);
 
         hp-dl380p-g8-sff-5 =
-          stableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-5 ] ++ grubLab);
+          unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-5 ] ++ grubLab);
       };
-      formatter = forAllSystems (nixpkgs-unstable: nixpkgs-unstable.nixfmt);
+      formatter = forAllSystems (nixpkgs: nixpkgs.nixfmt);
     };
 }

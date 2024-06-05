@@ -48,7 +48,7 @@ in
     
     services.stalwart-mail = {
       enable = true;
-      package = pkgs.unstable.stalwart-mail;
+      package = pkgs.stalwart-mail;
       settings = {
         certificate.default = {
           cert = "%{file:${credPath}/cert.pem}%";
