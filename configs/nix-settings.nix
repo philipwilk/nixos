@@ -22,10 +22,6 @@
       experimental-features =
         "nix-command flakes auto-allocate-uids ca-derivations";
       auto-optimise-store = true;
-      substituters = [ "https://cache.fogbox.uk" ];
-      trusted-public-keys = [
-        "cache.fogbox.uk:lwlsX4TZdJXQzfqTWRMf/I8xTlR/i+B5RTkD2BQhzdA="
-      ];
     };
     gc = {
       automatic = true;

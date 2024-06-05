@@ -65,6 +65,13 @@ in {
     ( lib.mkIf config.workstation.enable {
       boot.kernelParams = [ "mem_sleep_default=deep" ];
 
+      nix.settings = {
+        substituters = [ "https://cache.fogbox.uk" ];
+        trusted-public-keys = [
+          "cache.fogbox.uk:lwlsX4TZdJXQzfqTWRMf/I8xTlR/i+B5RTkD2BQhzdA="
+        ];
+      };
+
       environment = {
         sessionVariables.NIXOS_OZONE_WL = "1";
         binsh = "${pkgs.dash}/bin/dash";

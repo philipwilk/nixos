@@ -28,6 +28,10 @@
       email.enable = true;
       harmonia.enable = true;
     };
+    buildbot = {
+      enableMaster = true;
+      enableWorker = true;
+    };
     # websites.fogbox.enable = true;
   };  
   
