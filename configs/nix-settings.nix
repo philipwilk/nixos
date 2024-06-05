@@ -55,8 +55,7 @@
     };
   };
   
-  # Ensure firmware is up to date
-  services.fwupd.enable = true;
+  # Ensure firmware is available
   hardware = {
     enableAllFirmware = true;
     cpu = {
