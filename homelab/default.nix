@@ -15,6 +15,7 @@ in {
     "sshBastion"
     "nginx"
     "mail"
+    "harmonia"
   ] ++ join-dirfile "./websites" [
     "fogbox"
   ] ++ [
@@ -237,6 +238,14 @@ in {
             Domain for webmail access.
           '';
         };
+      };
+      harmonia.enable = mkOpt {
+        type = t.bool;
+        default = false;
+        example = true;
+        description = ''
+          Whether to enable the harmonia nix cache.
+        '';
       };
     };
     websites.fogbox.enable = mkOpt {
