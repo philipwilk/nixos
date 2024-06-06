@@ -10,7 +10,7 @@ let
 in
 {
   config = lib.mkIf config.homelab.services.harmonia.enable {
-    
+
     age.secrets.harmonia = {
       file = ../../secrets/harmonia.age;
       owner = "harmonia";
@@ -19,7 +19,7 @@ in
       enable = true;
       signKeyPath = config.age.secrets.harmonia.path;
     };
-    
+
     services.nginx.virtualHosts.${domain} = {
       enableACME = true;
       forceSSL = true;

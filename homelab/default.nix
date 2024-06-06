@@ -1,36 +1,42 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
   mkOpt = lib.mkOption;
   t = lib.types;
-in {
-  imports = join-dirfile "./services" [
-    "nextcloud"
-    "openldap/default"
-    "factorio"
-    "navidrome"
-    "uptime-kuma"
-    "vaultwarden"
-    "mediawiki"
-    "sshBastion"
-    "nginx"
-    "mail"
-    "harmonia"
-  ] ++ join-dirfile "./websites" [
-    "fogbox"
-  ] ++ join-dirfile "./nix"[
-    "hercules-ci"
-  ] ++ [
-    ./router
-    ./buildbot
-  ];
+in
+{
+  imports =
+    join-dirfile "./services" [
+      "nextcloud"
+      "openldap/default"
+      "factorio"
+      "navidrome"
+      "uptime-kuma"
+      "vaultwarden"
+      "mediawiki"
+      "sshBastion"
+      "nginx"
+      "mail"
+      "harmonia"
+    ]
+    ++ join-dirfile "./websites" [ "fogbox" ]
+    ++ join-dirfile "./nix" [ "hercules-ci" ]
+    ++ [
+      ./router
+      ./buildbot
+    ];
 
   options.homelab = {
     enable = mkOpt {
       type = t.bool;
       default = false;
       example = true;
-      description =  ''
+      description = ''
         Enable the default homelab options:
           - ssh using key access
           - podman enabled
@@ -41,7 +47,7 @@ in {
       type = t.bool;
       default = false;
       example = true;
-      description =  ''
+      description = ''
         Whether this server should act as a host for the key lab services
       '';
     };
@@ -49,7 +55,7 @@ in {
       type = t.str;
       default = null;
       example = "example.com";
-      description =  ''
+      description = ''
         Default top level domain for services.
       '';
     };
@@ -57,7 +63,7 @@ in {
       type = t.str;
       default = null;
       example = "joe.bloggs@example.com";
-      description =  ''
+      description = ''
         Email for acme cert renewals.
       '';
     };
@@ -67,7 +73,7 @@ in {
           type = t.bool;
           default = config.homelab.isLeader;
           example = false;
-          description =  ''
+          description = ''
             Whether to enable the homelab grafana instance.
           '';
         };
@@ -75,7 +81,7 @@ in {
           type = t.str;
           default = "grafana.${config.homelab.tld}";
           example = "grafana.example.com";
-          description =  ''
+          description = ''
             Domain for homelab grafana instance.
           '';
         };
@@ -84,7 +90,7 @@ in {
         type = t.bool;
         default = config.homelab.isLeader;
         example = false;
-        description =  ''
+        description = ''
           Whether to enable the homelab prometheus instance.
         '';
       };
@@ -93,7 +99,7 @@ in {
           type = t.bool;
           default = false;
           example = true;
-          description =  ''
+          description = ''
             Whether to enable the nextcloud service.
           '';
         };
@@ -101,7 +107,7 @@ in {
           type = t.str;
           default = "nextcloud.${config.homelab.tld}";
           example = "nextcloud.example.com";
-          description =  ''
+          description = ''
             Domain for homelab nextcloud instance.
           '';
         };
@@ -110,7 +116,7 @@ in {
         type = t.bool;
         default = false;
         example = true;
-        description =  ''
+        description = ''
           Whether to enable the navidrome service.
         '';
       };
@@ -119,7 +125,7 @@ in {
           type = t.bool;
           default = false;
           example = true;
-          description =  ''
+          description = ''
             Whether to enable the openldap server.
           '';
         };
@@ -127,7 +133,7 @@ in {
           type = t.str;
           default = "ldap.${config.homelab.tld}";
           example = "example.com";
-          description =  ''
+          description = ''
             Domain for the ldap instance.
           '';
         };
@@ -137,7 +143,7 @@ in {
           type = t.bool;
           default = false;
           example = true;
-          description =  ''
+          description = ''
             Whether to enable the factorio game server.
           '';
         };
@@ -145,7 +151,7 @@ in {
           type = t.listOf t.str;
           default = [ ];
           example = [ "username" ];
-          description =  ''
+          description = ''
             List of game admins that can run commands/pause etc.
           '';
         };
@@ -154,7 +160,7 @@ in {
         type = t.bool;
         default = false;
         example = true;
-        description =  ''
+        description = ''
           Whether to eanble the uptime kuma monitor.
         '';
       };
@@ -162,7 +168,7 @@ in {
         type = t.bool;
         default = false;
         example = true;
-        description =  ''
+        description = ''
           Whether to enable the vaultwarden bitwarden-compatible server.
         '';
       };
@@ -171,7 +177,7 @@ in {
           type = t.bool;
           default = false;
           example = true;
-          description =  ''
+          description = ''
             Whether to enable the mediawiki server.
           '';
         };
@@ -179,7 +185,7 @@ in {
           type = t.str;
           default = "wiki.${config.homelab.tld}";
           example = "wiki.example.com";
-          description =  ''
+          description = ''
             Domain of the wiki.
           '';
         };
@@ -265,16 +271,12 @@ in {
     # Assertions        
     assertions = [
       {
-        assertion = config.homelab.services.openldap.enable
-          -> config.homelab.acme.mail != null;
-        message =
-          "Openldap requires a cert for ldaps, and acme requires an email to get a cert.";
+        assertion = config.homelab.services.openldap.enable -> config.homelab.acme.mail != null;
+        message = "Openldap requires a cert for ldaps, and acme requires an email to get a cert.";
       }
       {
-        assertion = config.homelab.enable
-          -> config.homelab.tld != null;
-          message =
-            "Homelab module needs a tld for certs and nginx routing etc.";
+        assertion = config.homelab.enable -> config.homelab.tld != null;
+        message = "Homelab module needs a tld for certs and nginx routing etc.";
       }
     ];
 
@@ -305,25 +307,24 @@ in {
     services.openssh = {
       enable = true;
       listenAddresses = [
-        {
-          addr = "0.0.0.0";
-        }
-        {
-          addr = "[::]";
-        }
+        { addr = "0.0.0.0"; }
+        { addr = "[::]"; }
       ];
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;
       };
     };
-    users.users.philip.openssh.authorizedKeys.keys = let
-      pc =
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
-      laptop =
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
-      workstations = [ pc laptop ];
-    in workstations;
+    users.users.philip.openssh.authorizedKeys.keys =
+      let
+        pc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
+        laptop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
+        workstations = [
+          pc
+          laptop
+        ];
+      in
+      workstations;
 
     # Power management
     powerManagement.cpuFreqGovernor = "ondemand";
@@ -333,7 +334,10 @@ in {
     age.secrets.server_password.file = ../secrets/server_password.age;
     users.users.philip = {
       isNormalUser = true;
-      extraGroups = [ "networkmanager" "wheel" ];
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+      ];
       hashedPasswordFile = config.age.secrets.server_password.path;
     };
 
@@ -341,9 +345,7 @@ in {
     networking.networkmanager.enable = true;
 
     # Allow grafana in/out
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [
-      config.services.prometheus.port
-    ];
+    networking.firewall.interfaces."eno1".allowedTCPPorts = [ config.services.prometheus.port ];
 
     # Grafana and prometheus monithoring
     services = {
@@ -351,13 +353,14 @@ in {
         enable = config.homelab.services.grafana.enable;
         provision = {
           enable = true;
-          datasources.settings.datasources = [{
-            name = "prometheus";
-            type = "prometheus";
-            url =
-              "http://localhost:${toString config.services.prometheus.port}";
-            access = "proxy";
-          }];
+          datasources.settings.datasources = [
+            {
+              name = "prometheus";
+              type = "prometheus";
+              url = "http://localhost:${toString config.services.prometheus.port}";
+              access = "proxy";
+            }
+          ];
         };
         settings = {
           server = {
@@ -380,35 +383,40 @@ in {
       prometheus = {
         enable = config.homelab.services.prometheus.enable;
         enableReload = true;
-        webExternalUrl =
-          "http://192.168.1.10:${toString config.services.prometheus.port}/";
+        webExternalUrl = "http://192.168.1.10:${toString config.services.prometheus.port}/";
         scrapeConfigs = lib.mkIf config.homelab.isLeader [
           {
             job_name = "node";
-            static_configs = [{
-              targets =
-                let p = toString config.services.prometheus.exporters.node.port;
-                in [
-                  "localhost:${p}"
-                  "192.168.2.1:${p}"
-                  "192.168.2.2:${p}"
-                  "192.168.2.3:${p}"
-                  "192.168.2.4:${p}"
-                  "192.168.2.5:${p}"
-                ];
-            }];
+            static_configs = [
+              {
+                targets =
+                  let
+                    p = toString config.services.prometheus.exporters.node.port;
+                  in
+                  [
+                    "localhost:${p}"
+                    "192.168.2.1:${p}"
+                    "192.168.2.2:${p}"
+                    "192.168.2.3:${p}"
+                    "192.168.2.4:${p}"
+                    "192.168.2.5:${p}"
+                  ];
+              }
+            ];
           }
           {
             job_name = "haproxy";
             scrape_interval = "30s";
             scrape_timeout = "20s";
-            static_configs = [{ targets = [ "192.168.1.0:8404" ]; }];
+            static_configs = [ { targets = [ "192.168.1.0:8404" ]; } ];
           }
           {
             job_name = "endlessh-go";
             scrape_interval = "30s";
             scrape_timeout = "20s";
-            static_configs = [{ targets = [ "192.168.1.10:${toString config.services.endlessh-go.prometheus.port}" ]; }];
+            static_configs = [
+              { targets = [ "192.168.1.10:${toString config.services.endlessh-go.prometheus.port}" ]; }
+            ];
           }
         ];
         exporters = {

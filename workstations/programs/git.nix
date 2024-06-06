@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   programs.git = {
     enable = true;
     userName = "Philip Wilk";
@@ -14,11 +15,21 @@
       key = "/home/philip/.ssh/gitKey";
     };
     extraConfig = {
-      core = { editor = "hx"; };
-      gpg = { format = "ssh"; };
-      pull = { rebase = true; };
-      push = { autoSetupRemote = true; };
-      init = { defaultBranch = "main"; };
+      core = {
+        editor = "hx";
+      };
+      gpg = {
+        format = "ssh";
+      };
+      pull = {
+        rebase = true;
+      };
+      push = {
+        autoSetupRemote = true;
+      };
+      init = {
+        defaultBranch = "main";
+      };
       rerere.enabled = true;
     };
   };

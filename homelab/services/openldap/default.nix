@@ -1,14 +1,20 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   ldapname = config.homelab.services.openldap.domain;
-  createSuffix = domain:
-    lib.strings.concatStringsSep ","
-    (map (part: "dc=${part}") (lib.strings.splitString "." domain));
+  createSuffix =
+    domain:
+    lib.strings.concatStringsSep "," (map (part: "dc=${part}") (lib.strings.splitString "." domain));
   ldapSuffix = createSuffix ldapname;
   adminDn = "cn=admin,${ldapSuffix}";
   serviceOu = "ou=services,${ldapSuffix}";
   credPath = "/run/credentials/openldap.service";
-in {
+in
+{
   config = lib.mkIf config.homelab.services.openldap.enable {
     age.secrets.ldap_admin_pw = {
       file = ../../../secrets/ldap_admin_pw.age;
@@ -16,7 +22,10 @@ in {
     };
     services.openldap = {
       enable = true;
-      urlList = [ "ldap://" "ldaps://" ];
+      urlList = [
+        "ldap://"
+        "ldaps://"
+      ];
 
       settings = {
         attrs = {
@@ -42,7 +51,10 @@ in {
           ];
 
           "olcDatabase={1}mdb".attrs = {
-            objectClass = [ "olcDatabaseConfig" "olcMdbConfig" ];
+            objectClass = [
+              "olcDatabaseConfig"
+              "olcMdbConfig"
+            ];
 
             olcDatabase = "{1}mdb";
             olcDbDirectory = "/var/lib/openldap/data";
@@ -93,8 +105,11 @@ in {
       };
     };
 
-    security.acme.certs."${ldapname}" = {};   
+    security.acme.certs."${ldapname}" = { };
 
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [ 389 636 ];
+    networking.firewall.interfaces."eno1".allowedTCPPorts = [
+      389
+      636
+    ];
   };
 }

@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 let
   join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
   mkOpt = lib.mkOption;
@@ -12,12 +8,12 @@ in
   options.homelab.nix.hercules-ci.enable = mkOpt {
     type = t.bool;
     default = false;
-    example = true;  
+    example = true;
     description = ''
       Whether to enable the hercules-ci agent.
     '';
   };
-  
+
   config = lib.mkIf config.homelab.nix.hercules-ci.enable {
     age.secrets = {
       binaryCacheKeys = {
@@ -25,7 +21,7 @@ in
         owner = "hercules-ci-agent";
         group = "hercules-ci-agent";
       };
-       clusterJoinToken = {
+      clusterJoinToken = {
         file = ../../secrets/hercules-ci/clusterJoinToken.age;
         owner = "hercules-ci-agent";
         group = "hercules-ci-agent";
@@ -36,7 +32,7 @@ in
         group = "hercules-ci-agent";
       };
     };
-    
+
     services.hercules-ci-agent = {
       enable = true;
       settings = {

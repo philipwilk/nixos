@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 let
   join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
   mkOpt = lib.mkOption;
@@ -21,7 +17,7 @@ in
       example = true;
       description = ''
         Whether to enable the buildbot master.
-      ''; 
+      '';
     };
     enableWorker = mkOpt {
       type = t.bool;
@@ -29,11 +25,11 @@ in
       example = true;
       description = ''
         Whether to enable the buildbot worker.
-      ''; 
+      '';
     };
   };
 
   config = {
-    
+
   };
 }

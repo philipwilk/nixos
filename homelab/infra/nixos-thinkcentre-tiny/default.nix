@@ -38,6 +38,9 @@
 
   networking = {
     hostName = "nixos-thinkcentre-tiny";
-    firewall.interfaces."eno1".allowedTCPPorts = [ 80 443 ];
+    firewall.interfaces."eno1".allowedTCPPorts = [
+      80
+      443
+    ];
   };
 }

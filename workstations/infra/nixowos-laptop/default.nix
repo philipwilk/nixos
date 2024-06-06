@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [ ./hardware-configuration.nix ];
 
   networking.hostName = "nixowos-laptop";
@@ -7,7 +8,9 @@
     vaapiVdpau
     libvdpau-va-gl
   ];
-  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+  };
 
   programs.auto-cpufreq.enable = true;
 }

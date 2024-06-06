@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...  
-}:
+{ pkgs, config, ... }:
 let
   name = "atm8";
   datadir = "/data/minecraft/servers";
@@ -13,20 +9,18 @@ in
 {
   age.secrets.atm8 = {
     file = ../../secrets/atm8.age;
-    owner  = user;
+    owner = user;
     group = user;
-  }; 
+  };
 
   users.users.${user} = {
     isSystemUser = true;
     group = user;
   };
-  users.groups.${user} = {};
+  users.groups.${user} = { };
 
-  networking.firewall.allowedTCPPorts = [
-    port
-  ];
- 
+  networking.firewall.allowedTCPPorts = [ port ];
+
   virtualisation.oci-containers.containers.${name} = {
     image = "docker.io/itzg/minecraft-server:java17-alpine";
     environment = {
@@ -57,9 +51,7 @@ in
         https://mediafilez.forgecdn.net/files/5216/876/Chunk-Pregenerator-1.19.2-4.4.3.jar
       '';
     };
-    environmentFiles = [
-      config.age.secrets.atm8.path
-    ];
+    environmentFiles = [ config.age.secrets.atm8.path ];
     extraOptions = [
       "--cap-add=CAP_NET_RAW"
       "--network=slirp4netns:port_handler=slirp4netns"
