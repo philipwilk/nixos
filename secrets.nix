@@ -49,4 +49,8 @@ in {
   ${s "buildbot/oauth_sec"}.publicKeys = servers;
   ${s "buildbot/user_sec"}.publicKeys = servers;
   ${s "buildbot/webhook_sec"}.publicKeys = servers;
+  ${s "hercules-ci/binaryCacheKeys"}.publicKeys = servers;
+  ${s "hercules-ci/clusterJoinToken"}.publicKeys = servers;
+  ${s "hercules-ci/secretsJson"}.publicKeys = servers;
+  
 }

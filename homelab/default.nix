@@ -18,6 +18,8 @@ in {
     "harmonia"
   ] ++ join-dirfile "./websites" [
     "fogbox"
+  ] ++ join-dirfile "./nix"[
+    "hercules-ci"
   ] ++ [
     ./router
     ./buildbot

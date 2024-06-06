@@ -33,8 +33,9 @@
       enableWorker = true;
     };
     # websites.fogbox.enable = true;
-  };  
-  
+    nix.hercules-ci.enable = true;
+  };
+
   networking = {
     hostName = "nixos-thinkcentre-tiny";
     firewall.interfaces."eno1".allowedTCPPorts = [ 80 443 ];
