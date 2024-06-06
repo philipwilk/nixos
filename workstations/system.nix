@@ -1,4 +1,13 @@
-{ pkgs, agenix, config, lib, nix-matlab, nix-your-shell, ... }: {
+{
+  pkgs,
+  agenix,
+  config,
+  lib,
+  nix-matlab,
+  nix-your-shell,
+  ...
+}:
+{
   config = lib.mkIf config.workstation.declarativeHome {
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
     age.secrets.workstation_password.file = ../secrets/workstation_password.age;
@@ -6,7 +15,10 @@
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
 
-    nixpkgs.overlays = [ nix-matlab.overlay nix-your-shell.overlays.default ];
+    nixpkgs.overlays = [
+      nix-matlab.overlay
+      nix-your-shell.overlays.default
+    ];
 
     environment = {
       shells = with pkgs; [ nushellFull ];
@@ -46,9 +58,7 @@
           tor-browser-bundle-bin
           qbittorrent
           # Communication
-          (discord.override {
-            withOpenASAR = true;
-          })
+          (discord.override { withOpenASAR = true; })
           slack
           # TTY/serial
           minicom
@@ -91,7 +101,7 @@
           ## Database Management
           dbeaver-bin
           openldap
-               
+
           ## Phone stuff
           pmbootstrap
 
@@ -147,7 +157,7 @@
 
     # Keyboard ime support
     # i18n.inputMethod = {
-      # enabled = "fcitx5";
+    # enabled = "fcitx5";
     #   fcitx5 = {
     #     waylandFrontend = true;
     #     addons = with pkgs; [ fcitx5-gtk fcitx5-rime fcitx5-hangul ];

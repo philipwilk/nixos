@@ -1,1 +1,4 @@
-{ lib, ... }: { services.easyeffects.enable = true; }
+{ lib, ... }:
+{
+  services.easyeffects.enable = true;
+}

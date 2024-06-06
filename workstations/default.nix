@@ -1,10 +1,21 @@
-{ lib, pkgs, config, catppuccin, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  catppuccin,
+  ...
+}:
 let
   mkOpt = lib.mkOption;
   t = lib.types;
   join-dirfile = dir: map (file: ./${dir}/${file}.nix);
-in {
-  imports = [ ./system.nix ./desktops/gnome ./desktops/sway ];
+in
+{
+  imports = [
+    ./system.nix
+    ./desktops/gnome
+    ./desktops/sway
+  ];
 
   options.workstation = {
     enable = mkOpt {
@@ -19,28 +30,32 @@ in {
       type = t.bool;
       default = true;
       example = false;
-      description =  ''
+      description = ''
         Whether to enable the use of home-manager to manage configs.
       '';
     };
 
     desktop = mkOpt {
-      type = t.enum [ "gnome" "sway" ];
+      type = t.enum [
+        "gnome"
+        "sway"
+      ];
       default = "sway";
       example = "gnome";
-      description =  ''
+      description = ''
         Which desktop environment or window manager to enable.
       '';
     };
   };
 
   config = lib.mkMerge [
-    ( lib.mkIf config.workstation.declarativeHome {
-      home-manager =  {
+    (lib.mkIf config.workstation.declarativeHome {
+      home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
         users.philip = {
-          imports = [ catppuccin.homeManagerModules.catppuccin ]
+          imports =
+            [ catppuccin.homeManagerModules.catppuccin ]
             ++ join-dirfile "programs" [
               "git"
               "nys"
@@ -62,14 +77,12 @@ in {
         };
       };
     })
-    ( lib.mkIf config.workstation.enable {
+    (lib.mkIf config.workstation.enable {
       boot.kernelParams = [ "mem_sleep_default=deep" ];
 
       nix.settings = {
         substituters = [ "https://cache.fogbox.uk" ];
-        trusted-public-keys = [
-          "cache.fogbox.uk:lwlsX4TZdJXQzfqTWRMf/I8xTlR/i+B5RTkD2BQhzdA="
-        ];
+        trusted-public-keys = [ "cache.fogbox.uk:lwlsX4TZdJXQzfqTWRMf/I8xTlR/i+B5RTkD2BQhzdA=" ];
       };
 
       environment = {
@@ -81,7 +94,7 @@ in {
           thunderbird
           rustdesk-flutter
           libreoffice
-    
+
           ## Cli utils
           eza
           fd
@@ -147,9 +160,19 @@ in {
         fontconfig = {
           enable = true;
           defaultFonts = {
-            serif = [ "Noto Serif" "Noto Serif CJK" ];
-            sansSerif = [ "Noto Sans" "Noto Sans CJK" ];
-            emoji = [ "Blobmoji" "Noto Color Emoji" "Font Awesome 6 Free" ];
+            serif = [
+              "Noto Serif"
+              "Noto Serif CJK"
+            ];
+            sansSerif = [
+              "Noto Sans"
+              "Noto Sans CJK"
+            ];
+            emoji = [
+              "Blobmoji"
+              "Noto Color Emoji"
+              "Font Awesome 6 Free"
+            ];
             monospace = [ "Fira Code" ];
           };
         };

@@ -1,8 +1,4 @@
-{
-  lib,
-  config,
-  ...
-}:
+{ lib, config, ... }:
 {
   config = lib.mkIf config.homelab.router.ntpd-rs.enable {
     services.ntpd-rs = {
@@ -14,21 +10,15 @@
           {
             mode = "pool";
             address = "nixos.pool.ntp.org";
-            count = 4; 
+            count = 4;
           }
         ];
         server = [
-          {
-            listen  = "127.0.0.1:123";
-          }
-          {
-            listen = "[::1]:123";
-          }
+          { listen = "127.0.0.1:123"; }
+          { listen = "[::1]:123"; }
         ];
       };
     };
-    networking.firewall.interfaces.${config.homelab.router.devices.lan}.allowedUDPPorts = [
-      123
-    ];
+    networking.firewall.interfaces.${config.homelab.router.devices.lan}.allowedUDPPorts = [ 123 ];
   };
 }

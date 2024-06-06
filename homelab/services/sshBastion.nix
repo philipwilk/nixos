@@ -14,9 +14,7 @@
         port = 22;
         openFirewall = true;
         prometheus.enable = true;
-        extraOptions = [
-          "-geoip_supplier ip-api"
-        ];
+        extraOptions = [ "-geoip_supplier ip-api" ];
       };
     };
   };

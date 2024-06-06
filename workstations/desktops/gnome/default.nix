@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   config = lib.mkIf (config.workstation.desktop == "gnome") {
     environment = {
       gnome.excludePackages = with pkgs; [

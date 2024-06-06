@@ -13,13 +13,16 @@ in
     ./server
     ./client
   ];
-  
+
   options.autonix = {
     role = mkOpt {
-      type = t.enum [ "client" "server" ];
+      type = t.enum [
+        "client"
+        "server"
+      ];
       default = "client";
       example = "server";
-      description =  ''
+      description = ''
         Server if this machine is creating images, serving them and acting as the control server.
         Client if this machine is taking an image, doing a fresh install and sending its hardware config.
       '';
@@ -28,15 +31,15 @@ in
       type = t.str;
       default = null;
       example = "deploy.fogbox.uk";
-      description =  ''
+      description = ''
         The url to send client enrolls to (aka the server).
       '';
     };
     additionalKeys = mkOpt {
       type = t.listOf t.str;
-      default = [];
+      default = [ ];
       example = [ "SHA256:RLy4JBv7jMK5qYhRKwHB3af0rpMKYwE2PBhALCBV3G8 username@hostname" ];
-      description =  ''
+      description = ''
         Additional public keys to add to clients for ssh auth.
       '';
     };
@@ -49,23 +52,23 @@ in
         message = "Autonix requires a callback server url.";
       }
       {
-        assertion = config.autonix.role != null -> config.autonix.additionalKeys != [];
+        assertion = config.autonix.role != null -> config.autonix.additionalKeys != [ ];
         message = "Autonix requires additional ssh keys so you can connect to the servers after install.";
       }
     ];
 
-		services.openssh = {
+    services.openssh = {
       enable = true;
       settings.PasswordAuthentication = false;
     };
-		boot.kernelPackages = pkgs.linuxPackages_latest;
+    boot.kernelPackages = pkgs.linuxPackages_latest;
     users.users.nixos = {
       isNormalUser = true;
       initialPassword = "";
       extraGroups = [ "wheel" ];
       openssh.authorizedKeys.keys = config.autonix.additionalKeys;
     };
-  	security.pam.services.nixos.allowNullPassword = true;
-    users.groups.nixos = {};
+    security.pam.services.nixos.allowNullPassword = true;
+    users.groups.nixos = { };
   };
 }

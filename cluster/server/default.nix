@@ -1,15 +1,15 @@
 {
-	lib,
-	pkgs,
-	config,
-	...
+  lib,
+  pkgs,
+  config,
+  ...
 }:
 {
-	options.autonix.server = {
-		
-	};
-	
+  options.autonix.server = {
+
+  };
+
   config = lib.mkIf (config.options.autonix.role == "server") {
-    
+
   };
 }

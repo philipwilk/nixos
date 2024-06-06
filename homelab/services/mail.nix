@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }: 
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   domain = config.homelab.services.email.domain;
   webmail_domain = config.homelab.services.email.web;
@@ -14,7 +19,7 @@ in
       mail_pwd.file = ../../secrets/mail_pwd.age;
     };
 
-    security.acme.certs."${domain}" = {};
+    security.acme.certs."${domain}" = { };
 
     systemd.services.stalwart-mail = {
       wants = [ "acme-${domain}.service" ];
@@ -27,16 +32,16 @@ in
           "ldapPwd:${config.age.secrets.mail_ldap.path}"
           "mailPwd:${config.age.secrets.mail_pwd.path}"
         ];
-       ReadWritePaths = "${path}";
+        ReadWritePaths = "${path}";
       };
     };
-    
+
     networking.firewall.interfaces."eno1".allowedTCPPorts = [
       25
       465
       993
     ];
-    
+
     services.nginx.virtualHosts."${webmail_domain}" = {
       forceSSL = true;
       enableACME = true;
@@ -45,7 +50,7 @@ in
         proxyWebsockets = true;
       };
     };
-    
+
     services.stalwart-mail = {
       enable = true;
       package = pkgs.stalwart-mail;
@@ -55,10 +60,10 @@ in
           private-key = "%{file:${credPath}/key.pem}%";
           default = true;
         };
-        
+
         lookup.default.hostname = domain;
-        
-        server = {         
+
+        server = {
           listener = {
             smtp = {
               bind = [ "[::]:25" ];
@@ -107,7 +112,7 @@ in
           fts = "fts";
           lookup = "lookup";
         };
-        
+
         directory.memory = {
           type = "memory";
           principals = [
@@ -146,7 +151,7 @@ in
         #     quota = "diskQuota";
         #   };
         # };
-        
+
         tracer.stdout = {
           type = "stdout";
           level = "info";
@@ -171,6 +176,6 @@ in
           secret = "%{file:${credPath}/adminPwd}%";
         };
       };
-    };   
+    };
   };
 }

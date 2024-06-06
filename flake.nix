@@ -39,16 +39,31 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, agenix, nix-matlab, home-manager
-    , catppuccin, auto-cpufreq, nixos-generators, lanzaboote, buildbot-nix, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixpkgs-stable,
+      agenix,
+      nix-matlab,
+      home-manager,
+      catppuccin,
+      auto-cpufreq,
+      nixos-generators,
+      lanzaboote,
+      buildbot-nix,
+      ...
+    }@inputs:
     let
       systems = [ "x86_64-linux" ];
-      forAllSystems = fn:
-        nixpkgs.lib.genAttrs systems (sys: fn nixpkgs.legacyPackages.${sys});
+      forAllSystems = fn: nixpkgs.lib.genAttrs systems (sys: fn nixpkgs.legacyPackages.${sys});
       join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
 
       # Regional and nix settings for all machines
-      commonModules = join-dirfile "configs" [ "nix-settings" "uk-region" ];
+      commonModules = join-dirfile "configs" [
+        "nix-settings"
+        "uk-region"
+      ];
 
       # Homelab
       homelabModules = commonModules ++ [
@@ -62,8 +77,13 @@
       grubLab = homelabModules ++ [ ./configs/boot/grub.nix ];
 
       # Desktops
-      workstationModules = (join-dirfile "configs/boot" [ "systemd" "lanzaboote" ])
-        ++ commonModules ++ [
+      workstationModules =
+        (join-dirfile "configs/boot" [
+          "systemd"
+          "lanzaboote"
+        ])
+        ++ commonModules
+        ++ [
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
           catppuccin.nixosModules.catppuccin
@@ -71,7 +91,8 @@
           ./workstations
         ];
 
-      buildSys = nxpkgs: mods:
+      buildSys =
+        nxpkgs: mods:
         nxpkgs.lib.nixosSystem {
           modules = mods;
           specialArgs = inputs;
@@ -80,60 +101,56 @@
       unstableSystem = buildSys nixpkgs;
       stableSystem = buildSys nixpkgs-stable;
 
-      buildIso = arch: mods: nixos-generators.nixosGenerate {
-        system = arch;
-        modules = [
-          ./cluster
-        ] ++ commonModules ++ mods;
-        specialArgs = inputs;
-        format = "iso";
-      };
+      buildIso =
+        arch: mods:
+        nixos-generators.nixosGenerate {
+          system = arch;
+          modules = [ ./cluster ] ++ commonModules ++ mods;
+          specialArgs = inputs;
+          format = "iso";
+        };
       buildX86Iso = buildIso "x86_64-linux";
-    in {
+    in
+    {
       packages.x86_64-linux = {
         new-client = buildX86Iso [ ./cluster/client/new.nix ];
       };
 
       nixosConfigurations = {
         # Systemd machines
-        nixowos = unstableSystem ([
-          ./workstations/infra/nixowos
-        ] ++ workstationModules);
+        nixowos = unstableSystem ([ ./workstations/infra/nixowos ] ++ workstationModules);
 
-        nixowos-laptop = unstableSystem ([
-          ./workstations/infra/nixowos-laptop
-          auto-cpufreq.nixosModules.default
-        ] ++ workstationModules);
+        nixowos-laptop = unstableSystem (
+          [
+            ./workstations/infra/nixowos-laptop
+            auto-cpufreq.nixosModules.default
+          ]
+          ++ workstationModules
+        );
 
-        mini = unstableSystem ([ 
-          ./workstations/infra/mini
-        ] ++ workstationModules);
+        mini = unstableSystem ([ ./workstations/infra/mini ] ++ workstationModules);
 
-        nixosvmtest= unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
+        nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
 
-        nixos-thinkcentre-tiny = unstableSystem ([ 
-            ./homelab/infra/nixos-thinkcentre-tiny 
-          ] ++ systemdLab);
+        nixos-thinkcentre-tiny = unstableSystem ([ ./homelab/infra/nixos-thinkcentre-tiny ] ++ systemdLab);
 
         # Grub machines (DO NOT SUPPORT EFI BOOT)
-        hp-dl380p-g8-LFF =
-          unstableSystem ([
+        hp-dl380p-g8-LFF = unstableSystem (
+          [
             ./homelab/infra/hp-dl380p-g8-LFF
             # ./homelab/services/minecraft.nix
-          ] ++ grubLab);
+          ]
+          ++ grubLab
+        );
 
-        hp-dl380p-g8-sff-2 =
-          unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-2 ] ++ grubLab);
+        hp-dl380p-g8-sff-2 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-2 ] ++ grubLab);
 
-        hp-dl380p-g8-sff-3 =
-          unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-3 ] ++ grubLab);
+        hp-dl380p-g8-sff-3 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-3 ] ++ grubLab);
 
-        hp-dl380p-g8-sff-4 =
-          unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-4 ] ++ grubLab);
+        hp-dl380p-g8-sff-4 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-4 ] ++ grubLab);
 
-        hp-dl380p-g8-sff-5 =
-          unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-5 ] ++ grubLab);
+        hp-dl380p-g8-sff-5 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-5 ] ++ grubLab);
       };
-      formatter = forAllSystems (nixpkgs: nixpkgs.nixfmt);
+      formatter = forAllSystems (nixpkgs: nixpkgs.nixfmt-rfc-style);
     };
 }

@@ -1,4 +1,11 @@
-{ nixpkgs, pkgs, lib, config, ... }: {
+{
+  nixpkgs,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   nixpkgs = {
     # overlays = let
     #   overlay = _: _: {
@@ -8,7 +15,9 @@
     #     };
     #   };
     # in [ overlay ];
-    config = { allowUnfree = true; };
+    config = {
+      allowUnfree = true;
+    };
   };
 
   nix = {
@@ -16,11 +25,9 @@
     # registry = lib.mapAttrs (_: value: { flake = value; }) {
     #   inherit nixpkgs nixpkgs-unstable;
     # };
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}")
-      config.nix.registry;
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
     settings = {
-      experimental-features =
-        "nix-command flakes auto-allocate-uids ca-derivations";
+      experimental-features = "nix-command flakes auto-allocate-uids ca-derivations";
       auto-optimise-store = true;
     };
     gc = {
@@ -34,7 +41,7 @@
   environment = {
     systemPackages = with pkgs; [
       git
-      helix  
+      helix
       # cli utils
       hyfetch
       usbutils
@@ -54,7 +61,7 @@
       FLAKE = lib.mkDefault "/home/philip/repos/nixconf";
     };
   };
-  
+
   # Ensure firmware is available
   hardware = {
     enableAllFirmware = true;

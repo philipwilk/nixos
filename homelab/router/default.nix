@@ -1,22 +1,18 @@
-{
-	lib,
-	config,
-	...
-}:
+{ lib, config, ... }:
 let
   join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
   mkOpt = lib.mkOption;
   t = lib.types;
 in
 {
-	imports = join-dirfile "./" [
+  imports = join-dirfile "./" [
     "kea"
     "ntpd-rs"
     "unbound"
     "nat"
   ];
-  
-	options.homelab.router = {
+
+  options.homelab.router = {
     enable = lib.mkEnableOption "Router components";
     devices = {
       wan = mkOpt {
@@ -53,7 +49,7 @@ in
           Domain for hosts on the local net.
         '';
       };
-      lanRange= {
+      lanRange = {
         ip4 = mkOpt {
           type = t.str;
           default = "192.168.1.0/16";

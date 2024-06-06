@@ -1,8 +1,9 @@
 { config, lib, ... }:
-let 
+let
   domain = config.homelab.router.kea.hostDomain;
   router.ip4 = "192.168.1.0";
-in {
+in
+{
   config = lib.mkIf config.homelab.router.kea.enable {
     networking.interfaces.${config.homelab.router.devices.lan}.ipv4.addresses = [
       {
@@ -15,9 +16,7 @@ in {
         enable = true;
         settings = {
           interfaces-config = {
-            interfaces = [
-              config.homelab.router.devices.lan
-            ];
+            interfaces = [ config.homelab.router.devices.lan ];
           };
           lease-database = {
             name = "/var/lib/kea/dhcp4.leases";
@@ -27,11 +26,11 @@ in {
           rebind-timer = 2000;
           renew-timer = 1000;
           valid-lifetime = 4000;
-          
+
           subnet4 = [
             {
               id = 1;
-              pools = [{ pool = "192.168.1.101 - 192.168.1.245"; }];
+              pools = [ { pool = "192.168.1.101 - 192.168.1.245"; } ];
               subnet = config.homelab.router.kea.lanRange.ip4;
               option-data = [
                 {
@@ -39,7 +38,7 @@ in {
                   data = router.ip4;
                 }
                 {
-                  name = "routers"; 
+                  name = "routers";
                   data = router.ip4;
                 }
                 {
@@ -122,9 +121,7 @@ in {
         enable = true;
         settings = {
           interfaces-config = {
-            interfaces = [
-              config.homelab.router.devices.lan
-            ];
+            interfaces = [ config.homelab.router.devices.lan ];
           };
           lease-database = {
             name = "/var/lib/kea/dhcp6.leases";
@@ -138,11 +135,7 @@ in {
           subnet6 = [
             {
               id = 2;
-              pools =  [
-                {
-                  pool = "2001:db8:1::1-2001:db8:1::ffff";
-                }
-              ];
+              pools = [ { pool = "2001:db8:1::1-2001:db8:1::ffff"; } ];
               subnet = config.homelab.router.kea.lanRange.ip6;
               interface = config.homelab.router.devices.lan;
             }

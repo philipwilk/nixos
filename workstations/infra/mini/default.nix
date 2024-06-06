@@ -1,10 +1,11 @@
-{ config, pkgs, ... }: 
+{ config, pkgs, ... }:
 let
-  pc =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
-  laptop =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
-  workstations = [ pc laptop ];
+  pc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
+  laptop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
+  workstations = [
+    pc
+    laptop
+  ];
 in
 {
   imports = [ ./hardware-configuration.nix ];
@@ -21,7 +22,7 @@ in
     "getty@tty1".enable = false;
     "autovt@tty1".enable = false;
   };
-  
+
   environment.sessionVariables.FLAKE = "/home/mini/repos/nixconf";
 
   console.keyMap = "uk";
@@ -29,7 +30,10 @@ in
     openssh.authorizedKeys.keys = workstations;
     isNormalUser = true;
     description = "mini";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
   };
 
   services = {

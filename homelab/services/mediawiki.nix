@@ -1,8 +1,15 @@
-{ pkgs, config, lib, agenix, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  agenix,
+  ...
+}:
 let
   homelab = config.homelab;
   conf = homelab.services.mediawiki;
-in {
+in
+{
   config = lib.mkIf conf.enable {
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
     age.secrets = {
@@ -40,7 +47,7 @@ in {
       # Actual wiki config
       extraConfig = ''
         $wgUsePathInfo = true;
-      
+
         $wgEnableUploads = true;
         $wgGenerateThumbnailOnParse = false;
 

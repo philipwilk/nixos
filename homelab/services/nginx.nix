@@ -6,7 +6,10 @@
 }:
 {
   config = lib.mkIf config.homelab.services.nginx.enable {
-    networking.firewall.allowedTCPPorts = [ 443 80 ];
+    networking.firewall.allowedTCPPorts = [
+      443
+      80
+    ];
     services.nginx = {
       enable = true;
       enableQuicBPF = true;
