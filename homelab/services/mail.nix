@@ -18,6 +18,8 @@ in
       mail_ldap.file = ../../secrets/mail_ldap.age;
       mail_admin.file = ../../secrets/mail_admin.age;
       mail_pwd.file = ../../secrets/mail_pwd.age;
+      rsa.file = ../../secrets/mail/rsa.age;
+      ed25519.file = ../../secrets/mail/ed25519.age;
     };
 
     security.acme.certs."${domain}" = { };
@@ -32,6 +34,8 @@ in
           "adminPwd:${config.age.secrets.mail_admin.path}"
           "ldapPwd:${config.age.secrets.mail_ldap.path}"
           "mailPwd:${config.age.secrets.mail_pwd.path}"
+          "rsa.key:${config.age.secrets.rsa.path}"
+          "ed25519.key:${config.age.secrets.ed25519.path}"
         ];
         ReadWritePaths = "${path}";
       };
@@ -159,17 +163,39 @@ in
           enable = true;
         };
 
-        # signature."rsa" = {
-        #   private-key = "%{file:/var/lib/acme/${domain}/key.pem}%";
-        #   domain = domain;
-        #   selector = "rsa_default";
-        #   headers = ["From", "To", "Date", "Subject", "Message-ID"];
-        #   algorithm = "rsa-sha256";
-        #   canonicalization = "relaxed/relaxed";
-        #   expire = "10d";
-        #   set-body-length = true;
-        #   report = true;
-        # };
+        auth.dkim.sign = [
+          {
+            "if" = "listener != 'smtp'";
+            "then" = "['rsa', 'ed25519']";
+          }
+          {
+             "else" = false;
+          }
+        ];
+
+        signature."rsa" = {
+          private-key = "%{file:${credPath}/rsa.key}%";
+          domain = domain;
+          selector = "rsa_default";
+          headers = ["From" "To" "Date" "Subject" "Message-ID"];
+          algorithm = "rsa-sha256";
+          canonicalization = "relaxed/relaxed";
+          expire = "10d";
+          set-body-length = true;
+          report = true;
+        };
+
+        signature."ed25519" = {
+          private-key = "%{file:${credPath}/ed25519.key}%";
+          domain = domain;
+          selector = "ed_default";
+          headers = ["From" "To" "Date" "Subject" "Message-ID"];
+          algorithm = "ed25519-sha256";
+          canonicalization = "relaxed/relaxed";
+          expire = "10d";
+          set-body-length = true;
+          report = true;
+        };
 
         authentication.fallback-admin = {
           user = "admin";
