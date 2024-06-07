@@ -20,6 +20,11 @@
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
       recommendedBrotliSettings = true;
+
+      virtualHosts.default = {
+        default = true;
+        locations."/".return = "404";
+      };
     };
   };
 }
