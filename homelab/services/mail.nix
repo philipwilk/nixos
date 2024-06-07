@@ -7,6 +7,7 @@
 let
   domain = config.homelab.services.email.domain;
   webmail_domain = config.homelab.services.email.web;
+  mail_selfservice_domain = "selfservice.${config.homelab.tld}";
   ldapSuffix = config.services.openldap.settings.children."olcDatabase={1}mdb".attrs.olcSuffix;
   path = "/data/stalwart-mail";
   credPath = "/run/credentials/stalwart-mail.service";
@@ -42,7 +43,7 @@ in
       993
     ];
 
-    services.nginx.virtualHosts."${webmail_domain}" = {
+    services.nginx.virtualHosts."${mail_selfservice_domain}" = {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -53,7 +54,6 @@ in
 
     services.stalwart-mail = {
       enable = true;
-      package = pkgs.stalwart-mail;
       settings = {
         certificate.default = {
           cert = "%{file:${credPath}/cert.pem}%";
@@ -85,7 +85,7 @@ in
             };
           };
         };
-
+       
         store = {
           data = {
             type = "rocksdb";
@@ -119,7 +119,7 @@ in
             {
               name = "philipwilk";
               class = "individual";
-              secret = "{PLAIN}%{FILE:${credPath}/mailPwd}%";
+              secret = "%{file:${credPath}/mailPwd}%";
               email = [ "philipwilk@${domain}" ];
             }
           ];
@@ -155,7 +155,7 @@ in
         tracer.stdout = {
           type = "stdout";
           level = "info";
-          ansi = false;
+          ansi = true;
           enable = true;
         };
 
