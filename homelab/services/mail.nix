@@ -180,7 +180,6 @@ in
           headers = ["From" "To" "Date" "Subject" "Message-ID"];
           algorithm = "rsa-sha256";
           canonicalization = "relaxed/relaxed";
-          expire = "10d";
           set-body-length = true;
           report = true;
         };
@@ -192,7 +191,6 @@ in
           headers = ["From" "To" "Date" "Subject" "Message-ID"];
           algorithm = "ed25519-sha256";
           canonicalization = "relaxed/relaxed";
-          expire = "10d";
           set-body-length = true;
           report = true;
         };
