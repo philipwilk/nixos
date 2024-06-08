@@ -176,7 +176,7 @@ in
         signature."rsa" = {
           private-key = "%{file:${credPath}/rsa.key}%";
           domain = domain;
-          selector = "rsa_default";
+          selector = "rsa";
           headers = ["From" "To" "Date" "Subject" "Message-ID"];
           algorithm = "rsa-sha256";
           canonicalization = "relaxed/relaxed";
@@ -187,7 +187,7 @@ in
         signature."ed25519" = {
           private-key = "%{file:${credPath}/ed25519.key}%";
           domain = domain;
-          selector = "ed_default";
+          selector = "ed25519";
           headers = ["From" "To" "Date" "Subject" "Message-ID"];
           algorithm = "ed25519-sha256";
           canonicalization = "relaxed/relaxed";
