@@ -112,9 +112,9 @@
       buildX86Iso = buildIso "x86_64-linux";
     in
     {
-      packages.x86_64-linux = {
-        new-client = buildX86Iso [ ./cluster/client/new.nix ];
-      };
+      # packages.x86_64-linux = {
+        # new-client = buildX86Iso [ ./cluster/client/new.nix ];
+      # };
 
       nixosConfigurations = {
         # Systemd machines
@@ -130,7 +130,7 @@
 
         mini = unstableSystem ([ ./workstations/infra/mini ] ++ workstationModules);
 
-        nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
+        # nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
 
         nixos-thinkcentre-tiny = unstableSystem ([ ./homelab/infra/nixos-thinkcentre-tiny ] ++ systemdLab);
 
