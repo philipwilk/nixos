@@ -123,8 +123,21 @@ in
           pulse.enable = true;
           wireplumber.enable = true;
         };
+        resolved = {
+          enable = true;
+          dnssec = "true";
+          dnsovertls = "true";
+          domains = [ "~." ];
+          extraConfig = ''
+            DNS=9.9.9.11#dns11.quad9.net [2620:fe::11]#dns11.quad9.net 9.9.9.9#dns.quad9.net [2620:fe::fe]#dns.quad9.net
+            FallbackDNS=1.1.1.1#cloudflare-dns.com [2606:4700:4700::1111]#cloudflare-dns.com
+          '';
+        };
       };
-      networking.networkmanager.enable = true;
+      networking.networkmanager = {
+        enable = true;
+        dns = "systemd-resolved";
+      };
       hardware = {
         pulseaudio.enable = false;
         bluetooth = {
