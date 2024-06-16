@@ -47,12 +47,22 @@ in
       993
     ];
 
-    services.nginx.virtualHosts."${mail_selfservice_domain}" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:8119";
-        proxyWebsockets = true;
+    services.nginx.virtualHosts = {
+      "${mail_selfservice_domain}" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8119";
+          proxyWebsockets = true;
+        };
+      };
+      "jmap.${domain}" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8120";
+          proxyWebsockets = true;
+        };
       };
     };
 
@@ -85,6 +95,10 @@ in
             };
             management = {
               bind = [ "127.0.0.1:8119" ];
+              protocol = "http";
+            };
+            jmap = {
+              bind = [ "127.0.0.1:8120" ];
               protocol = "http";
             };
           };
