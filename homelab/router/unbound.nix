@@ -26,8 +26,8 @@ in
             forward-tls-upstream = "yes";
             forward-no-cache = "no";
             forward-addr = [
-              "9.9.9.11@853#dns11.quad9.net"
-              "2620:fe::11@853#dns11.quad9.net"
+              "9.9.9.9@853#dns.quad9.net"
+              "2620:fe::fe@853#dns.quad9.net"
               "1.1.1.1@853#cloudflare-dns.com"
               "2606:4700:4700::1111@853#cloudflare-dns.com"
             ];
