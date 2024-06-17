@@ -48,6 +48,8 @@ in
   ${s "hercules-ci/binaryCacheKeys"}.publicKeys = servers;
   ${s "hercules-ci/clusterJoinToken"}.publicKeys = servers;
   ${s "hercules-ci/secretsJson"}.publicKeys = servers;
-  ${s "mail/rsa"}.publicKeys = servers;
-  ${s "mail/ed25519"}.publicKeys = servers;
+  ${s "mail/fogbox.uk-rsa"}.publicKeys = servers;
+  ${s "mail/fogbox.uk-ed25519"}.publicKeys = servers;
+  ${s "mail/services.fogbox.uk-rsa"}.publicKeys = servers;
+  ${s "mail/services.fogbox.uk-ed25519"}.publicKeys = servers;
 }

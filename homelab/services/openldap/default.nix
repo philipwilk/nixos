@@ -11,7 +11,7 @@ let
     lib.strings.concatStringsSep "," (map (part: "dc=${part}") (lib.strings.splitString "." domain));
   ldapSuffix = createSuffix ldapname;
   adminDn = "cn=admin,${ldapSuffix}";
-  serviceOu = "ou=services,${ldapSuffix}";
+  userOu = "ou=users,${ldapSuffix}";
   credPath = "/run/credentials/openldap.service";
 in
 {
@@ -70,6 +70,7 @@ in
               ''
                 to attrs=userPassword
                   by self =xw
+                  by dn.exact="uid=mail,${userOu}" read
                   by anonymous auth
                   by * none
               ''
