@@ -6,6 +6,7 @@
 }:
 let
   domain = config.homelab.services.email.domain;
+  svcDomain = "services.${domain}";
   webmail_domain = config.homelab.services.email.web;
   mail_selfservice_domain = "selfservice.${config.homelab.tld}";
   ldapSuffix = config.services.openldap.settings.children."olcDatabase={1}mdb".attrs.olcSuffix;
@@ -19,24 +20,33 @@ in
       mail_ldap.file = ../../secrets/mail_ldap.age;
       mail_admin.file = ../../secrets/mail_admin.age;
       mail_pwd.file = ../../secrets/mail_pwd.age;
-      rsa.file = ../../secrets/mail/rsa.age;
-      ed25519.file = ../../secrets/mail/ed25519.age;
+      "${domain}-rsa".file = ../../secrets/mail/${"${domain}-rsa"}.age;
+      "${domain}-ed25519".file = ../../secrets/mail/${"${domain}-ed25519"}.age;
+      "${svcDomain}-rsa".file = ../../secrets/mail/${"${svcDomain}-rsa"}.age;
+      "${svcDomain}-ed25519".file = ../../secrets/mail/${"${svcDomain}-ed25519"}.age;
     };
 
-    security.acme.certs."${domain}" = { };
+    security.acme.certs = {
+      "${domain}" = { };
+      "${svcDomain}" = {};
+    };
 
     systemd.services.stalwart-mail = {
-      wants = [ "acme-${domain}.service" ];
-      after = [ "acme-${domain}.service" ];
+      wants = [ "acme-${domain}.service" "acme-${svcDomain}.service" ];
+      after = [ "acme-${domain}.service" "acme-${svcDomain}.service" ];
       serviceConfig = {
         LoadCredential = [
-          "cert.pem:${config.security.acme.certs.${domain}.directory}/cert.pem"
-          "key.pem:${config.security.acme.certs.${domain}.directory}/key.pem"
+          "${domain}-cert.pem:${config.security.acme.certs.${domain}.directory}/cert.pem"
+          "${domain}-key.pem:${config.security.acme.certs.${domain}.directory}/key.pem"
+          "${svcDomain}-cert.pem:${config.security.acme.certs.${svcDomain}.directory}/cert.pem"
+          "${svcDomain}-key.pem:${config.security.acme.certs.${svcDomain}.directory}/key.pem"
           "adminPwd:${config.age.secrets.mail_admin.path}"
           "ldapPwd:${config.age.secrets.mail_ldap.path}"
           "mailPwd:${config.age.secrets.mail_pwd.path}"
-          "rsa.key:${config.age.secrets.rsa.path}"
-          "ed25519.key:${config.age.secrets.ed25519.path}"
+          "${domain}-rsa.key:${config.age.secrets."${domain}-rsa".path}"
+          "${domain}-ed25519.key:${config.age.secrets."${domain}-ed25519".path}"
+          "${svcDomain}-rsa.key:${config.age.secrets."${svcDomain}-rsa".path}"
+          "${svcDomain}-ed25519.key:${config.age.secrets."${svcDomain}-ed25519".path}"
         ];
         ReadWritePaths = "${path}";
       };
@@ -70,10 +80,15 @@ in
     services.stalwart-mail = {
       enable = true;
       settings = {
-        certificate.default = {
-          cert = "%{file:${credPath}/cert.pem}%";
-          private-key = "%{file:${credPath}/key.pem}%";
+        certificate.${domain} = {
+          cert = "%{file:${credPath}/${domain}-cert.pem}%";
+          private-key = "%{file:${credPath}/${domain}-key.pem}%";
           default = true;
+        };
+
+        certificate.${svcDomain} = {
+          cert = "%{file:${credPath}/${svcDomain}-cert.pem}%";
+          private-key = "%{file:${credPath}/${svcDomain}-key.pem}%";
         };
 
         lookup.default.hostname = domain;
@@ -125,7 +140,7 @@ in
         };
 
         storage = {
-          directory = "memory";
+          directory = "openldap";
           data = "data";
           blob = "blob";
           fts = "fts";
@@ -144,7 +159,7 @@ in
           ];
         };
 
-        directory.default = {
+        directory.openldap = {
           type = "ldap";
           url = "ldaps://ldap.fogbox.uk";
           base-dn = "${ldapSuffix}";
@@ -159,15 +174,21 @@ in
               dn = "uid=?,${userSuffix}";
             };
           };
+          filter = {
+            name = "(&(objectClass=inetOrgPerson)(uid=?))";
+            email = "(&(objectClass=inetOrgPerson)(|(mail=?)(mailAlias=?)(mailList=?)))";
+            verify = "(&(objectClass=inetOrgPerson)(|(mail=*?*)(mailAlias=*?*)))";
+            expand = "(&(objectClass=inetOrgPerson)(mailList=?))";
+            domains = "(&(objectClass=inetOrgPerson)(|(mail=*@?)(mailAlias=*@?)))";
+          };
           attributes = {
             name = "uid";
             class = "inetOrgPerson";
-            description = [ "principalName" "description" ];
+            description = [ "description" ];
             secret = "userPassword";
             email = "mail";
-            email-alias = "mailAlias";
-            groups = [ "memberOf" "otherGroups" ];
-            quota = "diskQuota";
+            # groups = [ "memberOf" ];
+            # quota = "diskQuota";
           };
         };
 
@@ -178,18 +199,24 @@ in
           enable = true;
         };
 
+        report.dsn = {
+          from-name = "Mail Delivery Subsystem";
+          from-address = "subsystem@${svcDomain}";
+          sign = "[sender_domain + '-rsa', sender_domain + '-ed25519']";
+        };
+
         auth.dkim.sign = [
           {
-            "if" = "listener != 'smtp'";
-            "then" = "['rsa', 'ed25519']";
+            "if" = "is_local_domain('', sender_domain)";
+            "then" = "[sender_domain + '-rsa', sender_domain + '-ed25519']";
           }
           {
              "else" = false;
           }
         ];
 
-        signature."rsa" = {
-          private-key = "%{file:${credPath}/rsa.key}%";
+        signature."${domain}-rsa" = {
+          private-key = "%{file:${credPath}/${domain}-rsa.key}%";
           domain = domain;
           selector = "rsa";
           headers = ["From" "To" "Date" "Subject" "Message-ID"];
@@ -199,9 +226,31 @@ in
           report = true;
         };
 
-        signature."ed25519" = {
-          private-key = "%{file:${credPath}/ed25519.key}%";
+        signature."${domain}-ed25519" = {
+          private-key = "%{file:${credPath}/${domain}-ed25519.key}%";
           domain = domain;
+          selector = "ed25519";
+          headers = ["From" "To" "Date" "Subject" "Message-ID"];
+          algorithm = "ed25519-sha256";
+          canonicalization = "relaxed/relaxed";
+          set-body-length = true;
+          report = true;
+        };
+        
+        signature."${svcDomain}-rsa" = {
+          private-key = "%{file:${credPath}/${svcDomain}-rsa.key}%";
+          domain = svcDomain;
+          selector = "rsa";
+          headers = ["From" "To" "Date" "Subject" "Message-ID"];
+          algorithm = "rsa-sha256";
+          canonicalization = "relaxed/relaxed";
+          set-body-length = true;
+          report = true;
+        };
+
+        signature."${svcDomain}-ed25519" = {
+          private-key = "%{file:${credPath}/${svcDomain}-ed25519.key}%";
+          domain = svcDomain;
           selector = "ed25519";
           headers = ["From" "To" "Date" "Subject" "Message-ID"];
           algorithm = "ed25519-sha256";
