@@ -143,32 +143,32 @@ in
           ];
         };
 
-        # directory.default = {
-        #   type = "ldap";
-        #   url = "ldaps://ldap.fogbox.uk";
-        #   base-dn = "${ldapSuffix}";
-        #   timeout = "5s";
-        #   tls.enable = true;
-        #   bind = {
-        #     enable = true;
-        #     dn = "uid=mail,ou=services,${ldapSuffix}";
-        #     secret = "%{file:${credPath}/ldapPwd}%";
-        #     auth = {
-        #       enable = true;
-        #       dn = "uid=?,ou=users,${ldapSuffix}";
-        #     };
-        #   };
-        #   attributes = {
-        #     name = "uid";
-        #     class = "inetOrgPerson";
-        #     description = [ "principalName" "description" ];
-        #     secret = "userPassword";
-        #     email = "mail";
-        #     email-alias = "mailAlias";
-        #     groups = [ "memberOf" "otherGroups" ];
-        #     quota = "diskQuota";
-        #   };
-        # };
+        directory.default = {
+          type = "ldap";
+          url = "ldaps://ldap.fogbox.uk";
+          base-dn = "${ldapSuffix}";
+          timeout = "5s";
+          tls.enable = true;
+          bind = {
+            enable = true;
+            dn = "uid=mail,ou=services,${ldapSuffix}";
+            secret = "%{file:${credPath}/ldapPwd}%";
+            auth = {
+              enable = true;
+              dn = "uid=?,ou=users,${ldapSuffix}";
+            };
+          };
+          attributes = {
+            name = "uid";
+            class = "inetOrgPerson";
+            description = [ "principalName" "description" ];
+            secret = "userPassword";
+            email = "mail";
+            email-alias = "mailAlias";
+            groups = [ "memberOf" "otherGroups" ];
+            quota = "diskQuota";
+          };
+        };
 
         tracer.stdout = {
           type = "stdout";
