@@ -9,6 +9,7 @@ let
   webmail_domain = config.homelab.services.email.web;
   mail_selfservice_domain = "selfservice.${config.homelab.tld}";
   ldapSuffix = config.services.openldap.settings.children."olcDatabase={1}mdb".attrs.olcSuffix;
+  userSuffix = "ou=users,${ldapSuffix}";
   path = "/data/stalwart-mail";
   credPath = "/run/credentials/stalwart-mail.service";
 in
@@ -151,11 +152,11 @@ in
           tls.enable = true;
           bind = {
             enable = true;
-            dn = "uid=mail,ou=services,${ldapSuffix}";
+            dn = "uid=mail,${userSuffix}";
             secret = "%{file:${credPath}/ldapPwd}%";
             auth = {
               enable = true;
-              dn = "uid=?,ou=users,${ldapSuffix}";
+              dn = "uid=?,${userSuffix}";
             };
           };
           attributes = {
