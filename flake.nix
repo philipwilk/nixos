@@ -143,13 +143,13 @@
           ++ grubLab
         );
 
-        hp-dl380p-g8-sff-2 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-2 ] ++ grubLab);
+        # hp-dl380p-g8-sff-2 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-2 ] ++ grubLab);
 
-        hp-dl380p-g8-sff-3 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-3 ] ++ grubLab);
+        # hp-dl380p-g8-sff-3 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-3 ] ++ grubLab);
 
-        hp-dl380p-g8-sff-4 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-4 ] ++ grubLab);
+        # hp-dl380p-g8-sff-4 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-4 ] ++ grubLab);
 
-        hp-dl380p-g8-sff-5 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-5 ] ++ grubLab);
+        # hp-dl380p-g8-sff-5 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-5 ] ++ grubLab);
       };
       formatter = forAllSystems (nixpkgs: nixpkgs.nixfmt-rfc-style);
     };
