@@ -105,6 +105,7 @@
           ## Database Management
           dbeaver-bin
           openldap
+          apache-directory-studio
 
           ## Phone stuff
           pmbootstrap
