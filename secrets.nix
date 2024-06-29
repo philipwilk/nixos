@@ -52,4 +52,5 @@ in
   ${s "mail/fogbox.uk-ed25519"}.publicKeys = servers;
   ${s "mail/services.fogbox.uk-rsa"}.publicKeys = servers;
   ${s "mail/services.fogbox.uk-ed25519"}.publicKeys = servers;
+  ${s "vaultwarden_smtp"}.publicKeys = servers;
 }
