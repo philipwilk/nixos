@@ -19,7 +19,6 @@ in
 
       admins = [ "philipwilk" ];
       github = {
-        user = "philipwilk-buildbot";
         tokenFile = config.age.secrets.user_sec.path;
 
         webhookSecretFile = config.age.secrets.webhook_sec.path;
