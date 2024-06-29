@@ -1,20 +1,16 @@
-dn: ou=services,dc=ldap,dc=fogbox,dc=uk
-objectclass: organizationalUnit
-ou: services
-
-dn: uid=nextcloud,ou=services,dc=ldap,dc=fogbox,dc=uk
+dn: uid=nextcloud,ou=users,dc=ldap,dc=fogbox,dc=uk
 objectclass: inetOrgPerson
 uid: nextcloud
 sn: nextcloud
 cn: nextcloud
 
-dn: uid=mail,ou=services,dc=ldap,dc=fogbox,dc=uk
+dn: uid=mail,ou=users,dc=ldap,dc=fogbox,dc=uk
 objectclass: inetOrgPerson
 uid: mail
 sn: mail
 cn: mail
 
-dn: uid=opnsense,ou=services,dc=ldap,dc=fogbox,dc=uk
+dn: uid=opnsense,ou=users,dc=ldap,dc=fogbox,dc=uk
 objectClass: inetOrgPerson
 uid: opnsense
 sn: opnsense
