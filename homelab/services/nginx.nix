@@ -5,6 +5,15 @@
   ...
 }:
 {
+  options.homelab.services.nginx.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    example = true;
+    description = ''
+      Whether to enable nginx for proxying/load balancing.
+    '';
+  };
+  
   config = lib.mkIf config.homelab.services.nginx.enable {
     networking.firewall.allowedTCPPorts = [
       443

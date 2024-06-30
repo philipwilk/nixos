@@ -113,7 +113,7 @@
     in
     {
       # packages.x86_64-linux = {
-        # new-client = buildX86Iso [ ./cluster/client/new.nix ];
+      # new-client = buildX86Iso [ ./cluster/client/new.nix ];
       # };
 
       nixosConfigurations = {

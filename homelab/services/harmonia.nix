@@ -9,6 +9,15 @@ let
   credPath = "/run/credentials/harmonia.service";
 in
 {
+  options.homelab.services.harmonia.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    example = true;
+    description = ''
+      Whether to enable the harmonia nix cache.
+    '';
+  };
+  
   config = lib.mkIf config.homelab.services.harmonia.enable {
 
     age.secrets.harmonia = {

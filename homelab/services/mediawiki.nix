@@ -10,6 +10,40 @@ let
   conf = homelab.services.mediawiki;
 in
 {
+  options.homelab.services.mediawiki = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      example = true;
+      description = ''
+        Whether to enable the mediawiki server.
+      '';
+    };
+    domain = lib.mkOption {
+      type = lib.types.str;
+      default = "wiki.${config.homelab.tld}";
+      example = "wiki.example.com";
+      description = ''
+        Domain of the wiki.
+      '';
+    };
+    name = lib.mkOption {
+      type = lib.types.str;
+      default = "Mediawiki";
+      example = "Example wiki";
+      description = ''
+        Name of the wiki.
+      '';
+    };
+    adminMail = lib.mkOption {
+      type = lib.types.str;
+      default = config.homelab.acme.mail;
+      example = "admin@example.com";
+      description = ''
+        Email of the admin of the wiki (for the web server)
+      '';
+    };
+  };
   config = lib.mkIf conf.enable {
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
     age.secrets = {

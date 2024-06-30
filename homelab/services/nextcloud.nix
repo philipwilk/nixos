@@ -5,6 +5,25 @@
   ...
 }:
 {
+  options.homelab.services.nextcloud = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      example = true;
+      description = ''
+        Whether to enable the nextcloud service.
+      '';
+    };
+    domain = lib.mkOption {
+      type = lib.types.str;
+      default = "nextcloud.${config.homelab.tld}";
+      example = "nextcloud.example.com";
+      description = ''
+        Domain for homelab nextcloud instance.
+      '';
+    };
+  };
+  
   config = lib.mkIf config.homelab.services.nextcloud.enable {
     age.secrets.nextcloud_admin = {
       file = ../../secrets/nextcloud_admin.age;
