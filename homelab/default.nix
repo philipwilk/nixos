@@ -23,6 +23,7 @@ in
       "nginx"
       "mail"
       "harmonia"
+      "mastodon"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [ "hercules-ci" ]

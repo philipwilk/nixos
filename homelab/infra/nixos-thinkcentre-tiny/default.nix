@@ -27,6 +27,7 @@
       sshBastion.enable = true;
       email.enable = true;
       harmonia.enable = true;
+      mastodon.enable = true;
     };
     buildbot = {
       enableMaster = true;

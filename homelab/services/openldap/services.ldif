@@ -40,3 +40,9 @@ mail: grafana@services.fogbox.uk
 sn: grafana
 cn: grafana
 
+dn: uid=mastodon,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: mastodon
+mail: mastodon@services.fogbox.uk
+sn: mastodon
+cn: mastodon
