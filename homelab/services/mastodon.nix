@@ -39,11 +39,14 @@ in
         owner = "mastodon";
       };
     };
+
+    services.elasticsearch.enable = true;
   
     services.mastodon = {
       enable = true;
       localDomain = "masto.${config.homelab.tld}";
       configureNginx = true;
+      elasticsearch.host = "127.0.0.1";
       smtp = {
         user = "mastodon";
         port = 465;
