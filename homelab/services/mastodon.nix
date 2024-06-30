@@ -54,7 +54,11 @@ in
         createLocally = false;
       };
       streamingProcesses = 3;
-      extraConfig.SINGLE_USER_MODE = "true";
+      extraConfig = {
+        SMTP_SSL = "true";
+        SMTP_ENABLE_STARTTLS_AUTO = "false";
+        SINGLE_USER_MODE = "true";
+      };
       # Secrets
       vapidPublicKeyFile = config.age.secrets.mastodonVaPub.path;
       vapidPrivateKeyFile = config.age.secrets.mastodonVaPriv.path;
