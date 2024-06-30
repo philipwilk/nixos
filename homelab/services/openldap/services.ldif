@@ -25,3 +25,18 @@ uid: vaultwarden
 mail: vaultwarden@services.fogbox.uk
 sn: vaultwarden
 cn: vaultwarden
+
+dn: uid=kuma,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: kuma
+mail: status@services.fogbox.uk
+sn: kuma
+cn: kuma
+
+dn: uid=grafana,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: grafana
+mail: grafana@services.fogbox.uk
+sn: grafana
+cn: grafana
+
