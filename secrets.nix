@@ -39,19 +39,31 @@ in
   ${s "atm8"}.publicKeys = servers ++ workstations;
   ${s "mail_admin"}.publicKeys = servers;
   ${s "mail_pwd"}.publicKeys = servers;
+  # Harmonia nix cache
   ${s "harmonia"}.publickeys = servers;
+  # Buildbot
   ${s "buildbot/workers"}.publicKeys = servers ++ workstations;
   ${s "buildbot/worker_sec"}.publicKeys = servers;
   ${s "buildbot/oauth_sec"}.publicKeys = servers;
   ${s "buildbot/user_sec"}.publicKeys = servers;
   ${s "buildbot/webhook_sec"}.publicKeys = servers;
+  # Hercules=ci
   ${s "hercules-ci/binaryCacheKeys"}.publicKeys = servers;
   ${s "hercules-ci/clusterJoinToken"}.publicKeys = servers;
   ${s "hercules-ci/secretsJson"}.publicKeys = servers;
+  # Mail server
   ${s "mail/fogbox.uk-rsa"}.publicKeys = servers;
   ${s "mail/fogbox.uk-ed25519"}.publicKeys = servers;
   ${s "mail/services.fogbox.uk-rsa"}.publicKeys = servers;
   ${s "mail/services.fogbox.uk-ed25519"}.publicKeys = servers;
+  # Vaultwarden
   ${s "vaultwarden_smtp"}.publicKeys = servers;
+  # Grafana
   ${s "grafanamail"}.publicKeys = servers;
+  # Mastodon
+  ${s "mastodon/smtp"}.publicKeys = servers;
+  ${s "mastodon/pub"}.publicKeys = servers;
+  ${s "mastodon/priv"}.publicKeys = servers;
+  ${s "mastodon/otpSec"}.publicKeys = servers;
+  ${s "mastodon/secBase"}.publicKeys = servers;
 }
