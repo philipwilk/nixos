@@ -348,6 +348,12 @@ in
     networking.firewall.interfaces."eno1".allowedTCPPorts = [ config.services.prometheus.port ];
 
     # Grafana and prometheus monithoring
+    age.secrets.grafanamail.file = ../secrets/grafanamail.age;
+
+    systemd.services.grafana.serviceConfig.LoadCredential = [
+      "smtpPwd:${config.age.secrets.grafanamail.path}"
+    ];
+    
     services = {
       grafana = {
         enable = config.homelab.services.grafana.enable;
@@ -368,6 +374,14 @@ in
             enforce_domain = true;
             domain = config.homelab.services.grafana.domain;
             http_addr = "127.0.0.1";
+          };
+          smtp = {
+            user = "grafana";
+            startTLS_policy = "NoStartTLS";
+            password = "$__file{/run/credentials/grafana.service/smtpPwd}";
+            host = "fogbox.uk:465";
+            from_address = "grafana@services.fogbox.uk";
+            enabled = true;
           };
         };
       };
