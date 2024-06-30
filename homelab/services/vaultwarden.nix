@@ -1,5 +1,14 @@
 { config, lib, ... }:
 {
+  options.homelab.services.vaultwarden.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    example = true;
+    description = ''
+      Whether to enable the vaultwarden bitwarden-compatible server.
+    '';
+  };
+
   config = lib.mkIf config.homelab.services.vaultwarden.enable {
     age.secrets.vaultwarden_smtp.file = ../../secrets/vaultwarden_smtp.age;
     services.vaultwarden = {

@@ -1,5 +1,14 @@
 { config, lib, ... }:
 {
+  options.homelab.services.uptime-kuma.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    example = true;
+    description = ''
+      Whether to eanble the uptime kuma monitor.
+    '';
+  };
+
   config = lib.mkIf config.homelab.services.uptime-kuma.enable {
     services.uptime-kuma = {
       enable = true;

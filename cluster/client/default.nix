@@ -15,7 +15,7 @@ in
       default = null;
       example = "";
       description = ''
-        	The otp to auth with the server to allow enrollment to the cluster.
+        The otp to auth with the server to allow enrollment to the cluster.
       '';
     };
     awaitingEnroll = mkOpt {
@@ -23,7 +23,7 @@ in
       default = false;
       example = true;
       description = ''
-        	Whether the system needs to enroll. Should only be true prior to registration.
+        Whether the system needs to enroll. Should only be true prior to registration.
       '';
     };
   };

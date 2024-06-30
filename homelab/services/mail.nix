@@ -15,6 +15,33 @@ let
   credPath = "/run/credentials/stalwart-mail.service";
 in
 {
+  options.homelab.services.email = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      example = true;
+      description = ''
+        Whether to enable the email server.
+      '';
+    };
+    domain = lib.mkOption {
+      type = lib.types.str;
+      default = config.homelab.tld;
+      example = "fogbox.uk";
+      description = ''
+        Domain for postfix email server.
+      '';
+    };
+    web = lib.mkOption {
+      type = lib.types.str;
+      default = "mail.${config.homelab.services.email.domain}";
+      example = "mail.fogbox.uk";
+      description = ''
+        Domain for webmail access.
+      '';
+    };
+  };
+  
   config = lib.mkIf config.homelab.services.email.enable {
     age.secrets = {
       mail_ldap.file = ../../secrets/mail_ldap.age;

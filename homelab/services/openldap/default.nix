@@ -15,6 +15,24 @@ let
   credPath = "/run/credentials/openldap.service";
 in
 {
+  options.homelab.services.openldap = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      example = true;
+      description = ''
+        Whether to enable the openldap server.
+      '';
+    };
+    domain = lib.mkOption {
+      type = lib.types.str;
+      default = "ldap.${config.homelab.tld}";
+      example = "example.com";
+      description = ''
+        Domain for the ldap instance.
+      '';
+    };
+  };
   config = lib.mkIf config.homelab.services.openldap.enable {
     age.secrets.ldap_admin_pw = {
       file = ../../../secrets/ldap_admin_pw.age;
