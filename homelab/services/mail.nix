@@ -7,6 +7,8 @@
 let
   domain = config.homelab.services.email.domain;
   svcDomain = "services.${domain}";
+  autoDiscover = "autodiscover.${domain}";
+  autoConfig = "autoconfig.${domain}";
   webmail_domain = config.homelab.services.email.web;
   mail_selfservice_domain = "selfservice.${config.homelab.tld}";
   ldapSuffix = config.services.openldap.settings.children."olcDatabase={1}mdb".attrs.olcSuffix;
@@ -59,8 +61,14 @@ in
     };
 
     systemd.services.stalwart-mail = {
-      wants = [ "acme-${domain}.service" "acme-${svcDomain}.service" ];
-      after = [ "acme-${domain}.service" "acme-${svcDomain}.service" ];
+      wants = [
+        "acme-${domain}.service"          
+        "acme-${svcDomain}.service"
+      ];
+      after = [
+        "acme-${domain}.service"
+        "acme-${svcDomain}.service"
+      ];
       serviceConfig = {
         LoadCredential = [
           "${domain}-cert.pem:${config.security.acme.certs.${domain}.directory}/cert.pem"
@@ -99,6 +107,22 @@ in
         enableACME = true;
         locations."/" = {
           proxyPass = "http://127.0.0.1:8120";
+          proxyWebsockets = true;
+        };
+      };
+      "${autoConfig}" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8119";
+          proxyWebsockets = true;
+        };
+      };
+      "${autoDiscover}" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8119";
           proxyWebsockets = true;
         };
       };
