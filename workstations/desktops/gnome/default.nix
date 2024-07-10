@@ -9,9 +9,9 @@
     environment = {
       gnome.excludePackages = with pkgs; [
         gnome-tour
-        gnome.geary
-        gnome.totem
-        gnome.yelp
+        geary
+        totem
+        yelp
         gnome-text-editor
         gnome.gnome-software
       ];
@@ -24,7 +24,7 @@
         gnomeExtensions.search-light
         gnomeExtensions.duckduckgo-search-provider
         gnomeExtensions.fuzzy-app-search
-        gnome.gnome-tweaks
+        gnome-tweaks
       ];
     };
 
