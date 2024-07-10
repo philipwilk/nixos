@@ -1,9 +1,9 @@
 { pkgs, lib, ... }:
 {
   catppuccin.flavor = "latte";
-  gtk.catppuccin = {
+  catppuccin = {
     enable = true;
-    cursor = {
+    pointerCursor = {
       enable = true;
       accent = "peach";
     };

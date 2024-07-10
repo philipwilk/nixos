@@ -25,9 +25,9 @@ in
     users.users.philip.packages = with pkgs; [
       # Desktop chore replacements
       loupe
-      gnome.nautilus
+      nautilus
       gcr
-      gnome.seahorse
+      seahorse
       wmname
 
       bluetuith
@@ -53,6 +53,16 @@ in
     programs.dconf.enable = true;
 
     xdg.portal = {
+      config = {
+        common = {
+          default = [
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.Secret" = [
+            "gnome-keyring"
+          ];
+        };
+      };
       enable = true;
       xdgOpenUsePortal = true;
       wlr.enable = true;
@@ -160,7 +170,7 @@ in
         pamixer
         gnused
         # SOME SILLY DEVS USE THE GNOME SPECIFIC ICONS INSTEAD OF LIBADWAITA THANKS <3 <3 <3
-        gnome.adwaita-icon-theme
+        adwaita-icon-theme
         # Appindicator
         libappindicator
         libappindicator-gtk3

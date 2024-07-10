@@ -37,7 +37,7 @@ in
   };
 
   services = {
-    xserver.displayManager.autoLogin = {
+    displayManager.autoLogin = {
       user = "mini";
       enable = true;
     };

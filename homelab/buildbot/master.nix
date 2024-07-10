@@ -19,7 +19,7 @@ in
 
       admins = [ "philipwilk" ];
       github = {
-        tokenFile = config.age.secrets.user_sec.path;
+        authType.legacy.tokenFile = config.age.secrets.user_sec.path;
 
         webhookSecretFile = config.age.secrets.webhook_sec.path;
 
