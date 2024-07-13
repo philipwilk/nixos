@@ -24,6 +24,7 @@ in
       "mail"
       "harmonia"
       "mastodon"
+      "forgejo"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [ "hercules-ci" ]
