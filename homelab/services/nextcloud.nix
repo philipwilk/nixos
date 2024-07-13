@@ -23,7 +23,7 @@
       '';
     };
   };
-  
+
   config = lib.mkIf config.homelab.services.nextcloud.enable {
     age.secrets.nextcloud_admin = {
       file = ../../secrets/nextcloud_admin.age;

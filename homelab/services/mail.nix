@@ -43,7 +43,7 @@ in
       '';
     };
   };
-  
+
   config = lib.mkIf config.homelab.services.email.enable {
     age.secrets = {
       mail_ldap.file = ../../secrets/mail_ldap.age;
@@ -57,12 +57,12 @@ in
 
     security.acme.certs = {
       "${domain}" = { };
-      "${svcDomain}" = {};
+      "${svcDomain}" = { };
     };
 
     systemd.services.stalwart-mail = {
       wants = [
-        "acme-${domain}.service"          
+        "acme-${domain}.service"
         "acme-${svcDomain}.service"
       ];
       after = [
@@ -170,7 +170,7 @@ in
             };
           };
         };
-       
+
         store = {
           data = {
             type = "rocksdb";
@@ -261,16 +261,20 @@ in
             "if" = "is_local_domain('', sender_domain)";
             "then" = "[sender_domain + '-rsa', sender_domain + '-ed25519']";
           }
-          {
-             "else" = false;
-          }
+          { "else" = false; }
         ];
 
         signature."${domain}-rsa" = {
           private-key = "%{file:${credPath}/${domain}-rsa.key}%";
           domain = domain;
           selector = "rsa";
-          headers = ["From" "To" "Date" "Subject" "Message-ID"];
+          headers = [
+            "From"
+            "To"
+            "Date"
+            "Subject"
+            "Message-ID"
+          ];
           algorithm = "rsa-sha256";
           canonicalization = "relaxed/relaxed";
           set-body-length = true;
@@ -281,18 +285,30 @@ in
           private-key = "%{file:${credPath}/${domain}-ed25519.key}%";
           domain = domain;
           selector = "ed25519";
-          headers = ["From" "To" "Date" "Subject" "Message-ID"];
+          headers = [
+            "From"
+            "To"
+            "Date"
+            "Subject"
+            "Message-ID"
+          ];
           algorithm = "ed25519-sha256";
           canonicalization = "relaxed/relaxed";
           set-body-length = true;
           report = true;
         };
-        
+
         signature."${svcDomain}-rsa" = {
           private-key = "%{file:${credPath}/${svcDomain}-rsa.key}%";
           domain = svcDomain;
           selector = "rsa";
-          headers = ["From" "To" "Date" "Subject" "Message-ID"];
+          headers = [
+            "From"
+            "To"
+            "Date"
+            "Subject"
+            "Message-ID"
+          ];
           algorithm = "rsa-sha256";
           canonicalization = "relaxed/relaxed";
           set-body-length = true;
@@ -303,7 +319,13 @@ in
           private-key = "%{file:${credPath}/${svcDomain}-ed25519.key}%";
           domain = svcDomain;
           selector = "ed25519";
-          headers = ["From" "To" "Date" "Subject" "Message-ID"];
+          headers = [
+            "From"
+            "To"
+            "Date"
+            "Subject"
+            "Message-ID"
+          ];
           algorithm = "ed25519-sha256";
           canonicalization = "relaxed/relaxed";
           set-body-length = true;

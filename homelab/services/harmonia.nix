@@ -17,7 +17,7 @@ in
       Whether to enable the harmonia nix cache.
     '';
   };
-  
+
   config = lib.mkIf config.homelab.services.harmonia.enable {
 
     age.secrets.harmonia = {
