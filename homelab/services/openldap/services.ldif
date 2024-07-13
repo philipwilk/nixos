@@ -46,3 +46,11 @@ uid: mastodon
 mail: mastodon@services.fogbox.uk
 sn: mastodon
 cn: mastodon
+
+dn: uid=forgejo,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: forgejo
+mail: forgejo@services.fogbox.uk
+sn: forgejo
+cn: forgejo
+

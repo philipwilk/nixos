@@ -66,4 +66,7 @@ in
   ${s "mastodon/priv"}.publicKeys = servers;
   ${s "mastodon/otpSec"}.publicKeys = servers;
   ${s "mastodon/secBase"}.publicKeys = servers;
+  # forgejo
+  ${s "forgejo/smtp"}.publicKeys = servers;
+  ${s "forgejo/runner_tok"}.publicKeys = servers;
 }
