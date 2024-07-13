@@ -23,7 +23,7 @@
       '';
     };
   };
-  
+
   config = lib.mkIf config.homelab.services.factorio.enable {
     age.secrets.factorio_password.file = ../../secrets/factorio_password.age;
     services.factorio = {

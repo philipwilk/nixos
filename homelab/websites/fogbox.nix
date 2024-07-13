@@ -17,7 +17,7 @@ in
       Whether to enable static fogbox server.
     '';
   };
-  
+
   config = lib.mkIf conf.fogbox.enable {
     services.nginx.virtualHosts."${pub}" = {
       root = "/data/nginx/${pub}";

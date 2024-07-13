@@ -185,7 +185,7 @@ in
     systemd.services.grafana.serviceConfig.LoadCredential = [
       "smtpPwd:${config.age.secrets.grafanamail.path}"
     ];
-    
+
     services = {
       grafana = {
         enable = config.homelab.services.grafana.enable;

@@ -1,8 +1,4 @@
-{
-  lib,
-  config,
-  ...
-}:
+{ lib, config, ... }:
 let
   credPath = "/run/credentials/mastodon.service";
 in
@@ -41,7 +37,7 @@ in
     };
 
     services.elasticsearch.enable = true;
-  
+
     services.mastodon = {
       enable = true;
       localDomain = "masto.${config.homelab.tld}";
