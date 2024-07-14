@@ -83,7 +83,6 @@
           blender-hip
           # Media consumption
           vlc
-          lollypop
           youtube-music
           # Office stuff
           drawio
