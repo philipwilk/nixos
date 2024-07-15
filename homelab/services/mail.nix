@@ -250,12 +250,6 @@ in
           enable = true;
         };
 
-        report.dsn = {
-          from-name = "Mail Delivery Subsystem";
-          from-address = "subsystem@${svcDomain}";
-          sign = "[sender_domain + '-rsa', sender_domain + '-ed25519']";
-        };
-
         auth.dkim.sign = [
           {
             "if" = "is_local_domain('', sender_domain)";
