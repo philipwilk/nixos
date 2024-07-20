@@ -12,5 +12,6 @@
     LIBVA_DRIVER_NAME = "iHD";
   };
 
-  programs.auto-cpufreq.enable = true;
+  services.thermald.enable = true;
+  powerManagement.powertop.enable = true;
 }

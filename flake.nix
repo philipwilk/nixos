@@ -21,10 +21,6 @@
       url = "github:MercuryTechnologies/nix-your-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    auto-cpufreq = {
-      url = "github:AdnanHodzic/auto-cpufreq";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,7 +44,6 @@
       # nix-matlab,
       home-manager,
       catppuccin,
-      auto-cpufreq,
       nixos-generators,
       lanzaboote,
       buildbot-nix,
@@ -121,10 +116,7 @@
         nixowos = unstableSystem ([ ./workstations/infra/nixowos ] ++ workstationModules);
 
         nixowos-laptop = unstableSystem (
-          [
-            ./workstations/infra/nixowos-laptop
-            auto-cpufreq.nixosModules.default
-          ]
+          [ ./workstations/infra/nixowos-laptop ]
           ++ workstationModules
         );
 

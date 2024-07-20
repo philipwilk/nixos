@@ -39,26 +39,6 @@
         "type": "github"
       }
     },
-    "auto-cpufreq": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1720865723,
-        "narHash": "sha256-B976wzyTCHDdmqBBdZo/VEdAvWJgoTkRjAK5DPJUEUI=",
-        "owner": "AdnanHodzic",
-        "repo": "auto-cpufreq",
-        "rev": "432883acee548641fcfc12833c369ba184290679",
-        "type": "github"
-      },
-      "original": {
-        "owner": "AdnanHodzic",
-        "repo": "auto-cpufreq",
-        "type": "github"
-      }
-    },
     "buildbot-nix": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -477,7 +457,6 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "auto-cpufreq": "auto-cpufreq",
         "buildbot-nix": "buildbot-nix",
         "catppuccin": "catppuccin",
         "home-manager": "home-manager_2",
