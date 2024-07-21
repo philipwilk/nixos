@@ -1,8 +1,8 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
-  programs.git = {
+  home-manager.users.philip.programs.git = lib.mkIf config.workstation.declarativeHome {
     enable = true;
-    userName = "Philip Wilk";
+    userName = config.workstation.sourceControl.userName;
     userEmail = "p.wilk@student.reading.ac.uk";
     aliases = {
       pl = "log --graph --abbrev-commit --decorate --stat";
