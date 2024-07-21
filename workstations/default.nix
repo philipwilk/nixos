@@ -79,6 +79,7 @@ in
               "ssh"
               "easyeffects"
               "catppuccin"
+              "ldap"
             ];
 
           home = {
