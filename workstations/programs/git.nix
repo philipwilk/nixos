@@ -8,6 +8,7 @@
       pl = "log --graph --abbrev-commit --decorate --stat";
       dh = "diff HEAD";
       dhp = "diff HEAD~";
+      push-fwl = "push --force-with-lease";
     };
     diff-so-fancy.enable = true;
     signing = {
