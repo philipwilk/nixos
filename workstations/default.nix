@@ -6,8 +6,6 @@
   ...
 }:
 let
-  mkOpt = lib.mkOption;
-  t = lib.types;
   join-dirfile = dir: map (file: ./${dir}/${file}.nix);
 in
 {
@@ -15,19 +13,22 @@ in
     ./system.nix
     ./desktops/gnome
     ./desktops/sway
+  ] ++ join-dirfile "programs" [
+    "git"
+    "mercurial"
   ];
 
   options.workstation = {
-    enable = mkOpt {
-      type = t.bool;
+    enable = lib.mkOption {
+      type = lib.types.bool;
       default = true;
       example = false;
       description = ''
         Whether to enable the workstation app suite.
       '';
     };
-    declarativeHome = mkOpt {
-      type = t.bool;
+    declarativeHome = lib.mkOption {
+      type = lib.types.bool;
       default = true;
       example = false;
       description = ''
@@ -35,8 +36,8 @@ in
       '';
     };
 
-    desktop = mkOpt {
-      type = t.enum [
+    desktop = lib.mkOption {
+      type = lib.types.enum [
         "gnome"
         "sway"
       ];
@@ -45,6 +46,19 @@ in
       description = ''
         Which desktop environment or window manager to enable.
       '';
+    };
+
+    sourceControl = {
+      userName = lib.mkOption {
+        type = lib.types.str;
+        default = "Philip Wilk";
+        example = "Joe Bloggs";
+      };
+      userEmail = lib.mkOption {
+        type = lib.types.str;
+        default = "p.wilk@student.reading.ac.uk";
+        example = "joe.bloggs@example.com";
+      };
     };
   };
 
@@ -57,7 +71,6 @@ in
           imports =
             [ catppuccin.homeManagerModules.catppuccin ]
             ++ join-dirfile "programs" [
-              "git"
               "nys"
               "direnv"
               "nix"
