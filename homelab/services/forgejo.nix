@@ -23,10 +23,13 @@
       };
       forgejo_runner_tok = {
         file = ../../secrets/forgejo/runner_tok.age;
-        mode = "400";
-        owner = "gitea-runner";
       };
     };
+    
+    systemd.services.gitea-runner-default.serviceConfig.LoadCredential = [
+      "runner_tok:${config.age.secrets.forgejo_runner_tok.path}"
+    ];
+    
     services = {
       forgejo = {
         enable = true;
@@ -35,10 +38,10 @@
           server = {
             DOMAIN = "git.${config.homelab.tld}";
             ROOT_URL = "https://${config.services.forgejo.settings.server.DOMAIN}/";
-            HTTP_PORT = 3000;
+            HTTP_PORT = 8243;
           };
 
-          # service.DISABLE_REGISTRATION = true;
+          service.DISABLE_REGISTRATION = true;
 
           actions = {
             ENABLED = true;
@@ -53,11 +56,12 @@
               ENABLED = true;
               SMTP_ADDR = config.homelab.tld;
               FROM = address;
-              USER = address;
+              USER = "forgejo";
             };
         };
-        mailerPasswordFile = config.age.secrets.forgejo_smtp.path;
+        secrets.mailer.PASSWD = config.age.secrets.forgejo_smtp.path;
       };
+    
 
       gitea-actions-runner = {
         package = pkgs.forgejo-actions-runner;
@@ -65,7 +69,7 @@
           enable = true;
           name = "monolith";
           url = config.services.forgejo.settings.server.ROOT_URL;
-          tokenFile = config.age.secrets.forgejo_runner_tok.path;
+          tokenFile = "/run/credentials/gitea-runner-default.service/runner_tok";
           labels = [
             "ubuntu-latest:docker://node:16-bullseye"
             "ubuntu-22.04:docker://node:16-bullseye"
