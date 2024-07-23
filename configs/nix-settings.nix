@@ -59,7 +59,6 @@
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
-      EDITOR = "hx";
       FLAKE = lib.mkDefault "/home/philip/repos/nixconf";
     };
   };
