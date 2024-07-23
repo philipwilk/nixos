@@ -105,6 +105,8 @@
           format = "iso";
         };
       buildX86Iso = buildIso "x86_64-linux";
+
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
     in
     {
       # packages.x86_64-linux = {
@@ -144,5 +146,12 @@
         # hp-dl380p-g8-sff-5 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-5 ] ++ grubLab);
       };
       formatter = forAllSystems (nixpkgs: nixpkgs.nixfmt-rfc-style);
+
+      devShells."x86_64-linux".default = pkgs.mkShell {
+        packages = with pkgs; [
+          nil
+          nix-tree
+        ];
+      };
     };
 }
