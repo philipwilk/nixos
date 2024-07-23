@@ -14,10 +14,15 @@
         identitiesOnly = true;
       };
       fogbox = {
-        host = "git.fogbox.uk";
+        host = "fogbox.uk";
         identityFile = [ "~/.ssh/id_ed25519" ];
         identitiesOnly = true;
         port = 22420;
+      };
+      fogbox-git = {
+        host = "git.fogbox.uk";
+        identityFile = [ "~/.ssh/id_ed25519" ];
+        identitiesOnly = true;
       };
     };
   };
