@@ -113,6 +113,8 @@ in
       }
     ];
 
+    environment.sessionVariables.EDITOR = "hx";
+
     # Accept acme terms
     security.acme = {
       acceptTerms = true;

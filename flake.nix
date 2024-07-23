@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:philipwilk/home-manager/kakoune-themes";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
