@@ -82,6 +82,7 @@ in
               "easyeffects"
               "catppuccin"
               "ldap"
+              "kakoune/default"
             ];
 
           home = {
