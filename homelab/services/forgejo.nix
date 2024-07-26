@@ -21,14 +21,14 @@
         mode = "400";
         owner = "forgejo";
       };
-      forgejo_runner_tok = {
-        file = ../../secrets/forgejo/runner_tok.age;
-      };
+      #forgejo_runner_tok = {
+      #  file = ../../secrets/forgejo/runner_tok.age;
+      #};
     };
     
-    systemd.services.gitea-runner-default.serviceConfig.LoadCredential = [
-      "runner_tok:${config.age.secrets.forgejo_runner_tok.path}"
-    ];
+    #systemd.services.gitea-runner-default.serviceConfig.LoadCredential = [
+    #  "runner_tok:${config.age.secrets.forgejo_runner_tok.path}"
+    #];
     
     services = {
       forgejo = {
@@ -43,10 +43,10 @@
 
           service.DISABLE_REGISTRATION = true;
 
-          actions = {
-            ENABLED = true;
-            DEFAULT_ACTIONS_URL = "github";
-          };
+          #actions = {
+          #  ENABLED = true;
+          #  DEFAULT_ACTIONS_URL = "github";
+          #};
 
           mailer =
             let
@@ -63,23 +63,23 @@
       };
     
 
-      gitea-actions-runner = {
-        package = pkgs.forgejo-actions-runner;
-        instances.default = {
-          enable = true;
-          name = "monolith";
-          url = config.services.forgejo.settings.server.ROOT_URL;
-          tokenFile = "/run/credentials/gitea-runner-default.service/runner_tok";
-          labels = [
-            "ubuntu-latest:docker://node:16-bullseye"
-            "ubuntu-22.04:docker://node:16-bullseye"
-            "ubuntu-20.04:docker://node:16-bullseye"
-            "ubuntu-18.04:docker://node:16-buster"
-            ## optionally provide native execution on the host:
-            "native:host"
-          ];
-        };
-      };
+      #gitea-actions-runner = {
+      #  package = pkgs.forgejo-actions-runner;
+      #  instances.default = {
+      #    enable = true;
+      #    name = "monolith";
+      #    url = config.services.forgejo.settings.server.ROOT_URL;
+      #    tokenFile = "/run/credentials/gitea-runner-default.service/runner_tok";
+      #    labels = [
+      #      "ubuntu-latest:docker://node:16-bullseye"
+      #      "ubuntu-22.04:docker://node:16-bullseye"
+      #      "ubuntu-20.04:docker://node:16-bullseye"
+      #      "ubuntu-18.04:docker://node:16-buster"
+      #      ## optionally provide native execution on the host:
+      #      "native:host"
+      #    ];
+      #  };
+      #};
 
       nginx.virtualHosts."git.${config.homelab.tld}" = {
         forceSSL = true;
