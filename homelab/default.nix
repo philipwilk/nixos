@@ -19,7 +19,6 @@ in
       "uptime-kuma"
       "vaultwarden"
       "mediawiki"
-      "sshBastion"
       "nginx"
       "mail"
       "harmonia"
@@ -239,29 +238,8 @@ in
                   let
                     p = toString config.services.prometheus.exporters.node.port;
                   in
-                  [
-                    "localhost:${p}"
-                    "192.168.2.1:${p}"
-                    "192.168.2.2:${p}"
-                    "192.168.2.3:${p}"
-                    "192.168.2.4:${p}"
-                    "192.168.2.5:${p}"
-                  ];
+                  [ "localhost:${p}" ];
               }
-            ];
-          }
-          {
-            job_name = "haproxy";
-            scrape_interval = "30s";
-            scrape_timeout = "20s";
-            static_configs = [ { targets = [ "192.168.1.0:8404" ]; } ];
-          }
-          {
-            job_name = "endlessh-go";
-            scrape_interval = "30s";
-            scrape_timeout = "20s";
-            static_configs = [
-              { targets = [ "192.168.1.10:${toString config.services.endlessh-go.prometheus.port}" ]; }
             ];
           }
         ];

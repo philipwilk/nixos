@@ -24,7 +24,6 @@
         name = "Reading CS lore";
         domain = "lore.fogbox.uk";
       };
-      sshBastion.enable = true;
       email.enable = true;
       harmonia.enable = true;
       mastodon.enable = true;
@@ -37,6 +36,8 @@
     # websites.fogbox.enable = true;
     nix.hercules-ci.enable = true;
   };
+
+  services.openssh.ports = [ 22420 ];
 
   networking = {
     hostName = "nixos-thinkcentre-tiny";
