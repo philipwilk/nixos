@@ -29,6 +29,13 @@
     #systemd.services.gitea-runner-default.serviceConfig.LoadCredential = [
     #  "runner_tok:${config.age.secrets.forgejo_runner_tok.path}"
     #];
+    #
+    #
+    systemd.services.forgejo.serviceConfig = {
+      AmbientCapabilities = lib.mkForce [ "CAP_NET_BIND_SERVICE" ];
+      CapabilityBoundingSet = lib.mkForce [ "CAP_NET_BIND_SERVICE" ];
+      PrivateUsers = lib.mkForce false;
+    };
     
     services = {
       forgejo = {
@@ -39,6 +46,7 @@
             DOMAIN = "git.${config.homelab.tld}";
             ROOT_URL = "https://${config.services.forgejo.settings.server.DOMAIN}/";
             HTTP_PORT = 8243;
+            START_SSH_SERVER = true;
           };
 
           service.DISABLE_REGISTRATION = true;
