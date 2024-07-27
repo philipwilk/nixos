@@ -27,7 +27,8 @@
       email.enable = true;
       harmonia.enable = true;
       mastodon.enable = true;
-      forgejo.enable = true;
+      #forgejo.enable = true;
+      soft-serve.enable = true;
     };
     buildbot = {
       enableMaster = true;
