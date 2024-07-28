@@ -69,4 +69,5 @@ in
   # forgejo
   ${s "forgejo/smtp"}.publicKeys = servers;
   ${s "forgejo/runner_tok"}.publicKeys = servers;
+  ${s "searxng/sec"}.publicKeys = servers;
 }
