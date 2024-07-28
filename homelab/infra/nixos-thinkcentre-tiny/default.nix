@@ -29,6 +29,7 @@
       mastodon.enable = true;
       #forgejo.enable = true;
       soft-serve.enable = true;
+      searxng.enable = true;
     };
     buildbot = {
       enableMaster = true;

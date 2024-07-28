@@ -25,6 +25,7 @@ in
       "mastodon"
       "forgejo"
       "soft-serve"
+      "searxng"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [ "hercules-ci" ]
