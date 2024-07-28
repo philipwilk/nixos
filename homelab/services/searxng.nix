@@ -87,8 +87,22 @@ in
                     "Open Access DOI rewrite"
                 ];
                 engines = lib.mapAttrsToList (name: value: {inherit name;} // value) {
+                    # General search
                     "duckduckgo".disabled = false;
+                    "bing".disabled = false;
                     "brave".disabled = true;
+                    # IT/Development
+                    "crates.io".disabled = false;
+                    "npm".disabled = false;
+                    "pub.dev".disabled = false;
+                    "pkg.go.dev".disabled = false;
+                    # Git repos
+                    "gitlab".disabled = false;
+                    "codeberg".disabled = false;
+                    "bitbucket".disabled = false;
+                    "sourcehut".disabled = false;
+                    # maps
+                    "apple maps".disabled = false;
                 };
                 outgoing = {
                     request_timeout = 5.0;
