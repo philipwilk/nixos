@@ -1,6 +1,4 @@
-{
-    ...
-}:
+{ ... }:
 {
   home.file.".ldaprc".text = ''
     BASE dc=ldap,dc=fogbox,dc=uk

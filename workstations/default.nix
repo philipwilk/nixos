@@ -9,14 +9,16 @@ let
   join-dirfile = dir: map (file: ./${dir}/${file}.nix);
 in
 {
-  imports = [
-    ./system.nix
-    ./desktops/gnome
-    ./desktops/sway
-  ] ++ join-dirfile "programs" [
-    "git"
-    "mercurial"
-  ];
+  imports =
+    [
+      ./system.nix
+      ./desktops/gnome
+      ./desktops/sway
+    ]
+    ++ join-dirfile "programs" [
+      "git"
+      "mercurial"
+    ];
 
   options.workstation = {
     enable = lib.mkOption {

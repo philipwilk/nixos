@@ -25,7 +25,7 @@
       #  file = ../../secrets/forgejo/runner_tok.age;
       #};
     };
-    
+
     #systemd.services.gitea-runner-default.serviceConfig.LoadCredential = [
     #  "runner_tok:${config.age.secrets.forgejo_runner_tok.path}"
     #];
@@ -36,7 +36,7 @@
       CapabilityBoundingSet = lib.mkForce [ "CAP_NET_BIND_SERVICE" ];
       PrivateUsers = lib.mkForce false;
     };
-    
+
     services = {
       forgejo = {
         enable = true;
@@ -69,7 +69,6 @@
         };
         secrets.mailer.PASSWD = config.age.secrets.forgejo_smtp.path;
       };
-    
 
       #gitea-actions-runner = {
       #  package = pkgs.forgejo-actions-runner;
