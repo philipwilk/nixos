@@ -47,13 +47,13 @@ in
                     public_url = "ssh://${domain}${sshAddr}";
                     key_path = "ssh/soft_serve_host";
                     client_key_path = "ssh/soft_serve_client_ed25519";
-                    max_timeout = 30;
-                    idle_timeout = 120;
+                    max_timeout = 1200;
+                    idle_timeout = 600;
                 };
                 git = {
                     listen_addr = ":9418";
                     max_timeout = 30;
-                    idle_timeout = 3;
+                    idle_timeout = 10;
                     max_connections = 32;
                 };
                 http = {
