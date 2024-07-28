@@ -117,10 +117,7 @@
         # Systemd machines
         nixowos = unstableSystem ([ ./workstations/infra/nixowos ] ++ workstationModules);
 
-        nixowos-laptop = unstableSystem (
-          [ ./workstations/infra/nixowos-laptop ]
-          ++ workstationModules
-        );
+        nixowos-laptop = unstableSystem ([ ./workstations/infra/nixowos-laptop ] ++ workstationModules);
 
         mini = unstableSystem ([ ./workstations/infra/mini ] ++ workstationModules);
 
