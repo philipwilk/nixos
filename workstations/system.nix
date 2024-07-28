@@ -3,7 +3,7 @@
   agenix,
   config,
   lib,
-  # nix-matlab,
+  nix-matlab,
   nix-your-shell,
   ...
 }:
@@ -18,7 +18,7 @@
     hardware.opentabletdriver.enable = true;
 
     nixpkgs.overlays = [
-      # nix-matlab.overlay
+      nix-matlab.overlay
       nix-your-shell.overlays.default
     ];
 
@@ -86,7 +86,7 @@
           youtube-music
           # Office stuff
           drawio
-          # matlab
+          matlab
           nextcloud-client
           rnote
           foliate
