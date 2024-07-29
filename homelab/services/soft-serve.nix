@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   domain = "git.${config.homelab.tld}";
   sshAddr = ":22";
@@ -22,15 +22,18 @@ in
 
     networking.firewall.interfaces."eno1".allowedTCPPorts = [ 22 ];
 
-    systemd.services.soft-serve.serviceConfig =
-      let
-        capNet = "CAP_NET_BIND_SERVICE";
-      in
-      {
-        AmbientCapabilities = lib.mkForce capNet;
-        CapabilityBoundingSet = lib.mkForce capNet;
-        PrivateUsers = lib.mkForce false;
-      };
+    systemd.services.soft-serve = {
+        path = with pkgs; [ openssh ];
+    	serviceConfig =
+          let
+            capNet = "CAP_NET_BIND_SERVICE";
+          in
+          {
+            AmbientCapabilities = lib.mkForce capNet;
+            CapabilityBoundingSet = lib.mkForce capNet;
+            PrivateUsers = lib.mkForce false;
+          };
+    };
 
     services.soft-serve = {
       enable = true;
