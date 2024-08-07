@@ -62,6 +62,7 @@
           # Communication
           (discord.override { withOpenASAR = true; })
           slack
+          telegram-desktop
           # TTY/serial
           minicom
           heimdall
