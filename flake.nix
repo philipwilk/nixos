@@ -61,15 +61,14 @@
       ];
 
       # Homelab
-      homelabModules = commonModules ++ [
+      homelabSys = commonModules ++ [
         ./homelab
         agenix.nixosModules.default
         ./homelab/config.nix
         buildbot-nix.nixosModules.buildbot-master
         buildbot-nix.nixosModules.buildbot-worker
+        ./configs/boot/systemd.nix
       ];
-      systemdLab = homelabModules ++ [ ./configs/boot/systemd.nix ];
-      grubLab = homelabModules ++ [ ./configs/boot/grub.nix ];
 
       # Desktops
       workstationModules =
@@ -123,24 +122,7 @@
 
         # nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
 
-        nixos-thinkcentre-tiny = unstableSystem ([ ./homelab/infra/nixos-thinkcentre-tiny ] ++ systemdLab);
-
-        # Grub machines (DO NOT SUPPORT EFI BOOT)
-        hp-dl380p-g8-LFF = unstableSystem (
-          [
-            ./homelab/infra/hp-dl380p-g8-LFF
-            # ./homelab/services/minecraft.nix
-          ]
-          ++ grubLab
-        );
-
-        # hp-dl380p-g8-sff-2 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-2 ] ++ grubLab);
-
-        # hp-dl380p-g8-sff-3 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-3 ] ++ grubLab);
-
-        # hp-dl380p-g8-sff-4 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-4 ] ++ grubLab);
-
-        # hp-dl380p-g8-sff-5 = unstableSystem ([ ./homelab/infra/hp-dl380p-g8-sff-5 ] ++ grubLab);
+        nixos-thinkcentre-tiny = unstableSystem ([ ./homelab/infra/nixos-thinkcentre-tiny ] ++ homelabSys);
       };
       formatter = forAllSystems (nixpkgs: nixpkgs.nixfmt-rfc-style);
 
