@@ -79,31 +79,88 @@ in
           default_lang = "en-GB";
           autocomplete = "duckduckgo";
         };
+        # upstream list of plugins
+        # https://docs.searxng.org/admin/plugins.html
         enabled_plugins = [
           "Hash plugin"
-          "Self Informations"
+          "Self Information"
+          "Tor check plugin"
+          "Hostnames plugin"
+          "Basic Calculator"
           "Tracker URL remover"
           "Ahmia blacklist"
           "Open Access DOI rewrite"
         ];
-        engines = lib.mapAttrsToList (name: value: { inherit name; } // value) {
-          # General search
-          "duckduckgo".disabled = false;
-          "bing".disabled = false;
-          "brave".disabled = true;
-          # IT/Development
-          "crates.io".disabled = false;
-          "npm".disabled = false;
-          "pub.dev".disabled = false;
-          "pkg.go.dev".disabled = false;
-          # Git repos
-          "gitlab".disabled = false;
-          "codeberg".disabled = false;
-          "bitbucket".disabled = false;
-          "sourcehut".disabled = false;
-          # maps
-          "apple maps".disabled = false;
-        };
+        # upstream list of built-in search engines
+        # https://docs.searxng.org/user/configured_engines.html
+        engines =
+        let
+          pageSize = 100;
+        in
+          (lib.mapAttrsToList (name: value: { inherit name; } // value) {
+            # General search
+            "duckduckgo".disabled = false;
+            "bing".disabled = false;
+            "brave".disabled = true;
+            # IT/Development
+            "crates.io".disabled = false;
+            "npm".disabled = false;
+            "pub.dev".disabled = false;
+            "pkg.go.dev".disabled = false;
+            # Git repos
+            "gitlab".disabled = false;
+            "codeberg".disabled = false;
+            "bitbucket".disabled = false;
+            "sourcehut".disabled = false;
+            # maps
+            "apple maps".disabled = false;
+          })
+          ++
+          # upstream list of built-in meta engines
+          # https://docs.searxng.org/dev/engines/index.html#online-engines
+          [
+            {
+              name = "nixos wiki";
+              shortcut = "nw";
+              engine = "mediawiki";
+              base_url = "https://wiki.nixos.org/";
+              categories = "nix";
+              timeout = 3;
+              disabled = false;
+            }
+            {
+              name = "nixos options";
+              shortcut = "no";
+              engine = "xpath";
+              search_url = "https://search.nixos.org/options?channel=unstable&from={pageno}&size=${toString pageSize}&sort=relevance&type=packages&query={query}";
+              results_xpath = "/html/body/shortcut-element/div/div/div/div/div/div/ul";
+              content_xpath = "/div";
+              title_xpath = "/span/a";
+              suggestion_xpath = "/ul";
+              url_xpath = "/span/a";
+              paging = true;
+              page_size = pageSize;
+              categories = "nix";
+              timeout = 3;
+              disabled = false; 
+            }
+            {
+              name = "nixos packages";
+              shortcut = "np";
+              engine = "xpath";
+              search_url = "https://search.nixos.org/packages?channel=unstable&from={pageno}&size=${toString pageSize}&sort=relevance&type=packages&query={query}";
+              results_xpath = "/html/body/shortcut-element/div/div/div/div/div/div/ul";
+              content_xpath = "/div";
+              title_xpath = "/span/a";
+              suggestion_xpath = "/ul";
+              url_xpath = "/span/a";
+              paging = true;
+              page_size = pageSize;
+              categories = "nix";
+              timeout = 3;
+              disabled = false;
+            }
+          ];
         outgoing = {
           request_timeout = 5.0;
           max_request_timeout = 15.0;
@@ -119,7 +176,7 @@ in
         socket = "/run/searx/searx.sock";
         http = ":8888";
         chmod-socket = "660";
-        #disable-logging = true;
+        disable-logging = true;
       };
     };
   };
