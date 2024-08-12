@@ -57,24 +57,24 @@ in
 
     security.acme.certs = {
       "${domain}" = { };
-      #"${svcDomain}" = { };
+      "${svcDomain}" = { };
     };
 
     systemd.services.stalwart-mail = {
       wants = [
         "acme-${domain}.service"
-        #"acme-${svcDomain}.service"
+        "acme-${svcDomain}.service"
       ];
       after = [
         "acme-${domain}.service"
-        #"acme-${svcDomain}.service"
+        "acme-${svcDomain}.service"
       ];
       serviceConfig = {
         LoadCredential = [
           "${domain}-cert.pem:${config.security.acme.certs.${domain}.directory}/cert.pem"
           "${domain}-key.pem:${config.security.acme.certs.${domain}.directory}/key.pem"
-          #"${svcDomain}-cert.pem:${config.security.acme.certs.${svcDomain}.directory}/cert.pem"
-          #"${svcDomain}-key.pem:${config.security.acme.certs.${svcDomain}.directory}/key.pem"
+          "${svcDomain}-cert.pem:${config.security.acme.certs.${svcDomain}.directory}/cert.pem"
+          "${svcDomain}-key.pem:${config.security.acme.certs.${svcDomain}.directory}/key.pem"
           "adminPwd:${config.age.secrets.mail_admin.path}"
           "ldapPwd:${config.age.secrets.mail_ldap.path}"
           "mailPwd:${config.age.secrets.mail_pwd.path}"
@@ -137,10 +137,10 @@ in
           default = true;
         };
 
-        #certificate.${svcDomain} = {
-        #  cert = "%{file:${credPath}/${svcDomain}-cert.pem}%";
-        #  private-key = "%{file:${credPath}/${svcDomain}-key.pem}%";
-        #};
+        certificate.${svcDomain} = {
+          cert = "%{file:${credPath}/${svcDomain}-cert.pem}%";
+          private-key = "%{file:${credPath}/${svcDomain}-key.pem}%";
+        };
 
         lookup.default.hostname = domain;
 
