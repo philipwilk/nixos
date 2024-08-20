@@ -63,7 +63,6 @@
           (discord.override { withOpenASAR = true; })
           slack
           telegram-desktop
-          fluffychat
           # TTY/serial
           minicom
           heimdall
