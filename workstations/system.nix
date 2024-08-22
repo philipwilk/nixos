@@ -66,6 +66,9 @@
           # TTY/serial
           minicom
           heimdall
+          ventoy-full
+          rkdeveloptool
+          usbimager
           # Games
           prismlauncher
           moonlight-qt
