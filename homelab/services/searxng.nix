@@ -91,6 +91,11 @@ in
           "Ahmia blacklist"
           "Open Access DOI rewrite"
         ];
+
+        hostnames.remove = [
+          "(.*\\.)?nixos.wiki$"
+        ];
+        
         # upstream list of built-in search engines
         # https://docs.searxng.org/user/configured_engines.html
         engines =
