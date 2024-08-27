@@ -140,6 +140,7 @@
     };
 
     services = {
+      fwupd.enable = true;
       logind = {
         powerKey = "poweroff";
         powerKeyLongPress = "reboot";
