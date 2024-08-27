@@ -21,13 +21,13 @@
         "nvme"
         "usb_storage"
         "sd_mod"
+        "aesni_intel"
+        "cryptd"
       ];
       kernelModules = [ ];
       luks.devices = {
-        # LUKS root
-        "luks-2c091ef5-7caa-496c-aa43-7a85d4378ec0".device = "/dev/disk/by-uuid/2c091ef5-7caa-496c-aa43-7a85d4378ec0";
-        # LUKS swapfile
-        "luks-ad203aa1-6766-4952-b43a-08478b322dfa".device = "/dev/disk/by-uuid/ad203aa1-6766-4952-b43a-08478b322dfa";
+        "cryptroot".device = "/dev/disk/by-uuid/6ff8ba49-4ca2-4e3a-8fcf-e162fae8b2f0";
+        "cryptswap".device = "/dev/disk/by-uuid/bb339e19-2a49-455e-9bc2-963a18479fc8";
       };
     };
     kernelModules = [ "kvm-intel" ];
@@ -40,16 +40,17 @@
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/53b733fc-9124-47a3-82cc-f33541bedb0f";
+      device = "/dev/disk/by-uuid/00940d84-3626-4719-a272-680dc615edad";
       fsType = "ext4";
     };
     "/boot" = {
-      device = "/dev/disk/by-uuid/F4D5-689D";
+      device = "/dev/disk/by-uuid/2A4D-557D";
       fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
     };
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/6e00a92b-15ac-4af0-8ad2-8784425a5bee"; } ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/cb62901a-0dea-41ce-b237-d4ceec78d7b5"; } ];
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
