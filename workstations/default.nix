@@ -83,6 +83,7 @@ in
               "catppuccin"
               "ldap"
               "kakoune/default"
+              "matlab"
             ];
 
           home = {
