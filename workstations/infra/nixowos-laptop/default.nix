@@ -13,5 +13,5 @@
   };
 
   services.thermald.enable = true;
-  powerManagement.powertop.enable = true;
+  services.auto-cpufreq.enable = true;
 }
