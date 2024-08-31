@@ -45,7 +45,6 @@ in
     };
   };
   config = lib.mkIf conf.enable {
-    age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
     age.secrets = {
       mediawiki_sec = {
         file = ../../secrets/mediawiki_sec.age;

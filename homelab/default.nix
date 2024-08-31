@@ -165,7 +165,6 @@ in
     powerManagement.cpuFreqGovernor = "ondemand";
 
     # Set passwords for my user
-    age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
     age.secrets.server_password.file = ../secrets/server_password.age;
     users.users.philip = {
       isNormalUser = true;

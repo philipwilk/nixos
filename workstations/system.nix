@@ -9,7 +9,6 @@
 }:
 {
   config = lib.mkIf config.workstation.declarativeHome {
-    age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
     age.secrets.workstation_password.file = ../secrets/workstation_password.age;
 
     boot.kernelParams = [ "net.ipv4.tcp_mtu_probing=1" ];
