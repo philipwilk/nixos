@@ -20,6 +20,10 @@
       device = "rootpool/home";
       fsType = "zfs";
     };
+    "/pool" = {
+      device = "storagepool/pool";
+      fsType = "zfs";
+    };
     "/boot" = {
       device = "/dev/disk/by-uuid/301A-81CF";
       fsType = "vfat";
