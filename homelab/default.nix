@@ -37,7 +37,7 @@ in
   options.homelab = {
     enable = mkOpt {
       type = t.bool;
-      default = false;
+      default = true;
       example = true;
       description = ''
         Enable the default homelab options:
