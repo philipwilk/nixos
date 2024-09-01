@@ -44,6 +44,7 @@
     systemPackages = with pkgs; [
       git
       helix
+      zoxide
       # cli utils
       hyfetch
       usbutils
