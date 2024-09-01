@@ -25,7 +25,6 @@
         domain = "lore.fogbox.uk";
       };
       email.enable = true;
-      harmonia.enable = true;
       mastodon.enable = true;
       #forgejo.enable = true;
       soft-serve.enable = true;
@@ -36,7 +35,6 @@
       enableWorker = true;
     };
     # websites.fogbox.enable = true;
-    nix.hercules-ci.enable = true;
   };
 
   networking = {
