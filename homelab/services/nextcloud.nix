@@ -39,6 +39,8 @@
     services.nextcloud = {
       enable = true;
       https = true;
+      home = "/pool/nextcloud";
+      configureRedis = true;
       nginx.recommendedHttpHeaders = true;
       autoUpdateApps.enable = true;
       maxUploadSize = "4096M";
@@ -49,11 +51,11 @@
         adminuser = "philip";
         dbtype = "mysql";
         dbhost = "localhost";
-        dbname = "nextcloud";
+        dbname = "cloud";
         dbpassFile = config.age.secrets.nextcloud_sql.path;
       };
       settings = {
-        trusted_domains = [ "192.168.1.10" ];
+        trusted_domains = [ ];
         trusted_proxies = [ "127.0.0.1" ];
         mysql.utf8mb4 = true;
       };
@@ -63,6 +65,17 @@
     services.mysql = {
       enable = true;
       package = pkgs.mariadb_1011;
+      ensureDatabases = [
+        "cloud"
+      ];
+      ensureUsers = [
+       {
+         name = "nextcloud";
+         ensurePermissions = {
+           "cloud.*" = "ALL PRIVILEGES";
+         };
+       }
+      ];
       settings = {
         msqld = {
           max_allowed_packet = "64M";
