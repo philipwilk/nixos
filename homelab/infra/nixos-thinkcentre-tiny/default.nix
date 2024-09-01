@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -35,6 +35,11 @@
       enableWorker = true;
     };
     # websites.fogbox.enable = true;
+  };
+
+  services.nextcloud = {
+      home = lib.mkForce "/var/lib/nextcloud";
+      config.dbname = lib.mkForce "nextcloud";
   };
 
   networking = {
