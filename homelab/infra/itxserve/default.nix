@@ -14,8 +14,10 @@
         enable = true;
         domain = "cloud.${config.homelab.tld}";
       };
+    };
+    nix = {
+      hercules-ci.enable = true;
       harmonia.enable = true;
     };
-    nix.hercules-ci.enable = true;
   };
 }

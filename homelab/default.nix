@@ -30,7 +30,10 @@ in
       "searxng"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
-    ++ join-dirfile "./nix" [ "hercules-ci" ]
+    ++ join-dirfile "./nix" [
+      "hercules-ci"
+      "harmonia"
+    ]
     ++ [
       ./router
       ./buildbot
