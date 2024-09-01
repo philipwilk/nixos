@@ -141,6 +141,7 @@ in
     # Enable ssh access from only workstation ssh keys
     services.openssh = {
       enable = true;
+      ports = [ 22420 ];
       listenAddresses = [
         { addr = "0.0.0.0"; }
         { addr = "[::]"; }

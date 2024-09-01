@@ -39,8 +39,6 @@
     nix.hercules-ci.enable = true;
   };
 
-  services.openssh.ports = [ 22420 ];
-
   networking = {
     hostName = "nixos-thinkcentre-tiny";
     firewall.interfaces."eno1".allowedTCPPorts = [
