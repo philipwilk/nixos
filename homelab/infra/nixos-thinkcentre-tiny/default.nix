@@ -5,6 +5,7 @@
 
   homelab = {
     isLeader = true;
+    hostname = "sou.uk.region.fogbox.uk";
     services = {
       nginx.enable = true;
       nextcloud = {

@@ -8,6 +8,7 @@
   system.stateVersion = "24.11"; # Did you read the comment?
 
   homelab = {
+    hostname = "rdg.uk.region.fogbox.uk";
     services = {
       nginx.enable = true;
       nextcloud = {

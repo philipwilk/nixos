@@ -67,6 +67,14 @@ in
         Default top level domain for services.
       '';
     };
+    hostname = lib.mkOption {
+      type = lib.types.str;
+      default = null;
+      example = "sou.uk.regions.fogbox.uk";
+      description = ''
+        Fqdn hostname of the nixos install.
+      '';
+    };
     acme.mail = mkOpt {
       type = t.str;
       default = null;
@@ -94,9 +102,9 @@ in
           '';
         };
       };
-      prometheus.enable = mkOpt {
+      prometheusExporters.enable = mkOpt {
         type = t.bool;
-        default = config.homelab.isLeader;
+        default = true;
         example = false;
         description = ''
           Whether to enable the homelab prometheus instance.
@@ -192,9 +200,6 @@ in
       # Grafana
       (lib.mkIf cfg.services.grafana.enable {
 
-        # Allow grafana in/out
-        networking.firewall.interfaces."eno1".allowedTCPPorts = [ config.services.prometheus.port ];
-
         # Grafana and prometheus monithoring
         age.secrets.grafanamail.file = ../secrets/grafanamail.age;
 
@@ -211,7 +216,7 @@ in
                 {
                   name = "prometheus";
                   type = "prometheus";
-                  url = "http://localhost:${toString config.services.prometheus.port}";
+                  url = config.services.prometheus.webExternalUrl;
                   access = "proxy";
                 }
               ];
@@ -244,37 +249,39 @@ in
           };
         };
       })
-      (lib.mkIf cfg.services.prometheus.enable {
+      (lib.mkIf cfg.services.prometheusExporters.enable {
+        services.prometheus.exporters = {
+          node.enable = true;
+        };
+        services.nginx.virtualHosts."n.stats.${cfg.hostname}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.node.port}";
+            proxyWebsockets = true;
+          };
+        };
+      })
+      (lib.mkIf (cfg.isLeader) {
         services.prometheus = {
           enable = true;
           enableReload = true;
           webExternalUrl = "https://prometheus.${cfg.tld}/";
-          exporters = {
-            node = {
-              enable = true;
-              openFirewall = true;
-            };
-          };
-        };
-      })
-      (lib.mkIf (cfg.services.prometheus.enable && cfg.isLeader) {
-        services.prometheus.scrapeConfigs = [
-          {
-            job_name = "node";
-            static_configs = [
+          scrapeConfigs = [
               {
-                targets =
-                  let
-                    p = toString config.services.prometheus.exporters.node.port;
-                  in
-                  [
-                    "sou.uk.region.fogbox.uk:${p}"
-                    "rdg.uk.region.fogbox.uk:${p}"
-                  ];
+                job_name = "node";
+                static_configs = [
+                  {
+                    targets =
+                      [
+                        "n.stats.sou.uk.region.fogbox.uk"
+                        "n.stats.rdg.uk.region.fogbox.uk"
+                      ];
+                  }
+                ];
               }
             ];
-          }
-        ];
+        };
         services.nginx.virtualHosts."prometheus.${cfg.tld}" = {
           forceSSL = true;
           enableACME = true;
