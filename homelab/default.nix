@@ -207,6 +207,11 @@ in
           "smtpPwd:${config.age.secrets.grafanamail.path}"
         ];
 
+        age.secrets.prometheusBasicAuthPassword = {
+            file = ../secrets/prometheus/basicAuthPassword.age;
+            owner = "grafana";
+        };
+
         services = {
           grafana = {
             enable = true;
@@ -216,8 +221,12 @@ in
                 {
                   name = "prometheus";
                   type = "prometheus";
+                  isDefault = true;
                   url = config.services.prometheus.webExternalUrl;
                   access = "proxy";
+                  basicAuth = true;
+                  basicAuthUser = "grafana";
+                  secureJsonData.basicAuthPassword = "$__file{${config.age.secrets.prometheusBasicAuthPassword.path}}";
                 }
               ];
             };
@@ -253,16 +262,26 @@ in
         services.prometheus.exporters = {
           node.enable = true;
         };
+
+        age.secrets.nodeBasicAuth = {
+            file = ../secrets/prometheus/exporters/node/htpasswd.age;
+            owner = "nginx";
+        };
         services.nginx.virtualHosts."n.stats.${cfg.hostname}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
             proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.node.port}";
             proxyWebsockets = true;
+            basicAuthFile = config.age.secrets.nodeBasicAuth.path;
           };
         };
       })
       (lib.mkIf (cfg.isLeader) {
+        age.secrets.nodeBasicAuthPassword = {
+            file = ../secrets/prometheus/exporters/node/basicAuthPassword.age;
+            owner = "prometheus";
+        };
         services.prometheus = {
           enable = true;
           enableReload = true;
@@ -270,6 +289,11 @@ in
           scrapeConfigs = [
               {
                 job_name = "node";
+                scheme = "https";
+                basic_auth = {
+                    username = "prometheus";
+                    password_file = config.age.secrets.nodeBasicAuthPassword.path;
+                };
                 static_configs = [
                   {
                     targets =
@@ -282,12 +306,19 @@ in
               }
             ];
         };
+
+        age.secrets.prometheusBasicAuth = {
+            file = ../secrets/prometheus/htpasswd.age;
+            owner = "nginx";
+        };
+     
         services.nginx.virtualHosts."prometheus.${cfg.tld}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
             proxyPass = "http://127.0.0.1:${toString config.services.prometheus.port}";
             proxyWebsockets = true;
+            basicAuthFile = config.age.secrets.prometheusBasicAuth.path;
           };
         };
       })

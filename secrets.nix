@@ -52,6 +52,11 @@ in
   ${s "vaultwarden_smtp"}.publicKeys = servers;
   # Grafana
   ${s "grafanamail"}.publicKeys = servers;
+  # Prometheus
+  ${s "prometheus/htpasswd"}.publicKeys = servers;
+  ${s "prometheus/basicAuthPassword"}.publicKeys = servers;
+  ${s "prometheus/exporters/node/basicAuthPassword"}.publicKeys = servers;
+  ${s "prometheus/exporters/node/htpasswd"}.publicKeys = servers;
   # Mastodon
   ${s "mastodon/smtp"}.publicKeys = servers;
   ${s "mastodon/pub"}.publicKeys = servers;
