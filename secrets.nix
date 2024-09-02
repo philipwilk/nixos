@@ -57,6 +57,8 @@ in
   ${s "prometheus/basicAuthPassword"}.publicKeys = servers;
   ${s "prometheus/exporters/node/basicAuthPassword"}.publicKeys = servers;
   ${s "prometheus/exporters/node/htpasswd"}.publicKeys = servers;
+  ${s "prometheus/exporters/zfs/basicAuthPassword"}.publicKeys = servers;
+  ${s "prometheus/exporters/zfs/htpasswd"}.publicKeys = servers;
   # Mastodon
   ${s "mastodon/smtp"}.publicKeys = servers;
   ${s "mastodon/pub"}.publicKeys = servers;

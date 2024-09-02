@@ -261,25 +261,45 @@ in
       (lib.mkIf cfg.services.prometheusExporters.enable {
         services.prometheus.exporters = {
           node.enable = true;
+          zfs.enable = true;
         };
 
         age.secrets.nodeBasicAuth = {
             file = ../secrets/prometheus/exporters/node/htpasswd.age;
             owner = "nginx";
         };
-        services.nginx.virtualHosts."n.stats.${cfg.hostname}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.node.port}";
-            proxyWebsockets = true;
-            basicAuthFile = config.age.secrets.nodeBasicAuth.path;
+        age.secrets.zfsBasicAuth = {
+            file = ../secrets/prometheus/exporters/zfs/htpasswd.age;
+            owner = "nginx";
+        };
+        services.nginx.virtualHosts = {
+          "n.stats.${cfg.hostname}" = {
+              forceSSL = true;
+              enableACME = true;
+              locations."/" = {
+                proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.node.port}";
+                proxyWebsockets = true;
+                basicAuthFile = config.age.secrets.nodeBasicAuth.path;
+              };
+          };
+          "z.stats.${cfg.hostname}" = {
+              forceSSL = true;
+              enableACME = true;
+              locations."/" = {
+                proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.zfs.port}";
+                proxyWebsockets = true;
+                basicAuthFile = config.age.secrets.zfsBasicAuth.path;
+              };
           };
         };
       })
       (lib.mkIf (cfg.isLeader) {
         age.secrets.nodeBasicAuthPassword = {
             file = ../secrets/prometheus/exporters/node/basicAuthPassword.age;
+            owner = "prometheus";
+        };
+        age.secrets.zfsBasicAuthPassword = {
+            file = ../secrets/prometheus/exporters/zfs/basicAuthPassword.age;
             owner = "prometheus";
         };
         services.prometheus = {
@@ -300,6 +320,23 @@ in
                       [
                         "n.stats.sou.uk.region.fogbox.uk"
                         "n.stats.rdg.uk.region.fogbox.uk"
+                      ];
+                  }
+                ];
+              }
+              {
+                job_name = "zfs";
+                scheme = "https";
+                basic_auth = {
+                    username = "prometheus";
+                    password_file = config.age.secrets.zfsBasicAuthPassword.path;
+                };
+                static_configs = [
+                  {
+                    targets =
+                      [
+                        #"z.stats.sou.uk.region.fogbox.uk"
+                        "z.stats.rdg.uk.region.fogbox.uk"
                       ];
                   }
                 ];
