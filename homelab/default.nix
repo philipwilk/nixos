@@ -359,6 +359,49 @@ in
           };
         };
       })
+      # Zfs monitoring
+      (lib.mkIf config.boot.zfs.enabled {
+        age.secrets.zedMailPwd.file = ../secrets/zedMailPwd.age;
+          
+        programs.msmtp = {
+            enable = true;
+            setSendmail = true;
+            defaults = {
+              aliases = "/etc/aliases";
+              port = 465;
+              tls_trust_file = "/etc/ssl/certs/ca-certificates.crt";
+              tls = "on";
+              auth = "login";
+              tls_starttls = "off";
+            };
+            accounts = {
+              default = {
+                host = "${cfg.tld}";
+                passwordeval = "cat ${config.age.secrets.zedMailPwd.path}";
+                user = "zfs@services.${cfg.tld}";
+                from = "zfs@services.${cfg.tld}";
+              };
+            };
+          };
+          
+        services.zfs = {
+          autoScrub.enable = true;
+          zed = {
+              settings = {
+                ZED_EMAIL_ADDR = [ "philipwilk@fogbox.uk" ];
+                ZED_EMAIL_PROG = "${pkgs.msmtp}/bin/msmtp";
+                ZED_EMAIL_OPTS = "-s '@SUBJECT@' @ADDRESS@";
+
+                ZED_NOTIFY_INTERVAL_SECS = 3600;
+                ZED_NOTIFY_VERBOSE = false;
+
+                ZED_USE_ENCLOSURE_LEDS = true;
+                ZED_SCRUB_AFTER_RESILVER = false;
+              };
+              enableMail = false;
+            };
+          };
+      })
     ]
   );
 }

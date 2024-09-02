@@ -48,9 +48,16 @@ sn: mastodon
 cn: mastodon
 
 dn: uid=forgejo,ou=users,dc=ldap,dc=fogbox,dc=uk
-objectClass: inetOrgPerson
+objectclass: inetorgperson
 uid: forgejo
 mail: forgejo@services.fogbox.uk
 sn: forgejo
 cn: forgejo
+
+dn: uid=zfs,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: zfs
+mail: zfs@services.fogbox.uk
+sn: zfs
+cn: zfs
 
