@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
   domain = config.homelab.router.kea.hostDomain;
-  router.ip4 = "192.168.1.0";
+  router.ip4 = "192.168.1.1";
 
   cfg = config.homelab.router.kea;
   lan = config.homelab.router.devices.lan;
@@ -136,12 +136,6 @@ in
               ];
               # ip and hostname reservations
               reservations = [
-                # Tinyminimicro node
-                {
-                  hw-address = "44:8a:5b:de:13:28";
-                  ip-address = "192.168.1.10";
-                  hostname = "thinkcentre";
-                }
                 # Lights out management
                 {
                   hw-address = "54:9f:35:14:57:3e";
