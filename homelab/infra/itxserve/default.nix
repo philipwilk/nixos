@@ -11,7 +11,7 @@
     hostname = "sou.uk.region.fogbox.uk";
     isLeader = true;
     stateDir = "/pool";
-    #router.enable = true;
+    router.enable = true;
     services = {
       nginx.enable = true;
       nextcloud = {

@@ -215,14 +215,10 @@ in
         users.users.philip = {
           isNormalUser = true;
           extraGroups = [
-            "networkmanager"
             "wheel"
           ];
           hashedPasswordFile = config.age.secrets.server_password.path;
         };
-
-        #  Networking
-        networking.networkmanager.enable = true;
       }
 
       # Grafana

@@ -2,9 +2,11 @@
 let
   domain = config.homelab.router.kea.hostDomain;
   router.ip4 = "192.168.1.0";
-  router.ip6 = "2001:db8:1::1";
+  router.ip6 = "2a0e:cb00:700b:0:3660:1a2b:784e:ad79";
 
   cfg = config.homelab.router.kea;
+  lan = config.homelab.router.devices.lan;
+  wan = config.homelab.router.devices.wan;
 in
 {
   options.homelab.router.kea = {
@@ -35,7 +37,7 @@ in
       };
       ip6 = lib.mkOption {
         type = lib.types.str;
-        default = "2001:db8:1::/64";
+        default = "2a0e:cb01:1d:1200:2e0:1bff:feba:e00a/64";
         description = ''
           IP6 address range to use for the lan
         '';
@@ -44,20 +46,57 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    networking.interfaces.${config.homelab.router.devices.lan} = {
-      ipv4.addresses = [
-        {
-          address = router.ip4;
-          prefixLength = 16;
-        }
-      ];
-      ipv6.addresses = [
-        {
-          address = router.ip6;
-          prefixLength = 64;
-        }
-      ];
+    networking.useDHCP = false;
+    systemd.network = {
+        enable = true;
+        networks = {
+            "10-${wan}" = {
+                matchConfig.Name = wan;
+                networkConfig = {
+                    DHCP = "yes";
+                    IPv6AcceptRA = "yes";
+                    DHCPPrefixDelegation = "yes";
+                };
+                dhcpV6Config.WithoutRA= "solicit";
+                dhcpPrefixDelegationConfig = {
+                    UplinkInterface = ":self";
+                    SubnetId = 0;
+                    Announce = "no";
+                    };
+                linkConfig.RequiredForOnline = "routable";
+            };
+            "15-${lan}" = {
+                matchConfig.Name = lan;
+                networkConfig = {
+                    DHCP = "no";
+                    IPv6SendRA = true;
+                    DHCPPrefixDelegation = true;
+                };
+                dhcpPrefixDelegationConfig = {
+                    UplinkInterface = wan;
+                    SubnetId = 1;
+                    Announce = "yes";
+                };
+                linkConfig.RequiredForOnline = "no";
+                address = [
+                  cfg.lanRange.ip4
+                ];
+            };
+        };
     };
+    services.resolved.enable = false;
+
+    systemd.services.kea-dhcp6-server.serviceConfig = {
+        AmbientCapabilities = [
+          "CAP_NET_BIND_SERVICE"
+          "CAP_NET_RAW"
+        ];
+        CapabilityBoundingSet = [
+          "CAP_NET_BIND_SERVICE"
+          "CAP_NET_RAW"
+        ];
+    };
+
     services.kea = {
       dhcp4 = {
         enable = true;
@@ -134,24 +173,20 @@ in
           subnet6 = [
             {
               id = 1;
-              pools = [ { pool = "2001:db8:1::1-2001:db8:1::ffff"; } ];
+              pools = [ { pool = "2a0e:cb01:1d:1200:0:0:0:0-2a0e:cb01:1d:1200:ffff:ffff:ffff:ffff"; } ];
               subnet = config.homelab.router.kea.lanRange.ip6;
               interface = config.homelab.router.devices.lan;
               option-data = [
                 {
-                  name = "domain-name-servers";
+                  name = "dns-servers";
                   data = router.ip6;
                 }
                 {
-                  name = "routers";
-                  data = router.ip6;
-                }
-                {
-                  name = "domain-name";
+                  name = "erp-local-domain-name";
                   data = domain;
                 }
                 {
-                  name = "ntp-servers";
+                  name = "sntp-servers";
                   data = router.ip6;
                 }
               ];
