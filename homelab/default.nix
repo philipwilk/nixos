@@ -16,7 +16,6 @@ in
     join-dirfile "./services" [
       "nextcloud"
       "openldap/default"
-      "factorio"
       "navidrome"
       "uptime-kuma"
       "vaultwarden"
@@ -33,6 +32,9 @@ in
     ++ join-dirfile "./nix" [
       "hercules-ci"
       "harmonia"
+    ]
+    ++ join-dirfile "./games" [
+      "factorio"
     ]
     ++ [
       ./router
@@ -75,13 +77,39 @@ in
         Fqdn hostname of the nixos install.
       '';
     };
-    acme.mail = mkOpt {
-      type = t.str;
+    acme.mail = lib.mkOption {
+      type = lib.types.str;
       default = null;
       example = "joe.bloggs@example.com";
       description = ''
         Email for acme cert renewals.
       '';
+    };
+    stateDir = lib.mkOption {
+      type = lib.types.str;
+      default = "/var/lib";
+      example = "/mnt/state";
+      description = ''
+        Path to store state under
+      '';
+    };
+    net = {
+      lan = lib.mkOption {
+        type = lib.types.str;
+        default = "enp3s0";
+        example = "eno2";
+        description = ''
+          Lan device to use for firewall rules
+        '';
+      };
+      wan = lib.mkOption {
+        type = lib.types.str;
+        default = "enp2s0";
+        example = "eno1";
+        description = ''
+          Wan device to use for firewall rules
+        '';
+      };
     };
     services = {
       grafana = {
@@ -215,6 +243,7 @@ in
         services = {
           grafana = {
             enable = true;
+            dataDir = "${config.homelab.stateDir}/grafana";
             provision = {
               enable = true;
               datasources.settings.datasources = [
@@ -335,7 +364,7 @@ in
                   {
                     targets =
                       [
-                        #"z.stats.sou.uk.region.fogbox.uk"
+                        "z.stats.sou.uk.region.fogbox.uk"
                         "z.stats.rdg.uk.region.fogbox.uk"
                       ];
                   }
@@ -402,6 +431,11 @@ in
             };
           };
       })
+      {
+        services.mysql.dataDir = "${config.homelab.stateDir}/mysql";
+        services.postgresql.dataDir = "${config.homelab.stateDir}/postgresql/${config.services.postgresql.package.psqlSchema}";
+        services.postgresql.package = pkgs.postgresql_16;
+      }
     ]
   );
 }

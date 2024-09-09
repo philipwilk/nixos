@@ -20,7 +20,7 @@ in
       locations."/".proxyPass = "http://localhost${httpAddr}";
     };
 
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [ 22 ];
+    networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [ 22 ];
 
     systemd.services.soft-serve = {
         path = with pkgs; [ openssh ];
