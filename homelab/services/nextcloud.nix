@@ -39,7 +39,7 @@
     services.nextcloud = {
       enable = true;
       https = true;
-      home = "/pool/nextcloud";
+      home = "${config.homelab.stateDir}/nextcloud";
       configureRedis = true;
       nginx.recommendedHttpHeaders = true;
       autoUpdateApps.enable = true;
@@ -51,7 +51,7 @@
         adminuser = "philip";
         dbtype = "mysql";
         dbhost = "localhost";
-        dbname = "cloud";
+        dbname = "nextcloud";
         dbpassFile = config.age.secrets.nextcloud_sql.path;
       };
       settings = {
@@ -66,13 +66,13 @@
       enable = true;
       package = pkgs.mariadb_1011;
       ensureDatabases = [
-        "cloud"
+        "nextcloud"
       ];
       ensureUsers = [
        {
          name = "nextcloud";
          ensurePermissions = {
-           "cloud.*" = "ALL PRIVILEGES";
+           "nextcloud.*" = "ALL PRIVILEGES";
          };
        }
       ];

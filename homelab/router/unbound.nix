@@ -3,6 +3,15 @@ let
   domain = "dns.${config.homelab.tld}";
 in
 {
+  options.homelab.router.unbound.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = config.homelab.router.enable;
+    example = true;
+    description = ''
+      Whether to enable the unbound domain name server.
+    '';
+  };
+
   config = lib.mkIf config.homelab.router.unbound.enable {
     services.unbound = {
       enable = true;

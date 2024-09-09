@@ -14,8 +14,16 @@
     '';
   };
 
+  options.services.nginx.virtualHosts = lib.mkOption {
+    type = lib.types.attrsOf (lib.types.submodule {
+      config.acmeRoot = lib.mkDefault null;
+      config.forceSSL = lib.mkDefault true;
+      config.enableACME = lib.mkDefault true;
+    });
+  };
+
   config = lib.mkIf config.homelab.services.nginx.enable {
-    networking.firewall.allowedTCPPorts = [
+    networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [
       443
       80
     ];
@@ -32,6 +40,8 @@
 
       virtualHosts.default = {
         default = true;
+        forceSSL = false;
+        enableACME = false;
         locations."/".return = "404";
       };
     };

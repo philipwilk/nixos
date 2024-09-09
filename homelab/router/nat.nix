@@ -22,6 +22,15 @@ let
   wan = config.homelab.router.devices.wan;
 in
 {
+  options.homelab.router.nat.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = config.homelab.router.enable;
+    example = true;
+    description = ''
+      Whether to enable network address translation.
+    '';
+  };
+
   config = lib.mkIf config.homelab.router.nat.enable {
     networking.nftables = {
       enable = true;
@@ -36,24 +45,24 @@ in
       internalIPv6s = [ config.homelab.router.kea.lanRange.ip6 ];
       forwardPorts = lib.flatten [
         # Http
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 80)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 80)
         # Https
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 443)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 443)
         # Factorio
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "udp" 34197)
+        (quickRule "127.0.0.1" "[::1]" "udp" 34197)
         # Ldap
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 389)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 389)
         # Ldaps
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 636)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 636)
         # Ssh
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 22)
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 22420)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 22)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 22420)
         # SMTP
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 25)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 25)
         # SMTP/S submissions
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 465)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 465)
         # IMAP/S
-        (quickRule "192.168.1.10" "[2a0e:cb01:1d:1200::16a1]" "tcp" 993)
+        (quickRule "127.0.0.1" "[::1]" "tcp" 993)
       ];
     };
   };

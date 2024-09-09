@@ -4,8 +4,11 @@
   lib,
   ...
 }:
+let
+  cfg = config.homelab.games.factorio;
+in
 {
-  options.homelab.services.factorio = {
+  options.homelab.games.factorio = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -24,7 +27,7 @@
     };
   };
 
-  config = lib.mkIf config.homelab.services.factorio.enable {
+  config = lib.mkIf cfg.enable {
     age.secrets.factorio_password.file = ../../secrets/factorio_password.age;
     services.factorio = {
       enable = true;
@@ -32,7 +35,7 @@
       openFirewall = true;
       requireUserVerification = true;
       game-name = "broken bad";
-      admins = config.homelab.services.factorio.admins;
+      admins = cfg.admins;
       loadLatestSave = true;
       lan = true;
       nonBlockingSaving = true;

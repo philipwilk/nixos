@@ -126,7 +126,7 @@ in
 
     security.acme.certs."${ldapname}" = { };
 
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [
+    networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [
       389
       636
     ];

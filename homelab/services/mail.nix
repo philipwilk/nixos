@@ -13,7 +13,7 @@ let
   mail_selfservice_domain = "selfservice.${config.homelab.tld}";
   ldapSuffix = config.services.openldap.settings.children."olcDatabase={1}mdb".attrs.olcSuffix;
   userSuffix = "ou=users,${ldapSuffix}";
-  path = "/data/stalwart-mail";
+  stateDir = "${config.homelab.stateDir}/stalwart-mail";
   credPath = "/run/credentials/stalwart-mail.service";
 in
 {
@@ -83,11 +83,11 @@ in
           "${svcDomain}-rsa.key:${config.age.secrets."${svcDomain}-rsa".path}"
           "${svcDomain}-ed25519.key:${config.age.secrets."${svcDomain}-ed25519".path}"
         ];
-        ReadWritePaths = "${path}";
+        ReadWritePaths = "${stateDir}";
       };
     };
 
-    networking.firewall.interfaces."eno1".allowedTCPPorts = [
+    networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [
       25
       465
       993
@@ -174,19 +174,19 @@ in
         store = {
           data = {
             type = "rocksdb";
-            path = "${path}/data";
+            path = "${stateDir}/data";
           };
           blob = {
             type = "rocksdb";
-            path = "${path}/blob";
+            path = "${stateDir}/blob";
           };
           fts = {
             type = "rocksdb";
-            path = "${path}/fts";
+            path = "${stateDir}/fts";
           };
           lookup = {
             type = "rocksdb";
-            path = "${path}/lookup";
+            path = "${stateDir}/lookup";
           };
         };
 

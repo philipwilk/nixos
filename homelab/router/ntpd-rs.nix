@@ -1,5 +1,14 @@
 { lib, config, ... }:
 {
+  options.homelab.router.ntpd-rs.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = config.homelab.router.enable;
+    example = true;
+    description = ''
+      Whether to enable the ntpd-rs NTP server.
+    '';
+  };
+
   config = lib.mkIf config.homelab.router.ntpd-rs.enable {
     services.ntpd-rs = {
       enable = true;

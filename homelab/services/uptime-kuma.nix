@@ -15,6 +15,7 @@
       appriseSupport = true;
       settings = {
         HOST = "127.0.0.1";
+        DATA_DIR = lib.mkForce "${config.homelab.stateDir}/uptime-kuma";
       };
     };
 
