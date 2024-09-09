@@ -24,10 +24,6 @@ in
             "0.0.0.0"
             "::0"
           ];
-          access-control = [
-            "${config.homelab.router.kea.lanRange.ip4} allow"
-            "${config.homelab.router.kea.lanRange.ip6} allow"
-          ];
         };
         forward-zone = [
           {
