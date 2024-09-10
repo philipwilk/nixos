@@ -83,7 +83,7 @@ in
                 };
                 linkConfig.RequiredForOnline = "no";
                 address = [
-                  cfg.lanRange.ip4
+                  "${router.ip4}/16"
                 ];
                 ipv6SendRAConfig = {
                   EmitDNS = "no";
@@ -93,7 +93,15 @@ in
             };
         };
     };
-    services.resolved.enable = false;
+    services.resolved = {
+          enable = true;
+          dnssec = "true";
+          dnsovertls = "true";
+          extraConfig = ''
+            DNS=9.9.9.9#dns.quad9.net [2620:fe::fe]#dns.quad9.net
+            FallbackDNS=1.1.1.1#cloudflare-dns.com [2606:4700:4700::1111]#cloudflare-dns.com
+          '';
+    };
 
     services.kea = {
       dhcp4 = {
@@ -119,7 +127,7 @@ in
               option-data = [
                 {
                   name = "domain-name-servers";
-                  data = router.ip4;
+                  data = "9.9.9.9, 1.1.1.1";
                 }
                 {
                   name = "routers";
