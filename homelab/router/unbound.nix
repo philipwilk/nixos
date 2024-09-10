@@ -41,8 +41,14 @@ in
     };
 
     networking.firewall.interfaces.${config.homelab.router.devices.lan} = {
-      allowedTCPPorts = [ 53 1053 ];
-      allowedUDPPorts = [ 53 1053 ];
+      allowedTCPPorts = [
+        53
+        1053
+      ];
+      allowedUDPPorts = [
+        53
+        1053
+      ];
     };
   };
 }

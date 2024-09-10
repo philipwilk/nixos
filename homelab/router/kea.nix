@@ -40,67 +40,65 @@ in
   config = lib.mkIf cfg.enable {
     networking.useDHCP = false;
     systemd.network = {
-        enable = true;
-        networks = {
-            "10-${wan}" = {
-                matchConfig.Name = wan;
-                networkConfig = {
-                    DHCP = "yes";
-                    IPv6AcceptRA = "yes";
-                    LinkLocalAddressing="ipv6";
-                };
+      enable = true;
+      networks = {
+        "10-${wan}" = {
+          matchConfig.Name = wan;
+          networkConfig = {
+            DHCP = "yes";
+            IPv6AcceptRA = "yes";
+            LinkLocalAddressing = "ipv6";
+          };
 
-                dhcpV4Config = {
-                  UseHostname = "no";
-                  UseDNS = "no";
-                  UseNTP = "no";
-                  UseSIP = "no";
-                  UseRoutes = "no";
-                  UseGateway = "yes";
-                };
+          dhcpV4Config = {
+            UseHostname = "no";
+            UseDNS = "no";
+            UseNTP = "no";
+            UseSIP = "no";
+            UseRoutes = "no";
+            UseGateway = "yes";
+          };
 
-                ipv6AcceptRAConfig = {
-                  UseDNS = "no";
-                  DHCPv6Client = "yes";
-                };
-                
-                dhcpV6Config = {
-                  WithoutRA = "solicit";
-                  UseDelegatedPrefix = true;
-                  UseHostname = "no";
-                  UseDNS = "no";
-                  UseNTP = "no";
-                };
-                linkConfig.RequiredForOnline = "routable";
-            };
-            "15-${lan}" = {
-                matchConfig.Name = lan;
-                networkConfig = {
-                    IPv6AcceptRA = "no";
-                    IPv6SendRA = "yes";
-                    LinkLocalAddressing = "ipv6";
-                    DHCPPrefixDelegation = "yes";
-                };
-                linkConfig.RequiredForOnline = "no";
-                address = [
-                  "${router.ip4}/16"
-                ];
-                ipv6SendRAConfig = {
-                  EmitDNS = "no";
-                  EmitDomains = "no";
-                };
-                dhcpPrefixDelegationConfig.SubnetId = "0x1";
-            };
+          ipv6AcceptRAConfig = {
+            UseDNS = "no";
+            DHCPv6Client = "yes";
+          };
+
+          dhcpV6Config = {
+            WithoutRA = "solicit";
+            UseDelegatedPrefix = true;
+            UseHostname = "no";
+            UseDNS = "no";
+            UseNTP = "no";
+          };
+          linkConfig.RequiredForOnline = "routable";
         };
+        "15-${lan}" = {
+          matchConfig.Name = lan;
+          networkConfig = {
+            IPv6AcceptRA = "no";
+            IPv6SendRA = "yes";
+            LinkLocalAddressing = "ipv6";
+            DHCPPrefixDelegation = "yes";
+          };
+          linkConfig.RequiredForOnline = "no";
+          address = [ "${router.ip4}/16" ];
+          ipv6SendRAConfig = {
+            EmitDNS = "no";
+            EmitDomains = "no";
+          };
+          dhcpPrefixDelegationConfig.SubnetId = "0x1";
+        };
+      };
     };
     services.resolved = {
-          enable = true;
-          dnssec = "true";
-          dnsovertls = "true";
-          extraConfig = ''
-            DNS=9.9.9.9#dns.quad9.net [2620:fe::fe]#dns.quad9.net
-            FallbackDNS=1.1.1.1#cloudflare-dns.com [2606:4700:4700::1111]#cloudflare-dns.com
-          '';
+      enable = true;
+      dnssec = "true";
+      dnsovertls = "true";
+      extraConfig = ''
+        DNS=9.9.9.9#dns.quad9.net [2620:fe::fe]#dns.quad9.net
+        FallbackDNS=1.1.1.1#cloudflare-dns.com [2606:4700:4700::1111]#cloudflare-dns.com
+      '';
     };
 
     services.kea = {

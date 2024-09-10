@@ -38,73 +38,71 @@ in
   config = lib.mkIf cfg.enable {
     networking.useDHCP = false;
     systemd.network = {
-        enable = true;
-        networks = {
-            "10-${wan}" = {
-                matchConfig.Name = wan;
-                networkConfig = lib.mkMerge [
-                  {
-                      DHCP = "yes";
-                      IPv6AcceptRA = "yes";
-                      LinkLocalAddressing="ipv6";
-                  }
-                  dnsCfg
-                ];
+      enable = true;
+      networks = {
+        "10-${wan}" = {
+          matchConfig.Name = wan;
+          networkConfig = lib.mkMerge [
+            {
+              DHCP = "yes";
+              IPv6AcceptRA = "yes";
+              LinkLocalAddressing = "ipv6";
+            }
+            dnsCfg
+          ];
 
-                dhcpV4Config = {
-                  UseHostname = "no";
-                  UseDNS = "no";
-                  UseNTP = "no";
-                  UseSIP = "no";
-                  UseRoutes = "no";
-                  UseGateway = "yes";
-                };
+          dhcpV4Config = {
+            UseHostname = "no";
+            UseDNS = "no";
+            UseNTP = "no";
+            UseSIP = "no";
+            UseRoutes = "no";
+            UseGateway = "yes";
+          };
 
-                ipv6AcceptRAConfig = {
-                  UseDNS = "no";
-                  DHCPv6Client = "yes";
-                };
-                
-                dhcpV6Config = {
-                  WithoutRA = "solicit";
-                  UseDelegatedPrefix = true;
-                  UseHostname = "no";
-                  UseDNS = "no";
-                  UseNTP = "no";
-                };
-                linkConfig.RequiredForOnline = "routable";
-            };
-            "15-${lan}" = {
-                matchConfig.Name = lan;
-                networkConfig = lib.mkMerge [
-                  {
-                      IPv6AcceptRA = "no";
-                      IPv6SendRA = "yes";
-                      LinkLocalAddressing = "ipv6";
-                      DHCPPrefixDelegation = "yes";
-                      DHCPServer = "yes";
-                  }
-                  dnsCfg
-                ];
-                dhcpServerConfig = {
-                  EmitDNS = "yes";
-                  DNS = dns4;
-                  EmitNTP = "yes";
-                  NTP = routerIp;
-                  PoolOffset = 100;
-                };
-                linkConfig.RequiredForOnline = "no";
-                address = [
-                  "${routerIp}/16"
-                ];
-                ipv6SendRAConfig = {
-                  EmitDNS = "yes";
-                  DNS = dns6;
-                  EmitDomains = "no";
-                };
-                dhcpPrefixDelegationConfig.SubnetId = "0x1";
-            };
+          ipv6AcceptRAConfig = {
+            UseDNS = "no";
+            DHCPv6Client = "yes";
+          };
+
+          dhcpV6Config = {
+            WithoutRA = "solicit";
+            UseDelegatedPrefix = true;
+            UseHostname = "no";
+            UseDNS = "no";
+            UseNTP = "no";
+          };
+          linkConfig.RequiredForOnline = "routable";
         };
+        "15-${lan}" = {
+          matchConfig.Name = lan;
+          networkConfig = lib.mkMerge [
+            {
+              IPv6AcceptRA = "no";
+              IPv6SendRA = "yes";
+              LinkLocalAddressing = "ipv6";
+              DHCPPrefixDelegation = "yes";
+              DHCPServer = "yes";
+            }
+            dnsCfg
+          ];
+          dhcpServerConfig = {
+            EmitDNS = "yes";
+            DNS = dns4;
+            EmitNTP = "yes";
+            NTP = routerIp;
+            PoolOffset = 100;
+          };
+          linkConfig.RequiredForOnline = "no";
+          address = [ "${routerIp}/16" ];
+          ipv6SendRAConfig = {
+            EmitDNS = "yes";
+            DNS = dns6;
+            EmitDomains = "no";
+          };
+          dhcpPrefixDelegationConfig.SubnetId = "0x1";
+        };
+      };
     };
   };
 }

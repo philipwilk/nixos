@@ -21,7 +21,8 @@
       navidrome.enable = true;
       openldap.enable = true; # needs stateDir fix
       vaultwarden.enable = true; # needs stateDir fix, /var/lib/vaultwarden
-      mediawiki = { # needs statedir fix
+      mediawiki = {
+        # needs statedir fix
         enable = true;
         name = "Reading CS lore";
         domain = "lore.fogbox.uk";
@@ -29,7 +30,7 @@
       uptime-kuma.enable = true;
       email.enable = true;
       mastodon.enable = true; # needs stateDir fix
-      soft-serve.enable = true; #needs stateDir fix
+      soft-serve.enable = true; # needs stateDir fix
 
       searxng.enable = true;
     };

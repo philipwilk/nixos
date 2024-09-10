@@ -92,16 +92,14 @@ in
           "Open Access DOI rewrite"
         ];
 
-        hostnames.remove = [
-          "(.*\\.)?nixos.wiki$"
-        ];
-        
+        hostnames.remove = [ "(.*\\.)?nixos.wiki$" ];
+
         # upstream list of built-in search engines
         # https://docs.searxng.org/user/configured_engines.html
         engines =
-        let
-          pageSize = 100;
-        in
+          let
+            pageSize = 100;
+          in
           (lib.mapAttrsToList (name: value: { inherit name; } // value) {
             # General search
             "duckduckgo".disabled = false;
@@ -121,51 +119,51 @@ in
             "apple maps".disabled = false;
           })
           ++
-          # upstream list of built-in meta engines
-          # https://docs.searxng.org/dev/engines/index.html#online-engines
-          [
-            {
-              name = "nixos wiki";
-              shortcut = "nw";
-              engine = "mediawiki";
-              base_url = "https://wiki.nixos.org/";
-              categories = "nix";
-              timeout = 3;
-              disabled = false;
-            }
-            {
-              name = "nixos options";
-              shortcut = "no";
-              engine = "xpath";
-              search_url = "https://search.nixos.org/options?channel=unstable&from={pageno}&size=${toString pageSize}&sort=relevance&type=packages&query={query}";
-              results_xpath = "/html/body/shortcut-element/div/div/div/div/div/div/ul";
-              content_xpath = "/div";
-              title_xpath = "/span/a";
-              suggestion_xpath = "/ul";
-              url_xpath = "/span/a";
-              paging = true;
-              page_size = pageSize;
-              categories = "nix";
-              timeout = 3;
-              disabled = false; 
-            }
-            {
-              name = "nixos packages";
-              shortcut = "np";
-              engine = "xpath";
-              search_url = "https://search.nixos.org/packages?channel=unstable&from={pageno}&size=${toString pageSize}&sort=relevance&type=packages&query={query}";
-              results_xpath = "/html/body/shortcut-element/div/div/div/div/div/div/ul";
-              content_xpath = "/div";
-              title_xpath = "/span/a";
-              suggestion_xpath = "/ul";
-              url_xpath = "/span/a";
-              paging = true;
-              page_size = pageSize;
-              categories = "nix";
-              timeout = 3;
-              disabled = false;
-            }
-          ];
+            # upstream list of built-in meta engines
+            # https://docs.searxng.org/dev/engines/index.html#online-engines
+            [
+              {
+                name = "nixos wiki";
+                shortcut = "nw";
+                engine = "mediawiki";
+                base_url = "https://wiki.nixos.org/";
+                categories = "nix";
+                timeout = 3;
+                disabled = false;
+              }
+              {
+                name = "nixos options";
+                shortcut = "no";
+                engine = "xpath";
+                search_url = "https://search.nixos.org/options?channel=unstable&from={pageno}&size=${toString pageSize}&sort=relevance&type=packages&query={query}";
+                results_xpath = "/html/body/shortcut-element/div/div/div/div/div/div/ul";
+                content_xpath = "/div";
+                title_xpath = "/span/a";
+                suggestion_xpath = "/ul";
+                url_xpath = "/span/a";
+                paging = true;
+                page_size = pageSize;
+                categories = "nix";
+                timeout = 3;
+                disabled = false;
+              }
+              {
+                name = "nixos packages";
+                shortcut = "np";
+                engine = "xpath";
+                search_url = "https://search.nixos.org/packages?channel=unstable&from={pageno}&size=${toString pageSize}&sort=relevance&type=packages&query={query}";
+                results_xpath = "/html/body/shortcut-element/div/div/div/div/div/div/ul";
+                content_xpath = "/div";
+                title_xpath = "/span/a";
+                suggestion_xpath = "/ul";
+                url_xpath = "/span/a";
+                paging = true;
+                page_size = pageSize;
+                categories = "nix";
+                timeout = 3;
+                disabled = false;
+              }
+            ];
         outgoing = {
           request_timeout = 5.0;
           max_request_timeout = 15.0;

@@ -10,7 +10,8 @@ let
   ];
   # Uses same port for source and destination for ip4 and ip6
   # ip4, ip6, proto, sourcePort
-  quickRule = dst: protocol: source:
+  quickRule =
+    dst: protocol: source:
     createRule "${dst}:${toString source}" protocol source;
   lan = config.homelab.router.devices.lan;
   wan = config.homelab.router.devices.wan;
@@ -31,8 +32,19 @@ in
       flushRuleset = true;
     };
 
-    networking.firewall.allowedTCPPorts = [ 80 443 636 389 25 465 993 22420 22 34197 ];
-    
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+      636
+      389
+      25
+      465
+      993
+      22420
+      22
+      34197
+    ];
+
     networking.nat = {
       enable = true;
       externalInterface = wan;

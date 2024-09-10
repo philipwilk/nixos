@@ -15,11 +15,13 @@
   };
 
   options.services.nginx.virtualHosts = lib.mkOption {
-    type = lib.types.attrsOf (lib.types.submodule {
-      config.acmeRoot = lib.mkDefault null;
-      config.forceSSL = lib.mkDefault true;
-      config.enableACME = lib.mkDefault true;
-    });
+    type = lib.types.attrsOf (
+      lib.types.submodule {
+        config.acmeRoot = lib.mkDefault null;
+        config.forceSSL = lib.mkDefault true;
+        config.enableACME = lib.mkDefault true;
+      }
+    );
   };
 
   config = lib.mkIf config.homelab.services.nginx.enable {
