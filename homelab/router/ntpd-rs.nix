@@ -18,7 +18,7 @@
         source = [
           {
             mode = "pool";
-            address = "nixos.pool.ntp.org";
+            address = "uk.pool.ntp.org";
             count = 4;
           }
         ];

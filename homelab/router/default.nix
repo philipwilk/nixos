@@ -4,9 +4,8 @@ let
 in
 {
   imports = join-dirfile "./" [
-    "kea"
+    "systemd"
     "ntpd-rs"
-    #"unbound"
     "nat"
   ];
 

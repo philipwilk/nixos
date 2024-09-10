@@ -37,7 +37,7 @@ in
       enable = true;
       externalInterface = wan;
       internalInterfaces = [ lan ];
-      internalIPs = [ config.homelab.router.kea.lanRange.ip4 ];
+      internalIPs = [ config.homelab.router.systemd.ipRange ];
     };
   };
 }
