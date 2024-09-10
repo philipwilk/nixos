@@ -65,16 +65,14 @@
     services.mysql = {
       enable = true;
       package = pkgs.mariadb_1011;
-      ensureDatabases = [
-        "nextcloud"
-      ];
+      ensureDatabases = [ "nextcloud" ];
       ensureUsers = [
-       {
-         name = "nextcloud";
-         ensurePermissions = {
-           "nextcloud.*" = "ALL PRIVILEGES";
-         };
-       }
+        {
+          name = "nextcloud";
+          ensurePermissions = {
+            "nextcloud.*" = "ALL PRIVILEGES";
+          };
+        }
       ];
       settings = {
         msqld = {

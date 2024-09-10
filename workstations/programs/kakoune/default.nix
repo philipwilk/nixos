@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}:
+{ pkgs, config, ... }:
 {
   xdg.configFile."kak-lsp/kak-lsp.toml".source = ./kak-lsp.toml;
 
@@ -20,7 +16,7 @@
       numberLines.enable = true;
       wrapLines.enable = true;
     };
-    extraConfig  = ''
+    extraConfig = ''
       # LSP
       eval %sh{kak-lsp --kakoune -s $kak_session}
       lsp-enable
