@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.homelab.games.factorio;
+  package = pkgs.factorio-headless.override { versionsJson = ./factorio.json; };
 in
 {
   options.homelab.games.factorio = {
@@ -31,7 +32,7 @@ in
     age.secrets.factorio_password.file = ../../secrets/factorio_password.age;
     services.factorio = {
       enable = true;
-      package = pkgs.factorio-headless;
+      inherit package;
       openFirewall = true;
       requireUserVerification = true;
       game-name = "broken bad";
