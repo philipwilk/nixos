@@ -35,10 +35,10 @@
     };
     games = {
       # Needs statedir option fix /var/lib/factorio
-      factorio = {
-        enable = true;
-        admins = [ "wiryfuture" ];
-      };
+      #factorio = {
+      #  enable = true;
+      #  admins = [ "wiryfuture" ];
+      #};
     };
     nix = {
       hercules-ci.enable = true;
