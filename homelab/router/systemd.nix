@@ -6,8 +6,8 @@ let
   lan = config.homelab.router.devices.lan;
   wan = config.homelab.router.devices.wan;
 
-  dns4 = "9.9.9.9#dns.quad9.net 1.1.1.1#cloudflare-dns.com";
-  dns6 = "[2620:fe::fe]#dns.quad9.net [2606:4700:4700::1111]#cloudflare-dns.com";
+  dns4 = "9.9.9.9 1.1.1.1";
+  dns6 = "2620:fe::fe 2606:4700:4700::1111";
 
   dnsCfg = {
     DNS = "${dns6} ${dns4}";
@@ -22,7 +22,7 @@ in
       default = config.homelab.router.enable;
       example = true;
       description = ''
-        Whether to enable the Kea dhcp server.
+        Whether to enable the systemd networkd config.
       '';
     };
     ipRange = lib.mkOption {
@@ -82,19 +82,20 @@ in
               IPv6SendRA = "yes";
               LinkLocalAddressing = "ipv6";
               DHCPPrefixDelegation = "yes";
-              DHCPServer = "yes";
+              # DHCPServer = "yes";
+              Address = "${routerIp}/16";
             }
             dnsCfg
           ];
-          dhcpServerConfig = {
-            EmitDNS = "yes";
-            DNS = dns4;
-            EmitNTP = "yes";
-            NTP = routerIp;
-            PoolOffset = 100;
-          };
+          # dhcpServerConfig = {
+          #   EmitDNS = "yes";
+          #   DNS = dns4;
+          #   EmitNTP = "yes";
+          #   NTP = routerIp;
+          #   PoolOffset = 100;
+          #   ServerAddress = "${routerIp}/16";
+          # };
           linkConfig.RequiredForOnline = "no";
-          address = [ "${routerIp}/16" ];
           ipv6SendRAConfig = {
             EmitDNS = "yes";
             DNS = dns6;

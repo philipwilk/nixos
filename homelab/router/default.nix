@@ -7,6 +7,7 @@ in
     "systemd"
     "ntpd-rs"
     "nat"
+    "kea"
   ];
 
   options.homelab.router = {
