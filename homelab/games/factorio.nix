@@ -41,6 +41,7 @@ in
       lan = true;
       nonBlockingSaving = true;
       autosave-interval = 5;
+      extraSettingsFile = config.age.secrets.factorio_password.path;
     };
   };
 }
