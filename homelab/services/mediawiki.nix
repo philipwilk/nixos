@@ -46,16 +46,16 @@ in
   };
   config = lib.mkIf conf.enable {
     age.secrets = {
-      mediawiki_sec = {
-        file = ../../secrets/mediawiki_sec.age;
-        owner = "mediawiki";
-      };
       mediawiki_password = {
-        file = ../../secrets/mediawiki_password.age;
+        file = ../../secrets/mediawiki/password.age;
         owner = "mediawiki";
       };
-      mediawiki_gh_sec = {
-        file = ../../secrets/mediawiki_gh_sec.age;
+      mediawiki_gh = {
+        file = ../../secrets/mediawiki/gh.age;
+        owner = "mediawiki";
+      };
+      mediawiki_gl = {
+        file = ../../secrets/mediawiki/gl.age;
         owner = "mediawiki";
       };
     };
@@ -95,20 +95,13 @@ in
 
         // oauth2 config
         $wgAuthManagerOAuthConfig = [
-          'microsoft' => [
-            'clientId'                => '2f2cd144-8aec-4852-8571-e52903438ef2',
-            'clientSecret'            => file_get_contents("${config.age.secrets.mediawiki_sec.path}"),
-            'urlAuthorize'            => 'https://login.microsoftonline.com/organizations/oauth2/authorize',
-            'urlAccessToken'          => 'https://login.microsoftonline.com/organizations/oauth2/token',
-            'urlResourceOwnerDetails' => 'https://graph.microsoft.com',
-            'scopes' => 'openid email profile'
-          ],
-          'github' => [
-            'clientId'                => 'Iv1.7af0811556d82ff5',
-            'clientSecret'            => file_get_contents("${config.age.secrets.mediawiki_gh_sec.path}"),
-            'urlAuthorize'            => 'https://github.com/login/oauth/authorize',
-            'urlAccessToken'          => 'https://github.com/login/oauth/access_token',
-            'urlResourceOwnerDetails' => 'https://api.github.com/user'
+          'gitlab' => [
+            'clientId' => '917e25cf997484f5e42cf82f94523497fe7cc7bc00627b9afd8d53b3b6e77a8c',
+            'clientSecret' => file_get_contents("${config.age.secrets.mediawiki_gl.path}"),
+            'urlAuthorize' => 'https://csgitlab.reading.ac.uk/oauth/authorize',
+            'urlAccessToken' => 'https://csgitlab.reading.ac.uk/oauth/token',
+            'urlResourceOwnerDetails' => 'https://csgitlab.reading.ac.uk/oauth/userinfo',
+            'scopes' => 'openid email profile',
           ],
         ];        
       '';

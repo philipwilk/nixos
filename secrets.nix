@@ -24,9 +24,10 @@ in
   ${s "nextcloud_admin"}.publicKeys = servers ++ workstations;
   ${s "nextcloud_sql"}.publicKeys = servers;
   ${s "factorio_password"}.publicKeys = servers ++ workstations;
-  ${s "mediawiki_password"}.publicKeys = servers;
-  ${s "mediawiki_sec"}.publicKeys = servers;
-  ${s "mediawiki_gh_sec"}.publicKeys = servers;
+  # mediawiki
+  ${s "mediawiki/password"}.publicKeys = servers;
+  ${s "mediawiki/gh"}.publicKeys = servers;
+  ${s "mediawiki/gl"}.publicKeys = servers;
   ${s "mail_ldap"}.publicKeys = servers;
   ${s "atm8"}.publicKeys = servers ++ workstations;
   ${s "mail_admin"}.publicKeys = servers;
