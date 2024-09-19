@@ -6,10 +6,10 @@ let
     laptop
   ];
 
-  nixos-thinkcentre-tiny = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO+i2qFBYmULKqx0AtXWkLxRZeFqSvgs5EXChpLYzuyu root@nixos";
   itxserve = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGygqcot7EsJMlGPMFiiKE6GruHaxUPwsJqBH1HiykOG root@itxserve";
+  thinkcentre = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC0/qDrzDMquOwPQOspR24ZVBaFcmz/uBnD0wqTcNxdX root@thinkcentre";
   servers = [
-    nixos-thinkcentre-tiny
+    thinkcentre
     itxserve
   ];
 
