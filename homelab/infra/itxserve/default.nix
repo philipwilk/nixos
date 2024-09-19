@@ -24,8 +24,7 @@
       mediawiki = {
         # needs statedir fix
         enable = true;
-        name = "Reading CS lore";
-        domain = "lore.fogbox.uk";
+        name = "CS lore";
       };
       uptime-kuma.enable = true;
       email.enable = true;
