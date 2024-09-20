@@ -55,11 +55,11 @@ in
               # ip and hostname reservations
               reservations = [
                 # Lights out management
-                {
-                  hw-address = "54:9f:35:14:57:3e";
-                  ip-address = "192.168.1.50";
-                  hostname = "idrac-poweredge";
-                }
+                # {
+                #   hw-address = "54:9f:35:14:57:3e";
+                #   ip-address = "192.168.1.50";
+                #   hostname = "idrac-poweredge";
+                # }
               ];
             }
           ];

@@ -22,7 +22,7 @@ in
       default = config.homelab.router.enable;
       example = true;
       description = ''
-        Whether to enable the systemd networkd config.
+        Whether to enable systemd network configuration.
       '';
     };
     ipRange = lib.mkOption {
