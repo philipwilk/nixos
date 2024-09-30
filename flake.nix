@@ -122,7 +122,6 @@
 
         # nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
 
-        nixos-thinkcentre-tiny = unstableSystem ([ ./homelab/infra/nixos-thinkcentre-tiny ] ++ homelabSys);
         thinkcentre = unstableSystem ([ ./homelab/infra/thinkcentre ] ++ homelabSys);
         itxserve = unstableSystem ([ ./homelab/infra/itxserve ] ++ homelabSys);
       };
