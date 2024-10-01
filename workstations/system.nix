@@ -62,6 +62,7 @@
           # Communication
           (discord.override { withOpenASAR = true; })
           slack
+          teams-for-linux
           telegram-desktop
           # TTY/serial
           minicom
