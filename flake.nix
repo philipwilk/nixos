@@ -114,7 +114,7 @@
 
       nixosConfigurations = {
         # Systemd machines
-        nixowos = unstableSystem ([ ./workstations/infra/nixowos ] ++ workstationModules);
+        prime  = unstableSystem ([ ./workstations/infra/prime ] ++ workstationModules);
 
         probook = unstableSystem ([ ./workstations/infra/probook ] ++ workstationModules);
 
