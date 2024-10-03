@@ -5,7 +5,7 @@
     matchBlocks = {
       csgitlab = {
         host = "csgitlab.reading.ac.uk";
-        identityFile = [ "~/.ssh/id_ed25519" ];
+        identityFile = [ "~/.ssh/csgitlab" ];
         identitiesOnly = true;
       };
       github = {
