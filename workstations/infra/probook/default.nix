@@ -2,7 +2,7 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  networking.hostName = "nixowos-laptop";
+  networking.hostName = "probook";
   hardware.graphics.extraPackages = with pkgs; [
     intel-media-driver
     vaapiVdpau
