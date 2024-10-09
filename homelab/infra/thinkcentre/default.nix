@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   imports = [ ./hardware-configuration.nix ];
 
   networking.hostId = "d60c7b2e";
