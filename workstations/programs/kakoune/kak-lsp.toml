@@ -93,6 +93,7 @@ inlayHints.typeParameters.enable = true
 filetypes = ["nix"]
 command = "nil"
 roots = ["flake.nix", "shell.nix", ".git", ".hg"]
+formatting.command = "nix fmt"
 
 [language_server.scss-language-server]
 filetypes = ["scss"]
@@ -112,13 +113,13 @@ roots = ["pubspec.yaml", ".git", ".hg"]
 command = "sh"
 args = ["-c", "dart $(dirname $(command -v dart))/snapshots/analysis_server.dart.snapshot --lsp"]
 
-[language_server.jdtls]
+[language_server.java-language-server]
 filetypes = ["java"]
 roots = ["mvnw", "gradlew", ".git", ".hg"]
-command = "jdtls"
-[language_server.jdtls.settings]
+command = "java-language-server"
+[language_server.java-language-server.settings]
 # See https://github.dev/eclipse/eclipse.jdt.ls
-# "java.format.insertSpaces" = true
+#"java.format.insertSpaces" = true
 
 [language_server.elixir-ls]
 filetypes = ["elixir"]
