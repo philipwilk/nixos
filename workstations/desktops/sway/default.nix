@@ -43,7 +43,6 @@ in
           };
         };
       };
-      blueman.enable = true;
       geoclue2 = {
         enable = true;
         enableWifi = true;
@@ -100,27 +99,66 @@ in
               "sway/mode"
               "sway/window"
             ];
+            "sway/workspaces" = {
+              format = "{icon} {name}";
+              format-icons = {
+                default = "";
+                focused = "󰍹";
+              };
+            };
             "sway/window" = {
-              "format" = "{app_id}";
+              format = "󰘔 {app_id}";
             };
             modules-center = [
               "clock"
               "mpris"
             ];
-            "mpris" = {
-              "format" = "{player_icon} {player}: {artist} {title}";
+            clock = {
+              interval = 1;
+              format = "{:%H:%M:%S}";
+            };
+            mpris = {
+              format = "{player_icon} {player}: {artist} {title}";
             };
             modules-right = [
               "tray"
+              "bluetooth"
               "network"
               "backlight"
               "wireplumber"
               "battery"
             ];
-            "wireplumber" = {
-              "format" = "{volume}%";
-              "format-muted" = "uf6a9";
-              "on-click" = "volumectl toggle-mute";
+            tray = {
+              spacing = 4;
+            };
+            bluetooth= {
+              format-on = "󰂯";
+              format-off = "󰂲";
+              format-disabled = "󰂲";
+              format-connected = "󰂱 {status}";
+              on-click = "kitty bluetuith";
+            };
+            network  = {
+              format-ethernet = "󰈀 {ipaddr}";
+              format-wifi = "{icon} {essid}";
+              format-icons = [ "󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ];
+              format-disconnected = "󰤮 Disconnected";
+              on-click = "kitty nmtui";
+            };
+            backlight = {
+              format = "{icon} {percent}%";
+              format-icons = ["󰃚" "󰃛" "󰃜" "󰃝" "󰃞" "󰃟" "󰃠" ];
+            };
+            wireplumber = {
+              format = "{icon} {volume}%";
+              format-icons = ["󰕿" "󰖀" "󰕾"];
+              format-muted = "󰸈 0%";
+              on-click = "pavucontrol";
+            };
+            battery = {
+              format = "{icon} {time} at {capacity}%";
+              format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+              format-time = "{H}hrs {M}min remaining";
             };
           };
           style = catppuccin + waybar-style;
