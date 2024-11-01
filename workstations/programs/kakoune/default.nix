@@ -21,8 +21,6 @@ in
 
   config = lib.mkMerge [
     {
-      xdg.configFile."kak-lsp/kak-lsp.toml".source = ./kak-lsp.toml;
-
       programs.kakoune = {
         enable = true;
         defaultEditor = true;
@@ -59,6 +57,22 @@ in
           # LSP
           eval %sh{kak-lsp --kakoune -s $kak_session}
           lsp-enable
+
+          # # LSP servers
+          hook -group lsp-filetype-nix global BufSetOption filetype=nix %{
+            set-option buffer lsp_servers %{
+              [nil.settings]
+              "formatting.command" = "nix fmt"
+            }
+          }
+
+          hook -group lsp-filetype-java global BufSetOption filetype=java %{
+            set-option buffer lsp_servers %{
+              [java-language-server]
+              root_globs = ["mvnw", "gradlew", ".git", ".hg"]
+              command = "java-language-server"
+            }
+          }
 
           # # Format file on write
           hook global BufSetOption filetype=* %{
