@@ -8,8 +8,7 @@ tooltip label {
 }
 
 * {
-  /* `otf-font-awesome` is required to be installed for icons */
-  font-family: "Fira Code", "Noto Sans", "Noto Sans CJK", "Font Awesome 6 Free";
+  font-family: "Material Design Icons", "Fira Code", "Noto Sans", "Noto Sans CJK";
   font-size: 13px;
   color: @text;
 }
@@ -97,8 +96,9 @@ button:hover {
 #mode,
 #idle_inhibitor,
 #scratchpad,
+#bluetooth,
 #mpd {
-  padding: 0 10px;
+  padding: 8px 8px;
   color: @text;
   background-color: #fff0f5; 
 }
@@ -128,7 +128,7 @@ button:hover {
 
 #battery.charging, #battery.plugged {
   color: @text;
-  background-color: #26A65B;
+  background-color: #65f2a0;
 }
 
 @keyframes blink {
@@ -170,7 +170,7 @@ label:focus {
 }
 
 #network {
-  background-color: @rosewater;
+  background-color: #fff0f5;
 }
 
 #network.disconnected {
@@ -219,7 +219,7 @@ label:focus {
 }
 
 #tray {
-  background-color: @rosewater;
+  background-color: #fff0f5;
 }
 
 #tray > .passive {
