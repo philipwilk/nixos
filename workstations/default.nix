@@ -126,6 +126,7 @@ in
       };
 
       services = {
+        power-profiles-daemon.enable = true;
         printing.enable = true;
         gnome.gnome-keyring.enable = true;
         flatpak.enable = true;
@@ -179,7 +180,7 @@ in
           noto-fonts-cjk-serif
           fira-code
           fira-code-symbols
-          font-awesome_6
+          material-design-icons
         ];
         fontDir.enable = true;
         enableDefaultPackages = true;
@@ -197,7 +198,7 @@ in
             emoji = [
               "Blobmoji"
               "Noto Color Emoji"
-              "Font Awesome 6 Free"
+              "Material Design Icons"
             ];
             monospace = [ "Fira Code" ];
           };

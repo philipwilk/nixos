@@ -13,5 +13,4 @@
   };
 
   services.thermald.enable = true;
-  services.auto-cpufreq.enable = true;
 }

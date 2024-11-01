@@ -13,7 +13,8 @@
         totem
         yelp
         gnome-text-editor
-        gnome.gnome-software
+        gnome-software
+        epiphany
       ];
       systemPackages = with pkgs; [
         # Gnome extensions
