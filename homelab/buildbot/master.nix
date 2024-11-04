@@ -20,6 +20,8 @@ in
       enable = true;
       domain = domain;
 
+      evalWorkerCount = 4;
+
       workersFile = config.age.secrets.workers.path;
 
       admins = [ "philipwilk" ];
