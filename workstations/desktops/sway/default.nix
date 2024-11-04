@@ -131,33 +131,62 @@ in
             tray = {
               spacing = 4;
             };
-            bluetooth= {
+            bluetooth = {
               format-on = "󰂯";
               format-off = "󰂲";
               format-disabled = "󰂲";
               format-connected = "󰂱 {status}";
               on-click = "kitty bluetuith";
             };
-            network  = {
+            network = {
               format-ethernet = "󰈀 {ipaddr}";
               format-wifi = "{icon} {essid}";
-              format-icons = [ "󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ];
+              format-icons = [
+                "󰤯"
+                "󰤟"
+                "󰤢"
+                "󰤥"
+                "󰤨"
+              ];
               format-disconnected = "󰤮 Disconnected";
               on-click = "kitty nmtui";
             };
             backlight = {
               format = "{icon} {percent}%";
-              format-icons = ["󰃚" "󰃛" "󰃜" "󰃝" "󰃞" "󰃟" "󰃠" ];
+              format-icons = [
+                "󰃚"
+                "󰃛"
+                "󰃜"
+                "󰃝"
+                "󰃞"
+                "󰃟"
+                "󰃠"
+              ];
             };
             wireplumber = {
               format = "{icon} {volume}%";
-              format-icons = ["󰕿" "󰖀" "󰕾"];
+              format-icons = [
+                "󰕿"
+                "󰖀"
+                "󰕾"
+              ];
               format-muted = "󰸈 0%";
               on-click = "pavucontrol";
             };
             battery = {
               format = "{icon} {time} at {capacity}%";
-              format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+              format-icons = [
+                "󰁺"
+                "󰁻"
+                "󰁼"
+                "󰁽"
+                "󰁾"
+                "󰁿"
+                "󰂀"
+                "󰂁"
+                "󰂂"
+                "󰁹"
+              ];
               format-time = "{H}hrs {M}min remaining";
             };
           };

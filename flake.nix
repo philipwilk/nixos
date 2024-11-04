@@ -33,6 +33,10 @@
       url = "github:Mic92/buildbot-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -47,12 +51,15 @@
       nixos-generators,
       lanzaboote,
       buildbot-nix,
+      treefmt-nix,
       ...
     }@inputs:
     let
       systems = [ "x86_64-linux" ];
       forAllSystems = fn: nixpkgs.lib.genAttrs systems (sys: fn nixpkgs.legacyPackages.${sys});
       join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
+
+      treefmtEval = forAllSystems (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
       # Regional and nix settings for all machines
       commonModules = join-dirfile "configs" [
@@ -114,7 +121,7 @@
 
       nixosConfigurations = {
         # Systemd machines
-        prime  = unstableSystem ([ ./workstations/infra/prime ] ++ workstationModules);
+        prime = unstableSystem ([ ./workstations/infra/prime ] ++ workstationModules);
 
         probook = unstableSystem ([ ./workstations/infra/probook ] ++ workstationModules);
 
@@ -125,7 +132,11 @@
         thinkcentre = unstableSystem ([ ./homelab/infra/thinkcentre ] ++ homelabSys);
         itxserve = unstableSystem ([ ./homelab/infra/itxserve ] ++ homelabSys);
       };
-      formatter = forAllSystems (nixpkgs: nixpkgs.nixfmt-rfc-style);
+
+      formatter = forAllSystems (nixpkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+      checks = forAllSystems (pkgs: {
+        formatting = treefmtEval.${pkgs.system}.config.build.check self;
+      });
 
       devShells."x86_64-linux".default = pkgs.mkShell {
         packages = with pkgs; [
