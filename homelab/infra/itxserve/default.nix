@@ -33,20 +33,23 @@
 
       searxng.enable = true;
     };
-    games = {
-      # Needs statedir option fix /var/lib/factorio
-      factorio = {
-        enable = true;
-        admins = [ "wiryfuture" ];
-      };
-    };
-    buildbot = {
-      enableWorker = true;
-      enableMaster = true;
-    };
-    nix = {
-      hercules-ci.enable = true;
-      harmonia.enable = true;
+  };
+  homelab.buildbot = {
+    enableWorker = true;
+    enableMaster = true;
+  };
+  homelab.nix = {
+    hercules-ci.enable = true;
+    harmonia.enable = true;
+  };
+
+  homelab.games = {
+    # Needs statedir option fix /var/lib/factorio
+    factorio = {
+      enable = true;
+      admins = [ "wiryfuture" ];
     };
   };
+
+  services.factorio.saveName = "space";
 }
