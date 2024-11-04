@@ -134,9 +134,30 @@
       };
 
       formatter = forAllSystems (nixpkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-      checks = forAllSystems (pkgs: {
-        formatting = treefmtEval.${pkgs.system}.config.build.check self;
-      });
+
+      checks = forAllSystems (
+        pkgs:
+        let
+          lib = nixpkgs.lib;
+          inherit (pkgs.stdenv.hostPlatform) system;
+        in
+        lib.mergeAttrsList [
+          {
+            formatting = treefmtEval.${system}.config.build.check self;
+          }
+
+          # devShells.x86_64-linux.default -> devShells-default
+          (lib.mapAttrs' (name: lib.nameValuePair "devShells-${name}") self.devShells.${system})
+
+          # nixosConfigurations.machine -> nixosConfigurations-machine
+          # (and also makes sure they are for the current system)
+          (lib.filterAttrs (lib.const (deriv: deriv.system == system)) (
+            lib.mapAttrs' (
+              name: value: lib.nameValuePair "nixosConfigurations-${name}" value.config.system.build.toplevel
+            ) self.nixosConfigurations
+          ))
+        ]
+      );
 
       devShells."x86_64-linux".default = pkgs.mkShell {
         packages = with pkgs; [
