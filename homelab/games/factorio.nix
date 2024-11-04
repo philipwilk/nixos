@@ -35,7 +35,7 @@ in
       inherit package;
       openFirewall = true;
       requireUserVerification = true;
-      game-name = "broken bad";
+      game-name = "space trains";
       admins = cfg.admins;
       loadLatestSave = true;
       lan = true;
