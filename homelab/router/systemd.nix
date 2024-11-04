@@ -39,6 +39,17 @@ in
     networking.useDHCP = false;
     systemd.network = {
       enable = true;
+      links."link-${wan}" = {
+        matchConfig.Name = wan;
+        linkConfig = {
+          # WAN link is defaulting to 100mbps
+          # Think it is due to spurious rx errors
+          # Need to replace the link cable so it doesn't happen in the first place
+          # but i cba atm
+          BitsPerSecond = "1G";
+          Duplex = "full";
+        };
+      };
       networks = {
         "10-${wan}" = {
           matchConfig.Name = wan;
