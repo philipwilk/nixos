@@ -26,7 +26,9 @@ in
     };
     services.harmonia = {
       enable = true;
-      signKeyPath = config.age.secrets.harmonia.path;
+      signKeyPaths = [
+        config.age.secrets.harmonia.path
+      ];
     };
 
     services.nginx.virtualHosts.${domain} = {
