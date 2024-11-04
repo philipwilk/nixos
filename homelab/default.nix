@@ -39,7 +39,6 @@ in
       "mediawiki"
       "nginx"
       "mail"
-      "harmonia"
       "mastodon"
       "forgejo"
       "soft-serve"
