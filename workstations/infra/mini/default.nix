@@ -23,7 +23,7 @@ in
     "autovt@tty1".enable = false;
   };
 
-  environment.sessionVariables.FLAKE = "/home/mini/repos/nixconf";
+  environment.sessionVariables.FLAKE = "/home/mini/repos/nixos";
 
   console.keyMap = "uk";
   users.users.mini = {
