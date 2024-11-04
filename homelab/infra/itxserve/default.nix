@@ -40,6 +40,10 @@
         admins = [ "wiryfuture" ];
       };
     };
+    buildbot = {
+      enableWorker = true;
+      enableMaster = true;
+    };
     nix = {
       hercules-ci.enable = true;
       harmonia.enable = true;
