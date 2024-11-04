@@ -6,9 +6,14 @@ in
   config = lib.mkIf config.homelab.buildbot.enableMaster {
     age.secrets = {
       workers.file = ../../secrets/buildbot/workers.age;
-      user_sec.file = ../../secrets/buildbot/user_sec.age;
       oauth_sec.file = ../../secrets/buildbot/oauth_sec.age;
       webhook_sec.file = ../../secrets/buildbot/webhook_sec.age;
+      gh_pem.file = ../../secrets/buildbot/gh_pem.age;
+    };
+
+    services.buildbot-master = {
+      title = domain;
+      titleUrl = "https://${domain}/";
     };
 
     services.buildbot-nix.master = {
@@ -19,12 +24,14 @@ in
 
       admins = [ "philipwilk" ];
       github = {
-        authType.legacy.tokenFile = config.age.secrets.user_sec.path;
-
+        authType.app = {
+          id = 914149;
+          secretKeyFile = config.age.secrets.gh_pem.path;
+        };
         webhookSecretFile = config.age.secrets.webhook_sec.path;
-
         oauthId = "iv23liss80uhjbjh4cqd";
         oauthSecretFile = config.age.secrets.oauth_sec.path;
+        topic = "fogbox-buildbot";
       };
     };
 
