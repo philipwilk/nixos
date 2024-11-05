@@ -317,7 +317,7 @@ in
 
           keybindings =
             let
-              mod = config.wayland.windowManager.sway.config.modifier;
+              mod = config.home-manager.users.philip.wayland.windowManager.sway.config.modifier;
 
               #pamixer = lib.getExe pkgs.pamixer;
               #brightnessctl = lib.getExe pkgs.brightnessctl;
