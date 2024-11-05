@@ -14,7 +14,7 @@ tooltip label {
 }
 
 window#waybar {
-  background-color: @base;
+  background-color: #fff0f5;
   border-bottom: 3px solid @crust;
   color: @text;
   transition-property: background-color;
@@ -118,10 +118,6 @@ button:hover {
   margin-right: 0;
 }
 
-#clock {
-  background-color: @rosewater;
-}
-
 #battery {
   color: @text;
 }
@@ -149,7 +145,7 @@ button:hover {
 }
 
 label:focus {
-  background-color: #000000;
+  background-color: #fff0f5;
 }
 
 #cpu {
