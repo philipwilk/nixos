@@ -30,8 +30,8 @@
       email.enable = true;
       mastodon.enable = true; # needs stateDir fix
       soft-serve.enable = true; # needs stateDir fix
-
       searxng.enable = true;
+      jellyfin.enable = true;
     };
   };
   homelab.buildbot = {

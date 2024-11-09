@@ -7,7 +7,7 @@
 {
   options.homelab.services.nginx.enable = lib.mkOption {
     type = lib.types.bool;
-    default = false;
+    default = true;
     example = true;
     description = ''
       Whether to enable nginx for proxying/load balancing.

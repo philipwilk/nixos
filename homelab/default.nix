@@ -43,6 +43,7 @@ in
       "forgejo"
       "soft-serve"
       "searxng"
+      "jellyfin"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [

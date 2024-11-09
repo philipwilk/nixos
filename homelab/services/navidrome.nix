@@ -19,7 +19,7 @@
       settings = {
         Address = "127.0.0.1";
         Port = 4533;
-        MusicFolder = "${config.homelab.stateDir}/music";
+        MusicFolder = "${config.homelab.stateDir}/media/music";
         DataFolders = "${config.homelab.stateDir}/navidrome";
         CoverJpegQuality = 100;
         EnableSharing = true;
