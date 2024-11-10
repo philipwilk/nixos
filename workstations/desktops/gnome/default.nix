@@ -21,7 +21,6 @@
         gnomeExtensions.appindicator
         gnomeExtensions.forge
         gnomeExtensions.just-perfection
-        gnomeExtensions.rounded-window-corners
         gnomeExtensions.search-light
         gnomeExtensions.duckduckgo-search-provider
         gnomeExtensions.fuzzy-app-search
