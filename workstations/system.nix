@@ -83,12 +83,13 @@
           ardour
           kdenlive
           video-trimmer
-          picard
-          sound-juicer
           blender-hip
           # Media consumption
           vlc
           youtube-music
+          # Ripping
+          picard
+          asunder
           # Office stuff
           drawio
           matlab
