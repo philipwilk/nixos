@@ -10,5 +10,6 @@
     hostname = "rdg.uk.region.fogbox.uk";
     net.lan = "eno1";
     services.nginx.enable = true;
+    services.email.enable = true;
   };
 }

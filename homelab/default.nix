@@ -44,6 +44,7 @@ in
       "soft-serve"
       "searxng"
       "jellyfin"
+      "email"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [
