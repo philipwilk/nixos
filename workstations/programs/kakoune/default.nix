@@ -74,6 +74,14 @@ in
             }
           }
 
+          hook -group lsp-filetype-csharp global BufSetOption filetype=csharp %{
+            set-option buffer lsp_servers %{
+              [csharp-ls]
+              root_globs = ["cs", "csproj"]
+              command = "csharp-ls"
+            }
+          }
+
           # # Format file on write
           hook global BufSetOption filetype=* %{
             hook buffer BufWritePre .* lsp-formatting-sync
