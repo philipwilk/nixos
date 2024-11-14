@@ -128,6 +128,12 @@ in
       services = {
         power-profiles-daemon.enable = true;
         printing.enable = true;
+        avahi = {
+          enable = true;
+          nssmdns4 = true;
+          nssmdns6 = true;
+          ipv6 = true;
+        };
         gnome.gnome-keyring.enable = true;
         flatpak.enable = true;
         pipewire = {
