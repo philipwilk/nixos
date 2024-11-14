@@ -136,6 +136,7 @@ in
               format-off = "󰂲";
               format-disabled = "󰂲";
               format-connected = "󰂱 {status}";
+              format-connected-battery = "󰂱 {status} at 󰥉 {device_battery_percentage}%";
               on-click = "kitty bluetuith";
             };
             network = {
