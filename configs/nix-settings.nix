@@ -67,7 +67,6 @@
 
   # Ensure firmware is available
   hardware = {
-    enableAllFirmware = true;
     cpu = {
       amd = {
         updateMicrocode = true;
