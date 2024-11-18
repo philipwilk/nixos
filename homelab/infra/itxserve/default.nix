@@ -39,7 +39,7 @@
     enableMaster = true;
   };
   homelab.nix = {
-    hercules-ci.enable = true;
+    #hercules-ci.enable = true;
     harmonia.enable = true;
   };
 
