@@ -40,26 +40,15 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixpkgs-stable,
-      agenix,
-      nix-matlab,
-      home-manager,
-      catppuccin,
-      nixos-generators,
-      lanzaboote,
-      buildbot-nix,
-      treefmt-nix,
-      ...
-    }@inputs:
+    { self, ... }@inputs:
     let
-      systems = [ "x86_64-linux" ];
-      forAllSystems = fn: nixpkgs.lib.genAttrs systems (sys: fn nixpkgs.legacyPackages.${sys});
+      system = "x86_64-linux";
+      systems = [ system ];
+      forAllSystems =
+        fn: inputs.nixpkgs.lib.genAttrs systems (sys: fn inputs.nixpkgs.legacyPackages.${sys});
       join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
 
-      treefmtEval = forAllSystems (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
+      treefmtEval = forAllSystems (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
       # Regional and nix settings for all machines
       commonModules = join-dirfile "configs" [
@@ -70,10 +59,10 @@
       # Homelab
       homelabSys = commonModules ++ [
         ./homelab
-        agenix.nixosModules.default
+        inputs.agenix.nixosModules.default
         ./homelab/config.nix
-        buildbot-nix.nixosModules.buildbot-master
-        buildbot-nix.nixosModules.buildbot-worker
+        inputs.buildbot-nix.nixosModules.buildbot-master
+        inputs.buildbot-nix.nixosModules.buildbot-worker
         ./configs/boot/systemd.nix
       ];
 
@@ -85,34 +74,50 @@
         ])
         ++ commonModules
         ++ [
-          home-manager.nixosModules.home-manager
-          agenix.nixosModules.default
-          catppuccin.nixosModules.catppuccin
-          lanzaboote.nixosModules.lanzaboote
+          inputs.home-manager.nixosModules.home-manager
+          inputs.agenix.nixosModules.default
+          inputs.catppuccin.nixosModules.catppuccin
+          inputs.lanzaboote.nixosModules.lanzaboote
           ./workstations
         ];
 
-      buildSys =
-        nxpkgs: mods:
-        nxpkgs.lib.nixosSystem {
-          modules = mods;
-          specialArgs = inputs;
-        };
-
-      unstableSystem = buildSys nixpkgs;
-      stableSystem = buildSys nixpkgs-stable;
-
       buildIso =
         arch: mods:
-        nixos-generators.nixosGenerate {
+        inputs.nixos-generators.nixosGenerate {
           system = arch;
           modules = [ ./cluster ] ++ commonModules ++ mods;
           specialArgs = inputs;
           format = "iso";
         };
-      buildX86Iso = buildIso "x86_64-linux";
+      buildX86Iso = buildIso system;
 
-      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      patches = [
+        {
+          meta.description = "rustdesk-flutter: fix build #356450";
+          url = "https://github.com/NixOS/nixpkgs/pull/356450/commits/b932f695ed895e02c8687a2bafaa215332bcae30.patch";
+          sha256 = "2NIivzZ7/EKnyCJwNApoKbBMnvUwa2GBQB1GwJW8msY=";
+        }
+        {
+          meta.description = "python312Packages.pyside6: fix eval on linux #356081";
+          url = "https://github.com/NixOS/nixpkgs/pull/356081.patch";
+          sha256 = "6PhvfzyRXNlMlgVawBx29yLKDUsoOljWKJs7ryEzCFM=";
+        }
+      ];
+
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      nixpkgs = pkgs.applyPatches {
+        name = "nixpkgs-patched";
+        src = inputs.nixpkgs;
+        patches = map pkgs.fetchpatch patches;
+      };
+      nixosSystem = import (nixpkgs + "/nixos/lib/eval-config.nix");
+      buildSystem =
+        modules:
+        nixosSystem {
+          inherit modules;
+          inherit system;
+          specialArgs = inputs;
+        };
     in
     {
       # packages.x86_64-linux = {
@@ -121,16 +126,16 @@
 
       nixosConfigurations = {
         # Systemd machines
-        prime = unstableSystem ([ ./workstations/infra/prime ] ++ workstationModules);
+        prime = buildSystem ([ ./workstations/infra/prime ] ++ workstationModules);
 
-        probook = unstableSystem ([ ./workstations/infra/probook ] ++ workstationModules);
+        probook = buildSystem ([ ./workstations/infra/probook ] ++ workstationModules);
 
-        mini = unstableSystem ([ ./workstations/infra/mini ] ++ workstationModules);
+        mini = buildSystem ([ ./workstations/infra/mini ] ++ workstationModules);
 
         # nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
 
-        thinkcentre = unstableSystem ([ ./homelab/infra/thinkcentre ] ++ homelabSys);
-        itxserve = unstableSystem ([ ./homelab/infra/itxserve ] ++ homelabSys);
+        thinkcentre = buildSystem ([ ./homelab/infra/thinkcentre ] ++ homelabSys);
+        itxserve = buildSystem ([ ./homelab/infra/itxserve ] ++ homelabSys);
       };
 
       formatter = forAllSystems (nixpkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
@@ -138,7 +143,7 @@
       checks = forAllSystems (
         pkgs:
         let
-          lib = nixpkgs.lib;
+          lib = inputs.nixpkgs.lib;
           inherit (pkgs.stdenv.hostPlatform) system;
         in
         lib.mergeAttrsList [
