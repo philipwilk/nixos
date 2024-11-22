@@ -77,6 +77,7 @@
           prismlauncher
           moonlight-qt
           heroic
+          bottles
           packwiz
           # Media creation
           obs-studio
