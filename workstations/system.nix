@@ -13,6 +13,7 @@
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
 
     boot.kernelParams = [ "net.ipv4.tcp_mtu_probing=1" ];
+    boot.kernelModules = [ "sg" ];
 
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
@@ -53,6 +54,8 @@
           "libvirtd"
           "video"
           "input"
+          "cdrom"
+          "optical"
         ];
         hashedPasswordFile = config.age.secrets.workstation_password.path;
         packages = with pkgs; [
@@ -90,6 +93,8 @@
           # Ripping
           picard
           asunder
+          handbrake
+          makemkv
           # Office stuff
           drawio
           matlab
