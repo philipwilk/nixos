@@ -119,6 +119,7 @@ in
           wl-clip-persist
           networkmanager-openvpn
           ripunzip
+          gparted
 
           # Chore replacements
           pavucontrol
