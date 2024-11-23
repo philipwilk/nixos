@@ -84,6 +84,7 @@ in
               "ldap"
               "kakoune/default"
               "matlab"
+              "nushell"
             ];
 
           home = {
