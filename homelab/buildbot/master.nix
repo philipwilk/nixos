@@ -27,11 +27,11 @@ in
       admins = [ "philipwilk" ];
       github = {
         authType.app = {
-          id = 1063454;
+          id = 914149;
           secretKeyFile = config.age.secrets.gh_pem.path;
         };
         webhookSecretFile = config.age.secrets.webhook_sec.path;
-        oauthId = "Iv23lizVk8Nt5SdqYS6f";
+        oauthId = "iv23liss80uhjbjh4cqd";
         oauthSecretFile = config.age.secrets.oauth_sec.path;
         topic = "fogbox-buildbot";
       };
