@@ -159,7 +159,7 @@ in
   config = lib.mkIf config.homelab.enable (
     lib.mkMerge [
       {
-        # Assertions        
+        # Assertions
         assertions = [
           {
             assertion = config.homelab.services.openldap.enable -> config.homelab.acme.mail != null;

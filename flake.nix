@@ -74,7 +74,7 @@
         ])
         ++ commonModules
         ++ [
-          inputs.home-manager.nixosModules.home-manager
+          hm
           inputs.agenix.nixosModules.default
           inputs.catppuccin.nixosModules.catppuccin
           inputs.lanzaboote.nixosModules.lanzaboote
@@ -92,15 +92,18 @@
       buildX86Iso = buildIso system;
 
       patches = [
+        # {
+        #   meta.description = "description for the patch" ;
+        #   url = "";
+        #   sha256 = "";
+        # }
+      ];
+
+      hmPatches = [
         {
-          meta.description = "rustdesk-flutter: fix build #356450";
-          url = "https://github.com/NixOS/nixpkgs/pull/356450/commits/b932f695ed895e02c8687a2bafaa215332bcae30.patch";
-          sha256 = "2NIivzZ7/EKnyCJwNApoKbBMnvUwa2GBQB1GwJW8msY=";
-        }
-        {
-          meta.description = "python312Packages.pyside6: fix eval on linux #356081";
-          url = "https://github.com/NixOS/nixpkgs/pull/356081.patch";
-          sha256 = "6PhvfzyRXNlMlgVawBx29yLKDUsoOljWKJs7ryEzCFM=";
+          meta.description = "kakoune: add missing '.source' from colorSchemePackage xdg file";
+          url = "https://github.com/nix-community/home-manager/commit/000b3186f357574cee6f9a8169b1eda36efedea7.patch";
+          sha256 = "sha256-5hurKre/1VzzvezMP/gA1SiH/GP49l54vRmpinuEJJU=";
         }
       ];
 
@@ -118,6 +121,15 @@
           inherit system;
           specialArgs = inputs;
         };
+
+      hm = import (
+        (pkgs.applyPatches {
+          name = "home-manager-patched";
+          src = inputs.home-manager;
+          patches = map pkgs.fetchpatch hmPatches;
+        })
+        + "/nixos/default.nix"
+      );
     in
     {
       # packages.x86_64-linux = {
