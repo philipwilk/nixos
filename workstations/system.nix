@@ -63,7 +63,7 @@
           tor-browser-bundle-bin
           qbittorrent
           # Communication
-          (discord.override { withOpenASAR = true; })
+          (discord-canary.override { withOpenASAR = true; })
           slack
           teams-for-linux
           telegram-desktop
