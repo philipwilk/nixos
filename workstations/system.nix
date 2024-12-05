@@ -21,6 +21,14 @@
     nixpkgs.overlays = [
       nix-matlab.overlay
       nix-your-shell.overlays.default
+      # Enable aacs+bdplus
+      (self: super: {
+        libbluray = super.libbluray.override {
+          withAACS = true;
+          withBDplus = true;
+          withJava = true;
+        };
+      })
     ];
 
     environment = {
