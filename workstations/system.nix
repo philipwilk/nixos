@@ -81,6 +81,7 @@
           ventoy-full
           rkdeveloptool
           usbimager
+          syncthing
           # Games
           prismlauncher
           moonlight-qt
@@ -104,6 +105,7 @@
           asunder
           handbrake
           makemkv
+          mkvtoolnix
           # Office stuff
           drawio
           matlab

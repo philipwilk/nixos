@@ -120,6 +120,7 @@ in
           networkmanager-openvpn
           ripunzip
           gparted
+          baobab
 
           # Chore replacements
           pavucontrol
