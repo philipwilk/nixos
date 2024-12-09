@@ -99,6 +99,7 @@
           blender-hip
           # Media consumption
           vlc
+          jellyfin-media-player
           youtube-music
           # Ripping
           picard
