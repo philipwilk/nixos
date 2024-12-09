@@ -22,9 +22,9 @@
 
   nix = {
     package = pkgs.nixVersions.latest;
-    # registry = lib.mapAttrs (_: value: { flake = value; }) {
-    #   inherit nixpkgs nixpkgs-unstable;
-    # };
+    registry = lib.mapAttrs (_: value: { flake = value; }) {
+      inherit nixpkgs;
+    };
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
     settings = {
       experimental-features = "nix-command flakes auto-allocate-uids ca-derivations";
