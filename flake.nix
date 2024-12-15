@@ -100,11 +100,6 @@
       ];
 
       hmPatches = [
-        {
-          meta.description = "kakoune: add missing '.source' from colorSchemePackage xdg file";
-          url = "https://github.com/nix-community/home-manager/commit/000b3186f357574cee6f9a8169b1eda36efedea7.patch";
-          sha256 = "sha256-5hurKre/1VzzvezMP/gA1SiH/GP49l54vRmpinuEJJU=";
-        }
       ];
 
       pkgs = inputs.nixpkgs.legacyPackages.${system};
