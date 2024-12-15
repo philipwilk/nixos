@@ -341,7 +341,8 @@ in
               "XF86AudioNext" = "exec ${playerctl} next";
               "XF86AudioPrev" = "exec ${playerctl} previous";
               # Screenshots
-              "Print" = ''exec ${grim} -g "$(${slurp} -d)" - | wl-copy -t image/png && wl-paste > ~/Pictures/Screenshots/screenshot-$(date).png'';
+              "Print" =
+                ''exec ${grim} -g "$(${slurp} -d)" - | wl-copy -t image/png && wl-paste > ~/Pictures/Screenshots/screenshot-$(date).png'';
             };
         };
         # Swayfx

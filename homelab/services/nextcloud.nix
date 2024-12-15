@@ -93,16 +93,17 @@
       forceSSL = true;
       enableACME = true;
       locations = {
-        "~ \\.(?:css|js|mjs|svg|gif|png|jpg|jpeg|ico|wasm|tflite|map|html|ttf|bcmap|mp4|webm|ogg|flac)$".extraConfig = lib.mkForce ''
-          try_files $uri /index.php$request_uri;
-          access_log off;
-          location ~ \.mjs$ {
-            default_type text/javascript;
-          }
-          location ~ \.wasm$ {
-            default_type application/wasm;
-          }
-        '';
+        "~ \\.(?:css|js|mjs|svg|gif|png|jpg|jpeg|ico|wasm|tflite|map|html|ttf|bcmap|mp4|webm|ogg|flac)$".extraConfig =
+          lib.mkForce ''
+            try_files $uri /index.php$request_uri;
+            access_log off;
+            location ~ \.mjs$ {
+              default_type text/javascript;
+            }
+            location ~ \.wasm$ {
+              default_type application/wasm;
+            }
+          '';
         "~ \.woff2?$".extraConfig = ''
           try_files $uri /index.php$request_uri;
           expires 7d;

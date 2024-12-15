@@ -24,9 +24,11 @@
       kernelModules = [ ];
       luks.devices = {
         # LUKS root
-        "luks-02a8e4f1-370a-4bed-ba04-7d7950dbe564".device = "/dev/disk/by-uuid/02a8e4f1-370a-4bed-ba04-7d7950dbe564";
+        "luks-02a8e4f1-370a-4bed-ba04-7d7950dbe564".device =
+          "/dev/disk/by-uuid/02a8e4f1-370a-4bed-ba04-7d7950dbe564";
         # LUKS swapfile
-        "luks-56963998-41a4-4ca6-afc9-a9eadb2b93c9".device = "/dev/disk/by-uuid/56963998-41a4-4ca6-afc9-a9eadb2b93c9";
+        "luks-56963998-41a4-4ca6-afc9-a9eadb2b93c9".device =
+          "/dev/disk/by-uuid/56963998-41a4-4ca6-afc9-a9eadb2b93c9";
         # Extra storage space
         "n1p1".device = "/dev/disk/by-uuid/c86a86c1-d7d8-488d-b630-2a98b9bf539b";
       };
