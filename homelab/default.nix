@@ -44,6 +44,7 @@ in
       "soft-serve"
       "searxng"
       "jellyfin"
+      "homeAssistant"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [
