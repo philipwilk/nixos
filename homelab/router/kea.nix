@@ -41,7 +41,7 @@ in
               option-data = [
                 {
                   name = "domain-name-servers";
-                  data = "9.9.9.9, 1.1.1.1";
+                  data = "1.1.1.1, 9.9.9.9";
                 }
                 {
                   name = "routers";

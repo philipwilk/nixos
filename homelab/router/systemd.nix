@@ -6,8 +6,8 @@ let
   lan = config.homelab.router.devices.lan;
   wan = config.homelab.router.devices.wan;
 
-  dns4 = "9.9.9.9 1.1.1.1";
-  dns6 = "2620:fe::fe 2606:4700:4700::1111";
+  dns4 = "1.1.1.1 9.9.9.9";
+  dns6 = "2606:4700:4700::1111 2620:fe::fe";
 
   dnsCfg = {
     DNS = "${dns6} ${dns4}";
