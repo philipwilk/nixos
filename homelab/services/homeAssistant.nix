@@ -78,9 +78,6 @@ in
     #
     virtualisation.oci-containers.containers."otbr" = {
       image = "docker.io/openthread/otbr:latest";
-      environment = {
-        INFRA_IF_NAME = config.homelab.net.lan;
-      };
       devices = [
         dongleDevice
       ];
@@ -90,7 +87,12 @@ in
       };
       privileged = true;
       cmd = [
-        "--radio-url=spinel+hdlc+uart://${dongleDevice}"
+        "--radio-url \"spinel+hdlc+uart://${dongleDevice}?uart-baudrate=460800\""
+        "--backbone-interface ${config.homelab.net.lan}"
+      ];
+      extraOptions = [
+        "--network=host"
+        "--sysctl \"net.ipv6.conf.all.disable_ipv6=0 net.ipv4.conf.all.forwarding=1 net.ipv6.conf.all.forwarding=1\""
       ];
       ports = [
         "8081:8081"
