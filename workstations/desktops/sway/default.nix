@@ -48,7 +48,10 @@ in
         enableWifi = true;
         submitData = true;
       };
+      gvfs.enable = true;
+      udisks2.enable = true;
     };
+    programs.gnome-disks.enable = true;
     programs.dconf.enable = true;
 
     xdg.portal = {
@@ -354,6 +357,8 @@ in
 
           bindgesture swipe:right workspace prev
           bindgesture swipe:left workspace next
+
+          exec ${lib.getExe' pkgs.udiskie "udiskie"}
 
           exec swaync
           bindsym Mod4+Shift+n exec swaync-client -t -sw
