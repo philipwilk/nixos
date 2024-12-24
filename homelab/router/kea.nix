@@ -17,12 +17,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # https://gitlab.isc.org/isc-projects/kea/-/issues/3188
+    # kea cant handle hot plugging devices, so must wait until it is ready or it will silently fail
     services.kea = {
       dhcp4 = {
         enable = true;
         settings = {
           interfaces-config = {
             interfaces = [ config.homelab.router.devices.lan ];
+            dhcp-socket-type = "raw";
+            service-sockets-max-retries = 100;
+            service-sockets-retry-wait-time = 5000;
           };
           lease-database = {
             name = "/var/lib/kea/dhcp4.leases";
