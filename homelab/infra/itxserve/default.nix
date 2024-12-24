@@ -26,7 +26,6 @@
         enable = true;
         name = "CS lore";
       };
-      uptime-kuma.enable = true;
       email.enable = true;
       mastodon.enable = true; # needs stateDir fix
       soft-serve.enable = true; # needs stateDir fix

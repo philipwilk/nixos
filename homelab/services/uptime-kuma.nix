@@ -19,6 +19,10 @@
       };
     };
 
+    systemd.services.uptime-kuma.serviceConfig.ReadWritePaths = [
+      "${config.homelab.stateDir}/uptime-kuma"
+    ];
+
     # The default port is 3001 (there is no option for it)
     services.nginx.virtualHosts."status.${config.homelab.tld}" = {
       forceSSL = true;
