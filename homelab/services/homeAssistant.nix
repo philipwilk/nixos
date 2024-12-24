@@ -75,29 +75,31 @@ in
     #  ];
     #  volumes = [ "${config.homelab.stateDir}/multipan:/data:Z" ];
     #};
-    #
+    boot.kernelModules = [ "ip6table_filter" ];
     virtualisation.oci-containers.containers."otbr" = {
       image = "docker.io/openthread/otbr:latest";
       devices = [
         dongleDevice
+        "/dev/net/tun"
       ];
       capabilities = {
         CAP_NET_ADMIN = true;
         CAP_NET_RAW = true;
+        CAP_SYSLOG = true;
       };
-      privileged = true;
       cmd = [
         "--radio-url \"spinel+hdlc+uart://${dongleDevice}?uart-baudrate=460800\""
-        "--backbone-interface ${config.homelab.net.lan}"
       ];
       extraOptions = [
-        "--network=host"
-        "--sysctl \"net.ipv6.conf.all.disable_ipv6=0 net.ipv4.conf.all.forwarding=1 net.ipv6.conf.all.forwarding=1\""
+        "--sysctl net.ipv6.conf.all.disable_ipv6=0"
+        "--sysctl net.ipv4.conf.all.forwarding=1"
+        "--sysctl net.ipv6.conf.all.forwarding=1"
       ];
       ports = [
         "8081:8081"
         "8086:80"
       ];
+      volumes = [ "${config.homelab.stateDir}/multipan:/data:Z" ];
     };
 
     services.matter-server.enable = true; # needs stateDir patch
