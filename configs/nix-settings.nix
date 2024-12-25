@@ -6,18 +6,12 @@
   ...
 }:
 {
-  nixpkgs = {
-    # overlays = let
-    #   overlay = _: _: {
-    #     unstable = import nixpkgs-unstable {
-    #       system = "x86_64-linux";
-    #       inherit (config.nixpkgs) config;
-    #     };
-    #   };
-    # in [ overlay ];
-    config = {
-      allowUnfree = true;
-    };
+  nixpkgs.config.allowUnfree = true;
+
+  boot.plymouth = {
+    enable = true;
+    themePackages = with pkgs; [ nixos-bgrt-plymouth ];
+    theme = lib.mkDefault "nixos-bgrt";
   };
 
   nix = {
