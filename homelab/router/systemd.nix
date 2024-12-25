@@ -71,6 +71,7 @@ in
               DHCP = "yes";
               IPv6AcceptRA = "yes";
               LinkLocalAddressing = "ipv6";
+              IPv4Forwarding = "yes";
             }
             dnsCfg
           ];
@@ -108,6 +109,8 @@ in
               DHCPPrefixDelegation = "yes";
               # DHCPServer = "yes";
               Address = "${routerIp}/16";
+              IPv4Forwarding = "yes";
+              IPMasquerade = "ipv4";
             }
             dnsCfg
           ];
@@ -129,5 +132,18 @@ in
         };
       };
     };
+
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+      636
+      389
+      25
+      465
+      993
+      22420
+      22
+      34197
+    ];
   };
 }

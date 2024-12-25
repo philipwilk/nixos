@@ -6,7 +6,6 @@ in
   imports = join-dirfile "./" [
     "systemd"
     "ntpd-rs"
-    "nat"
     "kea"
   ];
 
