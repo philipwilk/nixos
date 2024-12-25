@@ -41,6 +41,7 @@
       git
       helix
       zoxide
+      bat
       # cli utils
       hyfetch
       usbutils
@@ -49,6 +50,7 @@
       dnsutils
       dmidecode
       sbctl
+      ethtool
       # nix utils
       nix-output-monitor
       nh
