@@ -107,21 +107,31 @@ in
               IPv6SendRA = "yes";
               LinkLocalAddressing = "ipv6";
               DHCPPrefixDelegation = "yes";
-              # DHCPServer = "yes";
+              DHCPServer = "yes";
               Address = "${routerIp}/16";
               IPv4Forwarding = "yes";
               IPMasquerade = "ipv4";
             }
             dnsCfg
           ];
-          # dhcpServerConfig = {
-          #   EmitDNS = "yes";
-          #   DNS = dns4;
-          #   EmitNTP = "yes";
-          #   NTP = routerIp;
-          #   PoolOffset = 100;
-          #   ServerAddress = "${routerIp}/16";
-          # };
+          dhcpServerConfig = {
+            EmitRouter = "yes";
+            EmitDNS = "yes";
+            DNS = dns4;
+            EmitNTP = "yes";
+            NTP = routerIp;
+            PoolOffset = 100;
+            ServerAddress = "${routerIp}/16";
+            UplinkInterface = wan;
+            DefaultLeaseTimeSec = 1800;
+          };
+          dhcpServerStaticLeases = [
+            # {
+            #   # Idac for example
+            #   Address = "192.168.1.50";
+            #   MACAddress = "54:9f:35:14:57:3e";
+            # }
+          ];
           linkConfig.RequiredForOnline = "no";
           ipv6SendRAConfig = {
             EmitDNS = "yes";
@@ -132,6 +142,12 @@ in
         };
       };
     };
+
+    # Open ports for dhcp server on lan
+    networking.firewall.interfaces.${lan}.allowedUDPPorts = [
+      67
+      68
+    ];
 
     networking.firewall.allowedTCPPorts = [
       80
