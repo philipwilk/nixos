@@ -14,6 +14,10 @@
 
     boot.kernelParams = [ "net.ipv4.tcp_mtu_probing=1" ];
     boot.kernelModules = [ "sg" ];
+    boot.plymouth = {
+      themePackages = with pkgs; [ plymouth-blahaj-theme ];
+      theme = "blahaj";
+    };
 
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
