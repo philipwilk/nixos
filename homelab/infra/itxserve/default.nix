@@ -42,6 +42,16 @@
     harmonia.enable = true;
   };
 
+  age.secrets.itxservePriv.file = ../../../secrets/wireguard/itxserve/private.age;
+  homelab.networking.wireguard = {
+    enable = true;
+    isServer = true;
+  };
+  networking.wireguard.interfaces.wg0 = {
+    privateKeyFile = config.age.secrets.itxservePriv.path;
+    ips = [ "10.100.0.1/24" ];
+  };
+
   homelab.games = {
     # Needs statedir option fix /var/lib/factorio
     factorio = {
