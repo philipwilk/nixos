@@ -51,10 +51,14 @@
       treefmtEval = forAllSystems (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
       # Regional and nix settings for all machines
-      commonModules = join-dirfile "configs" [
-        "nix-settings"
-        "uk-region"
-      ];
+      commonModules =
+        (join-dirfile "configs" [
+          "nix-settings"
+          "uk-region"
+        ])
+        ++ [
+          ./homelab/networking/wireguard.nix
+        ];
 
       # Homelab
       homelabSys = commonModules ++ [

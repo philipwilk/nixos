@@ -51,6 +51,7 @@
       dmidecode
       sbctl
       ethtool
+      wireguard-tools
       # nix utils
       nix-output-monitor
       nh

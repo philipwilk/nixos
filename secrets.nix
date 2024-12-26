@@ -73,4 +73,9 @@ in
   ${s "searxng/sec"}.publicKeys = servers;
   # zfs notifs
   ${s "zedMailPwd"}.publicKeys = servers;
+  # Wireguard
+  ${s "wireguard/itxserve/private"}.publicKeys = [ itxserve ];
+  ${s "wireguard/thinkcentre/private"}.publicKeys = [ thinkcentre ];
+  ${s "wireguard/probook/private"}.publicKeys = [ laptop ];
+  ${s "wireguard/prime/private"}.publicKeys = [ pc ];
 }
