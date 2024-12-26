@@ -63,6 +63,7 @@ in
           };
         };
       };
+      config.networkConfig.IPv6Forwarding = "yes";
       networks = {
         "10-${wan}" = {
           matchConfig.Name = wan;
