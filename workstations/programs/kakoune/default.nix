@@ -56,11 +56,21 @@ in
 
         hook -group lsp-filetype-java global BufSetOption filetype=java %{
           set-option buffer lsp_servers %{
-            [java-language-server]
+            [jdtls]
             root_globs = ["mvnw", "gradlew", ".git", ".hg"]
-            command = "java-language-server"
+            [jdtls.settings]
+            "java.format.insertSpaces" = true
+            "java.format.tabChar" = "space"
+            "java.format.tabSize" = 2
+            "java.format.insertSpaceAfterClosingAngleBracketInTypeArguments" = "insert"
+            "java.format.insertSpaceAfterOpeningAngleBracketInTypeArguments" = "insert"
+            "java.format.insertSpaceAfterClosingAngleBracketInParameterizedTypeReference" = "insert"
+            "java.format.insertSpaceAfterOpeningAngleBracketInParameterizedTypeReference" = "insert"
+            "java.format.insertSpaceAfterOpeningBraceInArrayInitializer" = "insert"
+            "java.format.insertSpaceBeforeClosingBraceInArrayInitializer" = "insert"
+            "java.format.insertSpaceBetweenEmptyBracketsInArrayAllocationExpression" = "insert"
           }
-        }
+         }
 
         hook -group lsp-filetype-csharp global BufSetOption filetype=csharp %{
           set-option buffer lsp_servers %{
