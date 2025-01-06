@@ -80,6 +80,14 @@ in
           }
         }
 
+        hook -group lsp-filetype-xml global BufSetOption filetype=xml %{
+          set-option buffer lsp_servers %{
+            [lemminx]
+            root_globs = ["xml", "html", "fxml"]
+            command = "lemminx"
+          }
+        }
+
         # # Format file on write
         hook global BufSetOption filetype=* %{
           hook buffer BufWritePre .* lsp-formatting-sync
