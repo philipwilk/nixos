@@ -162,7 +162,6 @@ in
         dns = "systemd-resolved";
       };
       hardware = {
-        pulseaudio.enable = false;
         bluetooth = {
           enable = true;
           powerOnBoot = true;
