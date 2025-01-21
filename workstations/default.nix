@@ -18,6 +18,7 @@ in
     ++ join-dirfile "programs" [
       "git"
       "mercurial"
+      "i18n"
     ];
 
   options.workstation = {
@@ -66,6 +67,8 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf config.workstation.declarativeHome {
+      workstations.i18n.enable = true;
+
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;

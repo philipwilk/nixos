@@ -82,10 +82,6 @@ in
     home-manager.users.philip = {
       home.sessionVariables = {
         "_JAVA_AWT_WM_NONREPARENTING" = "1";
-        "GTK_IM_MODULE" = "fcitx";
-        "QT_QPA_PLATFORM" = "xcb";
-        "QT_IM_MODULE" = "ibus";
-        "XMODIFIERS " = "@im=fcitx";
       };
 
       programs = {
