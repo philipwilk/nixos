@@ -16,6 +16,9 @@ let
   s = x: "secrets/${x}.age";
 in
 {
+  # wifi passwords
+  ${s "wifiPasswords"}.publicKeys = servers ++ workstations;
+  #
   ${s "cloudflare"}.publicKeys = servers;
   ${s "desec"}.publicKeys = servers;
   ${s "ldap_admin_pw"}.publicKeys = servers ++ workstations;
