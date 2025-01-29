@@ -67,7 +67,7 @@
           tor-browser-bundle-bin
           qbittorrent
           # Communication
-          (discord-canary.override { withOpenASAR = true; })
+          (discord.override { withOpenASAR = true; })
           slack
           teams-for-linux
           telegram-desktop
@@ -89,10 +89,9 @@
           gimp
           krita
           rawtherapee
-          ardour
           kdenlive
           video-trimmer
-          blender-hip
+          blender
           # Media consumption
           vlc
           jellyfin-media-player
