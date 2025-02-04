@@ -101,11 +101,6 @@
         #   url = "";
         #   sha256 = "";
         # }
-        {
-          meta.description = "swayfx: fix updated libinput switch";
-          url = "https://github.com/NixOS/nixpkgs/pull/376189.patch";
-          hash = "sha256-fuw+gpj6TJR7LEjcqT6JOiZ0lIvcKwrSV/hf+se7Lb8=";
-        }
       ];
 
       hmPatches = [
