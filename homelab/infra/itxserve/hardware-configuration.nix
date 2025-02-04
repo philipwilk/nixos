@@ -29,8 +29,16 @@
       device = "rootpool/home";
       fsType = "zfs";
     };
+    "/mnt/zfs/rootTier" = {
+      device = "rootpool/rootTier";
+      fsType = "zfs";
+    };
     "/pool" = {
       device = "storagepool/pool";
+      fsType = "zfs";
+    };
+    "/mnt/zfs/rust" = {
+      device = "rust/root";
       fsType = "zfs";
     };
     "/boot" = {

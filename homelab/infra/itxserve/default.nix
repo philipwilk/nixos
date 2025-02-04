@@ -46,6 +46,25 @@
     harmonia.enable = true;
   };
 
+  services.autotierfs = {
+    enable = true;
+    settings."/mnt/autotier/tier" = {
+      Global = {
+        "Log Level" = 1;
+        "Tier Period" = 1000;
+        "Copy Buffer Size" = "1 MiB";
+      };
+      "Tier 1" = {
+        Path = "/pool/tier";
+        Quota = "600GiB";
+      };
+      "Tier 2" = {
+        Path = "/mnt/zfs/rust/tier";
+        Quota = "1.7TiB";
+      };
+    };
+  };
+
   age.secrets.itxservePriv.file = ../../../secrets/wireguard/itxserve/private.age;
   homelab.networking.wireguard = {
     enable = true;
