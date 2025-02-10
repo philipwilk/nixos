@@ -17,4 +17,10 @@
   networking.wireless.enable = true;
   networking.wireless.secretsFile = config.age.secrets.wifiPasswords.path;
   networking.wireless.networks."Xiaomi AX3000T".pskRaw = "ext:clubhouse";
+
+  homelab.services.kanidm = {
+    enable = true;
+    domain = "testing-idm.fogbox.uk";
+    backupCount = 0;
+  };
 }
