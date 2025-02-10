@@ -7,7 +7,9 @@
 let
   otbrApiPort = 8081;
   otbrPort = 8086;
-  dongleDevice = "/dev/ttyUSB0";
+  ezspRadio = "/dev/ttyUSB0";
+  threadRadio = "/dev/ttyUSB1";
+  dongleDevice = threadRadio;
 in
 {
   options.homelab.services.homeAssistant.enable = lib.mkEnableOption "the home assistant config";
