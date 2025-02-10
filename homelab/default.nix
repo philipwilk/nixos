@@ -45,6 +45,7 @@ in
       "searxng"
       "jellyfin"
       "homeAssistant"
+      "kanidm"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [
