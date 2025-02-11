@@ -164,6 +164,8 @@
       fprintd.enable = true;
       pcscd.enable = true;
       openssh.settings.UseDns = true;
+      kanidm.enableClient = true;
+      kanidm.clientSettings.uri = "https://testing-idm.fogbox.uk";
       udev.extraRules = ''
         KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
         SUBSYSTEM=="hidraw*", ATTRS{idVendor}=="256c", MODE="0666"
