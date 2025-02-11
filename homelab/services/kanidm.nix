@@ -60,9 +60,7 @@ in
 
     services.kanidm = {
       enableClient = true;
-      clientSettings = {
-        uri = config.services.kanidm.serverSettings.origin;
-      };
+      clientSettings.uri = config.services.kanidm.serverSettings.origin;
       enableServer = true;
       serverSettings = {
         #db_path = lib.mkForce "${config.homelab.stateDir}/kanidm/kanidm.db"; # why is this read only you state heathens
