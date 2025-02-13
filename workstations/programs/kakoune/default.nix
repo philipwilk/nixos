@@ -89,10 +89,11 @@ in
         }
 
         # # Format file on write
-        hook global BufSetOption filetype=* %{
+        hook global WinCreate .* %{
           hook buffer BufWritePre .* lsp-formatting-sync
         }
 
+        lsp-auto-hover-disable
         lsp-inlay-hints-enable global
 
         # Bind lsp tab completion and tab indenting
