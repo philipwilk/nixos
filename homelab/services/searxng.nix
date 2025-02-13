@@ -104,6 +104,7 @@ in
             # General search
             "duckduckgo".disabled = false;
             "bing".disabled = false;
+            "google".disabled = true;
             "brave".disabled = true;
             # IT/Development
             "crates.io".disabled = false;
