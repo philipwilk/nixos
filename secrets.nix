@@ -81,4 +81,6 @@ in
   ${s "wireguard/thinkcentre/private"}.publicKeys = [ thinkcentre ];
   ${s "wireguard/probook/private"}.publicKeys = [ laptop ];
   ${s "wireguard/prime/private"}.publicKeys = [ pc ];
+  # Jupyterhub
+  ${s "jupyter-envs"}.publicKeys = servers;
 }
