@@ -46,6 +46,7 @@ in
       "jellyfin"
       "homeAssistant"
       "kanidm"
+      "jupyter"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [
