@@ -18,6 +18,7 @@
     };
     services = {
       nginx.enable = true;
+      jupyterhub.enable = true;
       nextcloud = {
         enable = true;
         domain = "cloud.${config.homelab.tld}";
