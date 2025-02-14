@@ -68,6 +68,7 @@
         inputs.buildbot-nix.nixosModules.buildbot-master
         inputs.buildbot-nix.nixosModules.buildbot-worker
         ./configs/boot/systemd.nix
+        ./configs/idmUserAuth.nix
       ];
 
       # Desktops
