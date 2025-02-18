@@ -24,8 +24,8 @@ in
         in
         ''
           c.Spawner.http_timeout = 60
-          c.SystemdSpawner.dynamic_users = True
           c.JupyterHub.spawner_class = 'systemd'
+          c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}']
 
           c.JupyterHub.authenticator_class = 'generic-oauth'
           c.GenericOAuthenticator.client_id = 'jupyterhub'
@@ -66,7 +66,7 @@ in
                 joblib
                 netcdf4
                 ipython
-                #         pyquerylist
+                pyquerylist
                 statsmodels
                 tensorflow
                 mlxtend
@@ -92,6 +92,9 @@ in
             "-f"
             "{connection_file}"
           ];
+          env = {
+            TF_ENABLE_ONEDNN_OPTS = "0";
+          };
           language = "python";
           logo32 = "${env}/${env.sitePackages}/ipykernel/resources/logo-32x32.png";
           logo64 = "${env}/${env.sitePackages}/ipykernel/resources/logo-64x64.png";

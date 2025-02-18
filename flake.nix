@@ -102,6 +102,11 @@
         #   url = "";
         #   sha256 = "";
         # }
+        {
+          meta.description = "init pyquerylist";
+          url = "https://github.com/NixOS/nixpkgs/pull/382170.patch";
+          hash = "sha256-lkVU6tQtjkeRdYNqpx5dysjUoTnWWYo+xDmWp85atAc=";
+        }
       ];
 
       hmPatches = [
