@@ -127,6 +127,7 @@ in
           # Chore replacements
           pavucontrol
           powertop
+          nvtopPackages.full
         ];
       };
 
