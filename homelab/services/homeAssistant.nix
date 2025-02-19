@@ -50,7 +50,7 @@ in
 
     # for silabs multiprotocol
     # https://hub.docker.com/r/b2un0/silabs-multipan-docker
-    networking.firewall.allowedTCPPorts = [
+    networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [
       otbrPort
     ];
     #virtualisation.oci-containers.containers."silabs-multipan" = {
