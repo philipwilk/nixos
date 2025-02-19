@@ -404,6 +404,9 @@ in
       # Zfs monitoring
       (lib.mkIf config.boot.zfs.enabled {
         age.secrets.zedMailPwd.file = ../secrets/zedMailPwd.age;
+        systemd.services.zfs-zed.serviceConfig.LoadCredential = [
+          "smtpPwd:${config.age.secrets.zedMailPwd.path}"
+        ];
 
         programs.msmtp = {
           enable = true;
@@ -419,7 +422,7 @@ in
           accounts = {
             default = {
               host = "${cfg.tld}";
-              passwordeval = "cat ${config.age.secrets.zedMailPwd.path}";
+              passwordeval = "cat /run/credentials/zfs-zed.service/smtpPwd";
               user = "zfs@services.${cfg.tld}";
               from = "zfs@services.${cfg.tld}";
             };
