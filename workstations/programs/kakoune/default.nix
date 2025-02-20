@@ -49,11 +49,16 @@ in
         eval %sh{kak-lsp --kakoune -s $kak_session}
         lsp-enable
 
+        lsp-auto-hover-disable
+        lsp-inlay-hints-enable global
+
         # # LSP servers
         hook -group lsp-filetype-nix global BufSetOption filetype=nix %{
           set-option buffer lsp_servers %{
+            [nil]
+            root_globs = ["flake.nix", "shell.nix", ".git", ".hg"]
             [nil.settings]
-            "formatting.command" = "nix fmt"
+            nil.formatting.command = ["nixfmt"]
           }
         }
 
@@ -95,9 +100,6 @@ in
         hook global WinCreate .* %{
           hook buffer BufWritePre .* lsp-formatting-sync
         }
-
-        lsp-auto-hover-disable
-        lsp-inlay-hints-enable global
 
         # Bind lsp tab completion and tab indenting
         map global insert <tab> <c-n>
