@@ -26,6 +26,9 @@ in
         wrapLines.enable = true;
       };
       extraConfig = ''
+        # Enable auto folder creation (why is this not a default)
+        hook global BufWritePre .* %{ nop %sh{ mkdir -p $(dirname "$kak_hook_param") }}
+
         # Enable auto pairs
         enable-auto-pairs
 
