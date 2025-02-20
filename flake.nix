@@ -37,13 +37,20 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-dns = {
+      url = "github:Janik-Haag/nixos-dns";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     { self, ... }@inputs:
     let
       system = "x86_64-linux";
-      systems = [ system ];
+      systems = [
+        system
+        "aarch64-linux"
+      ];
       forAllSystems =
         fn: inputs.nixpkgs.lib.genAttrs systems (sys: fn inputs.nixpkgs.legacyPackages.${sys});
       join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
@@ -69,6 +76,7 @@
         inputs.buildbot-nix.nixosModules.buildbot-worker
         ./configs/boot/systemd.nix
         ./configs/idmUserAuth.nix
+        inputs.nixos-dns.nixosModules.dns
       ];
 
       # Desktops
@@ -106,6 +114,11 @@
           meta.description = "init pyquerylist";
           url = "https://github.com/NixOS/nixpkgs/pull/382170.patch";
           hash = "sha256-lkVU6tQtjkeRdYNqpx5dysjUoTnWWYo+xDmWp85atAc=";
+        }
+        {
+          meta.description = "init octodns-providers.desec";
+          url = "https://github.com/NixOS/nixpkgs/commit/f45b6fe6c0dae0088f2bfc0705952960ecdcf459.patch";
+          hash = "sha256-o3WpghffLqBZPKnazI64EV9DZMvIS68XPhdSdBBmeHI=";
         }
       ];
 
@@ -156,6 +169,32 @@
       };
 
       formatter = forAllSystems (nixpkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+
+      packages = inputs.nixpkgs.lib.genAttrs systems (
+        system:
+        let
+          generate = inputs.nixos-dns.utils.generate inputs.nixpkgs.legacyPackages.${system};
+        in
+        {
+          zoneFiles = generate.zoneFiles {
+            inherit (self) nixosConfigurations;
+            extraConfig = import ./homelab/dns.nix;
+          };
+          octodns = generate.octodnsConfig {
+            dnsConfig = {
+              inherit (self) nixosConfigurations;
+              extraConfig = import ./homelab/dns.nix;
+            };
+            config.providers.desec = {
+              class = "octodns_desec.DesecProvider";
+              token = "env/DESEC_TOKEN";
+            };
+            zones = {
+              "fogbox.uk." = inputs.nixos-dns.utils.octodns.generateZoneAttrs [ "desec" ];
+            };
+          };
+        }
+      );
 
       checks = forAllSystems (
         pkgs:
