@@ -11,6 +11,7 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
+  boot.lanzaboote.pkiBundle = lib.mkForce "/var/lib/sbctl";
   boot = {
     initrd = {
       availableKernelModules = [
