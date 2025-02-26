@@ -21,6 +21,11 @@
 
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
+    hardware.openrazer = {
+      enable = true;
+      users = [ "philip" ];
+      keyStatistics = true;
+    };
 
     nixpkgs.overlays = [
       nix-matlab.overlay
@@ -94,6 +99,7 @@
           "input"
           "cdrom"
           "optical"
+          "plugdev"
         ];
         hashedPasswordFile = config.age.secrets.workstation_password.path;
         packages = with pkgs; [
@@ -118,6 +124,7 @@
           heroic
           bottles
           packwiz
+          polychromatic
           # Media creation
           obs-studio
           gimp
