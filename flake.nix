@@ -105,7 +105,7 @@
         {
           meta.description = "init pyquerylist";
           url = "https://github.com/NixOS/nixpkgs/pull/382170.patch";
-          hash = "sha256-lkVU6tQtjkeRdYNqpx5dysjUoTnWWYo+xDmWp85atAc=";
+          hash = "sha256-4PxP9WTjvwu50Uad5CJhN8H1p658mH5LVeLQQhGA02E=";
         }
       ];
 
