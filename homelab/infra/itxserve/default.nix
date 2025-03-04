@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -85,4 +85,31 @@
   };
 
   services.factorio.saveName = "space";
+
+  boot.kernelModules = [ "nct6775" ];
+  environment.etc."fancontrol".text = ''
+    INTERVAL=10
+    DEVPATH=hwmon1=devices/platform/nct6775.656
+    DEVNAME=hwmon1=nct6798
+    FCTEMPS=
+    FCFANS= hwmon1/pwm4=hwmon1/fan4_input
+    MINTEMP=
+    MAXTEMP=
+    MINSTART=
+    MINSTOP=
+  '';
+  environment.systemPackages = with pkgs; [ hddfancontrol ];
+  services.hddfancontrol = {
+    enable = true;
+    logVerbosity = "TRACE";
+    pwmPaths = [ "/sys/class/hwmon/hwmon1/pwm4:25:10" ];
+    disks = [
+      "/dev/disk/by-id/scsi-35000c500422e3433"
+      "/dev/disk/by-id/scsi-35000c50056de8567"
+    ];
+    extraArgs = [
+      "--interval=30s"
+      "--min-fan-speed-prct=50"
+    ];
+  };
 }

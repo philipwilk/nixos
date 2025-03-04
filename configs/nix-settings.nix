@@ -52,6 +52,7 @@
       sbctl
       ethtool
       wireguard-tools
+      lm_sensors
       # nix utils
       nix-output-monitor
       nh
