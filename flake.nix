@@ -107,6 +107,11 @@
           url = "https://github.com/NixOS/nixpkgs/pull/382170.patch";
           hash = "sha256-4PxP9WTjvwu50Uad5CJhN8H1p658mH5LVeLQQhGA02E=";
         }
+        {
+          meta.description = "update hddfancontrol";
+          url = "https://github.com/NixOS/nixpkgs/commit/c33ce5304477db332ca4b138c6acba38948c1d3a.patch";
+          hash = "sha256-w+UphdliGUzRvm5DprPgARetS+S4Q0g+3OpKrDM3/5Y=";
+        }
       ];
 
       hmPatches = [
