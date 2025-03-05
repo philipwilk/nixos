@@ -19,7 +19,7 @@ in
         };
         tabStop = 2;
         indentWidth = 2;
-        colorScheme = "catppuccin_latte";
+        colorScheme = "solarized-light";
         showWhitespace.enable = true;
         showMatching = true;
         numberLines.enable = true;
@@ -141,7 +141,7 @@ in
         kakoune-lsp
         smarttab-kak
       ];
-      colorSchemePackage = pkgs.kakounePlugins.kakoune-catppuccin;
+      #colorSchemePackage = pkgs.kakounePlugins.kakoune-catppuccin;
     };
   };
 }
