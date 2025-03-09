@@ -42,36 +42,22 @@ in
           c.GenericOAuthenticator.allowed_groups = { 'idm_all_persons@testing-idm.fogbox.uk' }
           c.GenericOAuthenticator.admin_groups = { 'idm_people_admins@testing-idm.fogbox.uk' }
         '';
-      jupyterhubEnv = (
-        pkgs.buildEnv {
-          name = "jupterhub-env";
-          paths = with pkgs; [
-            (python3.withPackages (
-              p: with p; [
-                jupyterhub
-                jupyterhub-systemdspawner
-                oauthenticator
-              ]
-            ))
-            git
-          ];
-        }
+      jupyterhubEnv = pkgs.python3.withPackages (
+        p: with p; [
+          jupyterhub
+          jupyterhub-systemdspawner
+          oauthenticator
+        ]
       );
-      jupyterlabEnv = (
-        pkgs.buildEnv {
-          name = "jupyterlab-env";
-          paths = with pkgs; [
-            (pkgs.python3.withPackages (
-              p: with p; [
-                jupyterhub
-                jupyterlab
-                python-lsp-server
-                jupyterlab-git
-              ]
-            ))
-            git
-          ];
-        }
+      jupyterlabEnv = pkgs.python3.withPackages (
+        p: with p; [
+          (jupyterhub.overridePythonAttrs (previousAttrs: {
+            dependencies = previousAttrs.dependencies ++ [ pkgs.git ];
+          }))
+          jupyterlab
+          python-lsp-server
+          jupyterlab-git
+        ]
       );
       kernels.python3 =
         let
