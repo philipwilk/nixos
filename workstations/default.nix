@@ -82,6 +82,7 @@ in
               "zoxide"
               "virtman"
               "ssh"
+              "easyeffects"
               "catppuccin"
               "ldap"
               "kakoune/default"
