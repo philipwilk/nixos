@@ -9,6 +9,13 @@ let
 in
 {
   config = {
+    # Essential linters/LSPs
+    home.packages = with pkgs; [
+      nixfmt-rfc-style
+      nil
+      lemminx
+    ];
+
     programs.kakoune = {
       enable = true;
       defaultEditor = true;
