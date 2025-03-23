@@ -117,6 +117,11 @@
           url = "https://github.com/NixOS/nixpkgs/pull/392405.patch";
           hash = "sha256-46i3vilSlYiOf9M31e4ApX8NEDimULNaVPvVoLvFS4U=";
         }
+        {
+          meta.description = "hddfancontrol sas support";
+          url = "https://github.com/NixOS/nixpkgs/compare/master...philipwilk:nixpkgs:hddfancontrol-sas.patch";
+          hash = "sha256-S+alCCs1UmmJInLgKLLyEjRYBF2VgtZcjsOpDwLBAGA=";
+        }
       ];
 
       hmPatches = [
