@@ -109,7 +109,6 @@
     ];
     extraArgs = [
       "--interval=30s"
-      "--min-fan-speed-prct=50"
     ];
   };
 }
