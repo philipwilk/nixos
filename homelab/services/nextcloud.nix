@@ -59,7 +59,7 @@
         trusted_proxies = [ "127.0.0.1" ];
         mysql.utf8mb4 = true;
       };
-      package = pkgs.nextcloud30;
+      package = pkgs.nextcloud31;
     };
 
     services.mysql = {
