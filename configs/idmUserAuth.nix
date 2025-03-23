@@ -31,6 +31,7 @@ in
     users.mutableUsers = false;
     services.kanidm = {
       enablePam = true;
+      package = lib.mkForce pkgs.kanidm;
       clientSettings.uri = "https://${cfg.idmDomain}";
       unixSettings = {
         pam_allowed_login_groups = cfg.allowedGroups;

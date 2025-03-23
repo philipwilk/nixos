@@ -109,7 +109,6 @@ in
           chromium
           firefox
           thunderbird
-          rustdesk-flutter
           libreoffice
 
           ## Cli utils

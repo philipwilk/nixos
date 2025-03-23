@@ -100,7 +100,7 @@
         # {
         #   meta.description = "description for the patch" ;
         #   url = "";
-        #   sha256 = "";
+        #   hash = "";
         # }
         {
           meta.description = "init pyquerylist";
@@ -108,9 +108,14 @@
           hash = "sha256-oTy/YP3VB9mCQLFv3dN17QmrQ8V3tgEOkP9qzCWD4yw=";
         }
         {
-          meta.description = "update hddfancontrol";
-          url = "https://github.com/NixOS/nixpkgs/commit/c33ce5304477db332ca4b138c6acba38948c1d3a.patch";
-          hash = "sha256-w+UphdliGUzRvm5DprPgARetS+S4Q0g+3OpKrDM3/5Y=";
+          meta.description = "fix mlxtend";
+          url = "https://github.com/NixOS/nixpkgs/pull/392453.patch";
+          hash = "sha256-8UM38Km67vHmUmFlFsHFZy5ESqgB+15xbNbIRSMnPAM=";
+        }
+        {
+          meta.description = "fix imbalanced-learn";
+          url = "https://github.com/NixOS/nixpkgs/pull/392405.patch";
+          hash = "sha256-46i3vilSlYiOf9M31e4ApX8NEDimULNaVPvVoLvFS4U=";
         }
       ];
 
