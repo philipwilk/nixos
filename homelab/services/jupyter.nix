@@ -57,6 +57,7 @@ in
           jupyterlab
           python-lsp-server
           jupyterlab-git
+          ipympl
         ]
       );
       kernels.python3 =
@@ -89,6 +90,8 @@ in
                 opencv-python
                 psycopg2
                 html5lib
+
+                ipympl
               ]
             )
           );
