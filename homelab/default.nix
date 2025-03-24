@@ -306,14 +306,19 @@ in
         services.prometheus.exporters = {
           node.enable = true;
           zfs.enable = true;
+          smartctl.enable = true;
         };
 
-        age.secrets.nodeBasicAuth = {
+        age.secrets.nodeHtpasswd = {
           file = ../secrets/prometheus/exporters/node/htpasswd.age;
           owner = "nginx";
         };
-        age.secrets.zfsBasicAuth = {
+        age.secrets.zfsHtpasswd = {
           file = ../secrets/prometheus/exporters/zfs/htpasswd.age;
+          owner = "nginx";
+        };
+        age.secrets.smartctlHtpasswd = {
+          file = ../secrets/prometheus/exporters/smartctl/htpasswd.age;
           owner = "nginx";
         };
         services.nginx.virtualHosts = {
@@ -323,7 +328,7 @@ in
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.node.port}";
               proxyWebsockets = true;
-              basicAuthFile = config.age.secrets.nodeBasicAuth.path;
+              basicAuthFile = config.age.secrets.nodeHtpasswd.path;
             };
           };
           "z.stats.${cfg.hostname}" = {
@@ -332,7 +337,16 @@ in
             locations."/" = {
               proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.zfs.port}";
               proxyWebsockets = true;
-              basicAuthFile = config.age.secrets.zfsBasicAuth.path;
+              basicAuthFile = config.age.secrets.zfsHtpasswd.path;
+            };
+          };
+          "smart.stats.${cfg.hostname}" = {
+            forceSSL = true;
+            enableACME = true;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.smartctl.port}";
+              proxyWebsockets = true;
+              basicAuthFile = config.age.secrets.smartctlHtpasswd.path;
             };
           };
         };
@@ -346,45 +360,70 @@ in
           file = ../secrets/prometheus/exporters/zfs/basicAuthPassword.age;
           owner = "prometheus";
         };
-        services.prometheus = {
-          enable = true;
-          enableReload = true;
-          webExternalUrl = "https://prometheus.${cfg.tld}/";
-          scrapeConfigs = [
-            {
-              job_name = "node";
-              scheme = "https";
-              basic_auth = {
-                username = "prometheus";
-                password_file = config.age.secrets.nodeBasicAuthPassword.path;
-              };
-              static_configs = [
-                {
-                  targets = [
-                    "n.stats.sou.uk.region.fogbox.uk"
-                    "n.stats.rdg.uk.region.fogbox.uk"
-                  ];
-                }
-              ];
-            }
-            {
-              job_name = "zfs";
-              scheme = "https";
-              basic_auth = {
-                username = "prometheus";
-                password_file = config.age.secrets.zfsBasicAuthPassword.path;
-              };
-              static_configs = [
-                {
-                  targets = [
-                    "z.stats.sou.uk.region.fogbox.uk"
-                    "z.stats.rdg.uk.region.fogbox.uk"
-                  ];
-                }
-              ];
-            }
-          ];
+        age.secrets.smartctlBasicAuthPassword = {
+          file = ../secrets/prometheus/exporters/smartctl/basicAuthPassword.age;
+          owner = "prometheus";
         };
+        services.prometheus =
+          let
+            genStatNames = hostnames: suff: map (hostname: "${suff}.stats.${hostname}") hostnames;
+            targetHostnames = [
+              "sou.uk.region.fogbox.uk"
+              "rdg.uk.region.fogbox.uk"
+            ];
+          in
+          {
+            enable = true;
+            enableReload = true;
+            webExternalUrl = "https://prometheus.${cfg.tld}/";
+            scrapeConfigs = [
+              {
+                job_name = "node";
+                scheme = "https";
+                basic_auth = {
+                  username = "prometheus";
+                  password_file = config.age.secrets.nodeBasicAuthPassword.path;
+                };
+                static_configs = [
+                  {
+                    targets = [
+                      "n.stats.sou.uk.region.fogbox.uk"
+                      "n.stats.rdg.uk.region.fogbox.uk"
+                    ];
+                  }
+                ];
+              }
+              {
+                job_name = "zfs";
+                scheme = "https";
+                basic_auth = {
+                  username = "prometheus";
+                  password_file = config.age.secrets.zfsBasicAuthPassword.path;
+                };
+                static_configs = [
+                  {
+                    targets = [
+                      "z.stats.sou.uk.region.fogbox.uk"
+                      "z.stats.rdg.uk.region.fogbox.uk"
+                    ];
+                  }
+                ];
+              }
+              {
+                job_name = "smartctl";
+                scheme = "https";
+                basic_auth = {
+                  username = "prometheus";
+                  password_file = config.age.secrets.smartctlBasicAuthPassword.path;
+                };
+                static_configs = [
+                  {
+                    targets = genStatNames targetHostnames "smart";
+                  }
+                ];
+              }
+            ];
+          };
 
         age.secrets.prometheusBasicAuth = {
           file = ../secrets/prometheus/htpasswd.age;
