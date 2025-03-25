@@ -101,7 +101,6 @@
   environment.systemPackages = with pkgs; [ hddfancontrol ];
   services.hddfancontrol = {
     enable = true;
-    logVerbosity = "TRACE";
     pwmPaths = [ "/sys/class/hwmon/hwmon1/pwm4:25:10" ];
     disks = [
       "/dev/disk/by-id/scsi-35000c500422e3433"
