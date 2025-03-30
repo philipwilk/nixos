@@ -1,6 +1,8 @@
-{ pkgs, ... }:
 {
-  programs.zoxide = {
+  ...
+}:
+{
+  programs.skim = {
     enable = true;
     enableFishIntegration = true;
   };

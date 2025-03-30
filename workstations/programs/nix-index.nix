@@ -1,12 +1,11 @@
 {
-  config,
   pkgs,
   ...
 }:
 {
-  programs.carapace.enable = true;
-  programs.nix-your-shell = {
+  programs.nix-index = {
     enable = true;
     enableFishIntegration = true;
   };
+  home.packages = with pkgs; [ comma ];
 }
