@@ -244,7 +244,6 @@ in
       wayland.windowManager.sway = {
         enable = true;
         package = pkgs.swayfx;
-        catppuccin.enable = true;
         systemd.xdgAutostart = true;
         swaynag.enable = true;
         wrapperFeatures = {

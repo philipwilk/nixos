@@ -2,8 +2,5 @@
   ...
 }:
 {
-  programs.helix = {
-    enable = true;
-    catppuccin.enable = true;
-  };
+  programs.helix.enable = true;
 }
