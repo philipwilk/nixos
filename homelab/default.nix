@@ -368,8 +368,8 @@ in
           let
             genStatNames = hostnames: suff: map (hostname: "${suff}.stats.${hostname}") hostnames;
             targetHostnames = [
-              "sou.uk.region.fogbox.uk"
-              "rdg.uk.region.fogbox.uk"
+              "sou.uk.region.${cfg.tld}"
+              "rdg.uk.region.${cfg.tld}"
             ];
           in
           {
@@ -386,10 +386,7 @@ in
                 };
                 static_configs = [
                   {
-                    targets = [
-                      "n.stats.sou.uk.region.fogbox.uk"
-                      "n.stats.rdg.uk.region.fogbox.uk"
-                    ];
+                    targets = genStatNames targetHostnames "n";
                   }
                 ];
               }
@@ -402,10 +399,7 @@ in
                 };
                 static_configs = [
                   {
-                    targets = [
-                      "z.stats.sou.uk.region.fogbox.uk"
-                      "z.stats.rdg.uk.region.fogbox.uk"
-                    ];
+                    targets = genStatNames targetHostnames "z";
                   }
                 ];
               }
