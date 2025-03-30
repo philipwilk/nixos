@@ -197,7 +197,7 @@ in
           settings = {
             main = {
               exit-on-keyboard-focus-loss = false;
-              terminal = "${lib.getExe pkgs.nushell}";
+              terminal = "${lib.getExe pkgs.fish}";
               layer = "overlay";
             };
           };

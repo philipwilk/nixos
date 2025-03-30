@@ -67,7 +67,7 @@
       };
 
     environment = {
-      shells = with pkgs; [ nushell ];
+      shells = with pkgs; [ fish ];
       systemPackages = with pkgs; [
         # Terminals and shells
         kitty
@@ -86,7 +86,6 @@
     };
 
     users = {
-      defaultUserShell = pkgs.nushell;
       users.philip = {
         isNormalUser = true;
         extraGroups = [
