@@ -3,6 +3,7 @@
   pkgs,
   config,
   catppuccin,
+  nix-index-database,
   ...
 }:
 let
@@ -74,7 +75,10 @@ in
         useUserPackages = true;
         users.philip = {
           imports =
-            [ catppuccin.homeManagerModules.catppuccin ]
+            [
+              catppuccin.homeManagerModules.catppuccin
+              nix-index-database.hmModules.nix-index
+            ]
             ++ join-dirfile "programs" [
               "nys"
               "direnv"

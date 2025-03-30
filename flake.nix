@@ -37,6 +37,10 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -82,6 +86,7 @@
           hm
           inputs.agenix.nixosModules.default
           inputs.catppuccin.nixosModules.catppuccin
+          inputs.nix-index-database.nixosModules.nix-index
           inputs.lanzaboote.nixosModules.lanzaboote
           ./workstations
         ];

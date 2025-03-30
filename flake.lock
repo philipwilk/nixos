@@ -325,6 +325,26 @@
         "type": "github"
       }
     },
+    "nix-index-database": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1743306489,
+        "narHash": "sha256-LROaIjSLo347cwcHRfSpqzEOa2FoLSeJwU4dOrGm55E=",
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "rev": "b3696bfb6c24aa61428839a99e8b40c53ac3a82d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
     "nix-matlab": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -484,6 +504,7 @@
         "catppuccin": "catppuccin",
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
+        "nix-index-database": "nix-index-database",
         "nix-matlab": "nix-matlab",
         "nix-your-shell": "nix-your-shell",
         "nixos-generators": "nixos-generators",
