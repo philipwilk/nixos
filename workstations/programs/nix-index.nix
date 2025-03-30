@@ -7,5 +7,6 @@
     enable = true;
     enableFishIntegration = true;
   };
-  home.packages = with pkgs; [ comma ];
+  programs.nix-index-database.comma.enable = true;
+  programs.command-not-found.enable = false;
 }
