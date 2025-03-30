@@ -2,8 +2,5 @@
   ...
 }:
 {
-  programs.starship = {
-    enable = true;
-    catppuccin.enable = true;
-  };
+  programs.starship.enable = true;
 }

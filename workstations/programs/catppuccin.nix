@@ -3,7 +3,7 @@
   catppuccin.flavor = "latte";
   catppuccin = {
     enable = true;
-    pointerCursor = {
+    cursors = {
       enable = true;
       accent = "peach";
     };
