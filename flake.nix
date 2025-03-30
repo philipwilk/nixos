@@ -103,11 +103,6 @@
         #   hash = "";
         # }
         {
-          meta.description = "init pyquerylist";
-          url = "https://github.com/NixOS/nixpkgs/pull/382170.patch";
-          hash = "sha256-oTy/YP3VB9mCQLFv3dN17QmrQ8V3tgEOkP9qzCWD4yw=";
-        }
-        {
           meta.description = "fix mlxtend";
           url = "https://github.com/NixOS/nixpkgs/pull/392453.patch";
           hash = "sha256-8UM38Km67vHmUmFlFsHFZy5ESqgB+15xbNbIRSMnPAM=";
@@ -118,9 +113,9 @@
           hash = "sha256-46i3vilSlYiOf9M31e4ApX8NEDimULNaVPvVoLvFS4U=";
         }
         {
-          meta.description = "hddfancontrol sas support";
-          url = "https://github.com/NixOS/nixpkgs/compare/master...philipwilk:nixpkgs:hddfancontrol-sas.patch";
-          hash = "sha256-S+alCCs1UmmJInLgKLLyEjRYBF2VgtZcjsOpDwLBAGA=";
+          meta.description = "openrazer-daemon: 3.9.0->3.10.1";
+          url = "https://github.com/NixOS/nixpkgs/pull/384992/commits/66bcc6b31f5006232e0b1c94aff3f5eab1667da6.patch";
+          hash = "sha256-3YNNqStB05OekaY4fCa+Pyc0YSfSYxgzEuqle5JfE7w=";
         }
       ];
 
