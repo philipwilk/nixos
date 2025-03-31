@@ -19,7 +19,7 @@
       settings = {
         Address = "127.0.0.1";
         Port = 4533;
-        MusicFolder = "/mnt/zfs/rust/media/music";
+        MusicFolder = "/mnt/zfs/colossus/media/music";
         DataFolders = "${config.homelab.stateDir}/navidrome";
         CoverJpegQuality = 100;
         EnableSharing = true;

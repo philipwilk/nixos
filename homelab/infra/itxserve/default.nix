@@ -47,25 +47,6 @@
     harmonia.enable = true;
   };
 
-  services.autotierfs = {
-    enable = true;
-    settings."/mnt/autotier/tier" = {
-      Global = {
-        "Log Level" = 1;
-        "Tier Period" = 1000;
-        "Copy Buffer Size" = "1 MiB";
-      };
-      "Tier 1" = {
-        Path = "/pool/tier";
-        Quota = "600GiB";
-      };
-      "Tier 2" = {
-        Path = "/mnt/zfs/rust/tier";
-        Quota = "1.7TiB";
-      };
-    };
-  };
-
   age.secrets.itxservePriv.file = ../../../secrets/wireguard/itxserve/private.age;
   homelab.networking.wireguard = {
     enable = true;
@@ -109,8 +90,14 @@
         lffBay = {
           pwmPaths = [ "/sys/class/hwmon/hwmon1/pwm4:25:10" ];
           disks = byId [
-            "scsi-35000c500422e3433"
-            "scsi-35000c50056de8567"
+            "scsi-35000cca2530a67ec"
+            "scsi-35000cca2530c4cbc"
+            "scsi-35000cca2530cd21c"
+            "scsi-35000cca2530cf7b8"
+            "scsi-35000cca2530d3dd4"
+            "scsi-35000cca2530d5a24"
+            "scsi-35000cca2530a7f1c"
+            "scsi-35000cca2530cf2a4"
           ];
           extraArgs = [
             "--interval=30s"

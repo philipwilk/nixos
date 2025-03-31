@@ -20,7 +20,7 @@ in
       description = "path for kanidm backups.";
       example = "/mnt/kanidm";
       type = lib.types.str;
-      default = "/mnt/zfs/rust/backups/kanidm";
+      default = "/mnt/zfs/colossus/backups/kanidm";
     };
     backupCount = lib.mkOption {
       description = "number of kanidm backups to keep. 0 to disable backups";

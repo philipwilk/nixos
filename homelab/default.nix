@@ -463,7 +463,6 @@ in
         };
 
         services.zfs = {
-          autoScrub.enable = true;
           zed = {
             settings = {
               ZED_EMAIL_ADDR = [ "philipwilk@fogbox.uk" ];
