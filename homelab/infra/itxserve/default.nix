@@ -92,7 +92,7 @@
     DEVPATH=hwmon1=devices/platform/nct6775.656
     DEVNAME=hwmon1=nct6798
     FCTEMPS=
-    FCFANS= hwmon1/pwm4=hwmon1/fan4_input
+    FCFANS= hwmon1/pwm1=hwmon1/fan1_input hwmon1/pwm4=hwmon1/fan4_input
     MINTEMP=
     MAXTEMP=
     MINSTART=
@@ -101,13 +101,33 @@
   environment.systemPackages = with pkgs; [ hddfancontrol ];
   services.hddfancontrol = {
     enable = true;
-    pwmPaths = [ "/sys/class/hwmon/hwmon1/pwm4:25:10" ];
-    disks = [
-      "/dev/disk/by-id/scsi-35000c500422e3433"
-      "/dev/disk/by-id/scsi-35000c50056de8567"
-    ];
-    extraArgs = [
-      "--interval=30s"
-    ];
+    settings =
+      let
+        byId = builtins.map (disk: "/dev/disk/by-id/${disk}");
+      in
+      {
+        lffBay = {
+          pwmPaths = [ "/sys/class/hwmon/hwmon1/pwm4:25:10" ];
+          disks = byId [
+            "scsi-35000c500422e3433"
+            "scsi-35000c50056de8567"
+          ];
+          extraArgs = [
+            "--interval=30s"
+          ];
+        };
+        sffBay = {
+          pwmPaths = [ "/sys/class/hwmon/hwmon1/pwm1:80:55" ];
+          disks = byId [
+            "ata-KIOXIA-EXCERIA_SATA_SSD_62RB71ENKFV4"
+            "ata-KIOXIA-EXCERIA_SATA_SSD_72GB81JJKLQ4"
+            "ata-KIOXIA-EXCERIA_SATA_SSD_72JB81UEKFV4"
+            "ata-KIOXIA-EXCERIA_SATA_SSD_72JB81UIKFV4"
+          ];
+          extraArgs = [
+            "--interval=30s"
+          ];
+        };
+      };
   };
 }

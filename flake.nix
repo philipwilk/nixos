@@ -122,6 +122,11 @@
           url = "https://github.com/NixOS/nixpkgs/pull/384992/commits/66bcc6b31f5006232e0b1c94aff3f5eab1667da6.patch";
           hash = "sha256-3YNNqStB05OekaY4fCa+Pyc0YSfSYxgzEuqle5JfE7w=";
         }
+        {
+          meta.description = "nixos/hddfancontrol: use attrset for config";
+          url = "https://github.com/NixOS/nixpkgs/pull/394826.patch";
+          hash = "sha256-po0qU0TCxxGgKQMDzKEP6L/EtaZWdDYRXJPjYqPe0YU=";
+        }
       ];
 
       hmPatches = [
