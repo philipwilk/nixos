@@ -65,15 +65,20 @@
         ];
 
       # Homelab
-      homelabSys = commonModules ++ [
-        ./homelab
-        inputs.agenix.nixosModules.default
-        ./homelab/config.nix
-        inputs.buildbot-nix.nixosModules.buildbot-master
-        inputs.buildbot-nix.nixosModules.buildbot-worker
-        ./configs/boot/systemd.nix
-        ./configs/idmUserAuth.nix
-      ];
+      homelabSys =
+        commonModules
+        ++ [
+          ./homelab
+          inputs.agenix.nixosModules.default
+          ./homelab/config.nix
+          inputs.buildbot-nix.nixosModules.buildbot-master
+          inputs.buildbot-nix.nixosModules.buildbot-worker
+        ]
+        ++ (join-dirfile "configs/" [
+          "boot/systemd"
+          "idmUserAuth"
+          "zfs"
+        ]);
 
       # Desktops
       workstationModules =

@@ -37,10 +37,6 @@
       device = "storagepool/pool";
       fsType = "zfs";
     };
-    "/mnt/zfs/rust" = {
-      device = "rust/root";
-      fsType = "zfs";
-    };
     "/boot" = {
       device = "/dev/disk/by-uuid/301A-81CF";
       fsType = "vfat";
@@ -48,6 +44,11 @@
         "fmask=0022"
         "dmask=0022"
       ];
+    };
+    "/mnt/zfs/colossus" = {
+      device = "colossus/root";
+      fsType = "zfs";
+      options = [ "zfsutil" ]; # removes need for dataset to have a legacy mountpoint
     };
   };
 
