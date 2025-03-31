@@ -115,7 +115,7 @@
         {
           meta.description = "fix imbalanced-learn";
           url = "https://github.com/NixOS/nixpkgs/pull/392405.patch";
-          hash = "sha256-46i3vilSlYiOf9M31e4ApX8NEDimULNaVPvVoLvFS4U=";
+          hash = "sha256-jHshSGpZs+MkwP4S2j0eMihwHjn3SdcGEL78MYRRhD0=";
         }
         {
           meta.description = "openrazer-daemon: 3.9.0->3.10.1";
