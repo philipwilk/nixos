@@ -94,6 +94,7 @@
           inputs.nix-index-database.nixosModules.nix-index
           inputs.lanzaboote.nixosModules.lanzaboote
           ./workstations
+          ./workstations/iwd.nix
         ];
 
       buildIso =
