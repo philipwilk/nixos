@@ -9,6 +9,8 @@
 }:
 {
   config = lib.mkIf config.workstation.declarativeHome {
+    workstation.iwd.enabled = true;
+
     age.secrets.workstation_password.file = ../secrets/workstation_password.age;
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
 
@@ -54,40 +56,6 @@
         );
       })
     ];
-
-    networking.networkmanager.wifi.backend = "iwd";
-    networking.wireless.iwd = {
-      enable = true;
-      settings = {
-        General = {
-          ControlPortOverNL80211 = false;
-          UseDefaultNetwork = true;
-        };
-        Network = {
-          EnableIPv6 = true;
-          RoutePriorityOffset = 300;
-          NameResolvingService = "systemd";
-        };
-        Settings = {
-          AutoConnect = true;
-        };
-      };
-    };
-    systemd.network =
-      let
-        net = "wlan0";
-      in
-      {
-        enable = true;
-        networks.${net} = {
-          matchConfig.Name = net;
-          networkConfig = {
-            DHCP = "yes";
-            IgnoreCarrierLoss = 3;
-            IPv6PrivacyExtensions = "kernel";
-          };
-        };
-      };
 
     environment = {
       shells = with pkgs; [ fish ];
