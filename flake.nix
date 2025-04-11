@@ -133,6 +133,11 @@
           url = "https://github.com/NixOS/nixpkgs/pull/394826.patch";
           hash = "sha256-nV5kn94h4v66Lj5/IWYyoByfs/OIbIXwfp8+SzPw3eE=";
         }
+        {
+          meta.description = "makemkv: 1.17.9->1.18.1";
+          url = "https://github.com/NixOS/nixpkgs/pull/397570.patch";
+          hash = "sha256-1RycTr0UyIsxbtwyKU0W6R900mPuVsefGdPtuvd7Lis=";
+        }
       ];
 
       hmPatches = [
