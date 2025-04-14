@@ -136,6 +136,7 @@
           mkvtoolnix
           # Office stuff
           drawio
+          ciscoPacketTracer8
           matlab
           nextcloud-client
           rnote
