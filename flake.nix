@@ -3,7 +3,8 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    make-shell.url = "github:nicknovitski/make-shell";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,174 +49,190 @@
 
   outputs =
     { self, ... }@inputs:
-    let
-      system = "x86_64-linux";
-      systems = [ system ];
-      forAllSystems =
-        fn: inputs.nixpkgs.lib.genAttrs systems (sys: fn inputs.nixpkgs.legacyPackages.${sys});
-      join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
-
-      treefmtEval = forAllSystems (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-
-      # Regional and nix settings for all machines
-      commonModules =
-        (join-dirfile "configs" [
-          "nix-settings"
-          "uk-region"
-        ])
-        ++ [
-          ./homelab/networking/wireguard.nix
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      top@{
+        config,
+        self,
+        withSystem,
+        moduleWithSystem,
+        ...
+      }:
+      {
+        imports = [
+          inputs.treefmt-nix.flakeModule
+          inputs.make-shell.flakeModules.default
         ];
 
-      # Homelab
-      homelabSys =
-        commonModules
-        ++ [
-          ./homelab
-          inputs.agenix.nixosModules.default
-          ./homelab/config.nix
-          inputs.buildbot-nix.nixosModules.buildbot-master
-          inputs.buildbot-nix.nixosModules.buildbot-worker
-        ]
-        ++ (join-dirfile "configs/" [
-          "boot/systemd"
-          "idmUserAuth"
-          "zfs"
-        ]);
-
-      # Desktops
-      workstationModules =
-        (join-dirfile "configs/boot" [
-          "systemd"
-          "lanzaboote"
-        ])
-        ++ commonModules
-        ++ [
-          hm
-          inputs.agenix.nixosModules.default
-          inputs.catppuccin.nixosModules.catppuccin
-          inputs.nix-index-database.nixosModules.nix-index
-          inputs.lanzaboote.nixosModules.lanzaboote
-          ./workstations
-          ./workstations/iwd.nix
+        systems = [
+          "x86_64-linux"
         ];
 
-      buildIso =
-        arch: mods:
-        inputs.nixos-generators.nixosGenerate {
-          system = arch;
-          modules = [ ./cluster ] ++ commonModules ++ mods;
-          specialArgs = inputs;
-          format = "iso";
-        };
-      buildX86Iso = buildIso system;
-
-      patches = [
-        # {
-        #   meta.description = "description for the patch" ;
-        #   url = "";
-        #   hash = "";
-        # }
-        {
-          meta.description = "fix mlxtend";
-          url = "https://github.com/NixOS/nixpkgs/pull/392453.patch";
-          hash = "sha256-8UM38Km67vHmUmFlFsHFZy5ESqgB+15xbNbIRSMnPAM=";
-        }
-        {
-          meta.description = "fix imbalanced-learn";
-          url = "https://github.com/NixOS/nixpkgs/pull/392405.patch";
-          hash = "sha256-jHshSGpZs+MkwP4S2j0eMihwHjn3SdcGEL78MYRRhD0=";
-        }
-        {
-          meta.description = "nixos/hddfancontrol: use attrset for config";
-          url = "https://github.com/NixOS/nixpkgs/pull/394826.patch";
-          hash = "sha256-nV5kn94h4v66Lj5/IWYyoByfs/OIbIXwfp8+SzPw3eE=";
-        }
-        {
-          meta.descripiton = "stalwart-mail: disable failing tests";
-          url = "https://github.com/NixOS/nixpkgs/pull/398434.patch";
-          hash = "sha256-jpCDvcHMkZz/dMe/izMWSv1O3JkXtMhO7JUhptii2Xo=";
-        }
-      ];
-
-      hmPatches = [
-      ];
-
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
-      nixpkgs = pkgs.applyPatches {
-        name = "nixpkgs-patched";
-        src = inputs.nixpkgs;
-        patches = map pkgs.fetchpatch patches;
-      };
-      nixosSystem = import (nixpkgs + "/nixos/lib/eval-config.nix");
-      buildSystem =
-        modules:
-        nixosSystem {
-          inherit modules;
-          inherit system;
-          specialArgs = inputs;
-        };
-
-      hm = import (
-        (pkgs.applyPatches {
-          name = "home-manager-patched";
-          src = inputs.home-manager;
-          patches = map pkgs.fetchpatch hmPatches;
-        })
-        + "/nixos/default.nix"
-      );
-    in
-    {
-      # packages.x86_64-linux = {
-      # new-client = buildX86Iso [ ./cluster/client/new.nix ];
-      # };
-
-      nixosConfigurations = {
-        # Systemd machines
-        prime = buildSystem ([ ./workstations/infra/prime ] ++ workstationModules);
-
-        probook = buildSystem ([ ./workstations/infra/probook ] ++ workstationModules);
-
-        mini = buildSystem ([ ./workstations/infra/mini ] ++ workstationModules);
-
-        # nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
-
-        thinkcentre = buildSystem ([ ./homelab/infra/thinkcentre ] ++ homelabSys);
-        itxserve = buildSystem ([ ./homelab/infra/itxserve ] ++ homelabSys);
-      };
-
-      formatter = forAllSystems (nixpkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-
-      checks = forAllSystems (
-        pkgs:
-        let
-          lib = inputs.nixpkgs.lib;
-          inherit (pkgs.stdenv.hostPlatform) system;
-        in
-        lib.mergeAttrsList [
+        flake =
           {
-            formatting = treefmtEval.${system}.config.build.check self;
-          }
+            lib,
+            ...
+          }:
+          {
+            nixosConfigurations = withSystem "x86_64-linux" (
+              { pkgs, ... }:
+              let
+                join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
 
-          # devShells.x86_64-linux.default -> devShells-default
-          (lib.mapAttrs' (name: lib.nameValuePair "devShells-${name}") self.devShells.${system})
+                # Regional and nix settings for all machines
+                commonModules =
+                  (join-dirfile "configs" [
+                    "nix-settings"
+                    "uk-region"
+                  ])
+                  ++ [
+                    ./homelab/networking/wireguard.nix
+                  ];
 
-          # nixosConfigurations.machine -> nixosConfigurations-machine
-          # (and also makes sure they are for the current system)
-          (lib.filterAttrs (lib.const (deriv: deriv.system == system)) (
-            lib.mapAttrs' (
-              name: value: lib.nameValuePair "nixosConfigurations-${name}" value.config.system.build.toplevel
-            ) self.nixosConfigurations
-          ))
-        ]
-      );
+                # Homelab
+                homelabSys =
+                  commonModules
+                  ++ [
+                    ./homelab
+                    inputs.agenix.nixosModules.default
+                    ./homelab/config.nix
+                    inputs.buildbot-nix.nixosModules.buildbot-master
+                    inputs.buildbot-nix.nixosModules.buildbot-worker
+                  ]
+                  ++ (join-dirfile "configs/" [
+                    "boot/systemd"
+                    "idmUserAuth"
+                    "zfs"
+                  ]);
 
-      devShells."x86_64-linux".default = pkgs.mkShell {
-        packages = with pkgs; [
-          nixfmt-rfc-style
-          nil
-          nix-tree
-        ];
-      };
-    };
+                # Desktops
+                workstationModules =
+                  (join-dirfile "configs/boot" [
+                    "systemd"
+                    "lanzaboote"
+                  ])
+                  ++ commonModules
+                  ++ [
+                    hm
+                    inputs.agenix.nixosModules.default
+                    inputs.catppuccin.nixosModules.catppuccin
+                    inputs.nix-index-database.nixosModules.nix-index
+                    inputs.lanzaboote.nixosModules.lanzaboote
+                    ./workstations
+                    ./workstations/iwd.nix
+                  ];
+
+                patches = [
+                  # {
+                  #   meta.description = "description for the patch" ;
+                  #   url = "";
+                  #   hash = "";
+                  # }
+                  {
+                    meta.description = "fix mlxtend";
+                    url = "https://github.com/NixOS/nixpkgs/pull/392453.patch";
+                    hash = "sha256-8UM38Km67vHmUmFlFsHFZy5ESqgB+15xbNbIRSMnPAM=";
+                  }
+                  {
+                    meta.description = "fix imbalanced-learn";
+                    url = "https://github.com/NixOS/nixpkgs/pull/392405.patch";
+                    hash = "sha256-jHshSGpZs+MkwP4S2j0eMihwHjn3SdcGEL78MYRRhD0=";
+                  }
+                  {
+                    meta.description = "nixos/hddfancontrol: use attrset for config";
+                    url = "https://github.com/NixOS/nixpkgs/pull/394826.patch";
+                    hash = "sha256-nV5kn94h4v66Lj5/IWYyoByfs/OIbIXwfp8+SzPw3eE=";
+                  }
+                  {
+                    meta.descripiton = "stalwart-mail: disable failing tests";
+                    url = "https://github.com/NixOS/nixpkgs/pull/398434.patch";
+                    hash = "sha256-jpCDvcHMkZz/dMe/izMWSv1O3JkXtMhO7JUhptii2Xo=";
+                  }
+                ];
+
+                hmPatches = [
+                ];
+
+                nixpkgs = pkgs.applyPatches {
+                  name = "nixpkgs-patched";
+                  src = inputs.nixpkgs;
+                  patches = map pkgs.fetchpatch patches;
+                };
+                nixosSystem = import (nixpkgs + "/nixos/lib/eval-config.nix");
+                buildSystem =
+                  modules:
+                  nixosSystem {
+                    inherit modules;
+                    system = "x86_64-linux";
+                    specialArgs = inputs;
+                  };
+
+                hm = import (
+                  (pkgs.applyPatches {
+                    name = "home-manager-patched";
+                    src = inputs.home-manager;
+                    patches = map pkgs.fetchpatch hmPatches;
+                  })
+                  + "/nixos/default.nix"
+                );
+              in
+              {
+                # Systemd machines
+                prime = buildSystem ([ ./workstations/infra/prime ] ++ workstationModules);
+                probook = buildSystem ([ ./workstations/infra/probook ] ++ workstationModules);
+                mini = buildSystem ([ ./workstations/infra/mini ] ++ workstationModules);
+                # nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
+                thinkcentre = buildSystem ([ ./homelab/infra/thinkcentre ] ++ homelabSys);
+                itxserve = buildSystem ([ ./homelab/infra/itxserve ] ++ homelabSys);
+              }
+            );
+          };
+
+        perSystem =
+          {
+            config,
+            pkgs,
+            lib,
+            system,
+            ...
+          }:
+          {
+            # devshells
+            make-shells.default = {
+              packages = with pkgs; [
+                nixfmt-rfc-style
+                nil
+                nix-tree
+              ];
+            };
+            # Formatting for all the things
+            treefmt =
+              { ... }:
+              {
+                projectRootFile = "flake.nix";
+
+                programs = {
+                  nixfmt.enable = true;
+                  jsonfmt.enable = true;
+                  mdformat.enable = true;
+                };
+
+                settings.global.excludes = [
+                  "*.age"
+                  "*.ldif"
+                  "*.envrc"
+                  "*.css"
+                ];
+              };
+
+            checks = # nixosConfigurations.machine -> nixosConfigurations-machine
+              (
+                lib.filterAttrs (lib.const (deriv: deriv.system == system)) (
+                  lib.mapAttrs' (
+                    name: value: lib.nameValuePair "nixosConfigurations-${name}" value.config.system.build.toplevel
+                  ) self.nixosConfigurations
+                )
+              );
+          };
+      }
+    );
 }
