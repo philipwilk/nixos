@@ -16,7 +16,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-your-shell = {
       url = "github:MercuryTechnologies/nix-your-shell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -124,19 +127,14 @@
           hash = "sha256-jHshSGpZs+MkwP4S2j0eMihwHjn3SdcGEL78MYRRhD0=";
         }
         {
-          meta.description = "openrazer-daemon: 3.9.0->3.10.1";
-          url = "https://github.com/NixOS/nixpkgs/pull/384992.patch";
-          hash = "sha256-3YNNqStB05OekaY4fCa+Pyc0YSfSYxgzEuqle5JfE7w=";
-        }
-        {
           meta.description = "nixos/hddfancontrol: use attrset for config";
           url = "https://github.com/NixOS/nixpkgs/pull/394826.patch";
           hash = "sha256-nV5kn94h4v66Lj5/IWYyoByfs/OIbIXwfp8+SzPw3eE=";
         }
         {
-          meta.description = "makemkv: 1.17.9->1.18.1";
-          url = "https://github.com/NixOS/nixpkgs/pull/397570.patch";
-          hash = "sha256-1RycTr0UyIsxbtwyKU0W6R900mPuVsefGdPtuvd7Lis=";
+          meta.descripiton = "stalwart-mail: disable failing tests";
+          url = "https://github.com/NixOS/nixpkgs/pull/398434.patch";
+          hash = "sha256-jpCDvcHMkZz/dMe/izMWSv1O3JkXtMhO7JUhptii2Xo=";
         }
       ];
 
