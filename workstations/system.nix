@@ -9,7 +9,9 @@
 }:
 {
   config = lib.mkIf config.workstation.declarativeHome {
-    workstation.iwd.enabled = true;
+    specialisation.withIwd.configuration = {
+      workstation.iwd.enabled = true;
+    };
 
     age.secrets.workstation_password.file = ../secrets/workstation_password.age;
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
