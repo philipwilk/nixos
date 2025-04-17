@@ -12,6 +12,9 @@
     specialisation.withIwd.configuration = {
       workstation.iwd.enabled = true;
     };
+    specialisation.withGnome.configuration = {
+      workstation.desktop = lib.mkForce "gnome";
+    };
 
     age.secrets.workstation_password.file = ../secrets/workstation_password.age;
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
