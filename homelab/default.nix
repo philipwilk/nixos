@@ -53,6 +53,9 @@ in
       "hercules-ci"
       "harmonia"
     ]
+    ++ join-dirfile "./ci" [
+      "gitlab-runners"
+    ]
     ++ join-dirfile "./games" [ "factorio" ]
     ++ [
       ./router

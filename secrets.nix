@@ -85,4 +85,6 @@ in
   ${s "wireguard/prime/private"}.publicKeys = [ pc ];
   # Jupyterhub
   ${s "jupyter-envs"}.publicKeys = servers;
+  #  gitlab-runner
+  ${s "runners/csgitlab"}.publicKeys = servers;
 }
