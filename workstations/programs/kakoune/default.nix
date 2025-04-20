@@ -103,6 +103,17 @@ in
           }
         }
 
+        hook -group lsp-filetype-python global BufSetOption filetype=python %{
+          set-option buffer lsp_servers %{
+            [pylsp]
+            root_globs = ["requirements.txt", "setup.py", "pyproject.toml", ".git", ".hg"]
+            settings_section = "_"
+            [pylsp.settings._]
+            plugins.ruff.enabled = true
+            plugins.ruff.formatEnabled = true
+          }
+        }
+
         # # Format file on write
         hook global WinCreate .* %{
           hook buffer BufWritePre .* lsp-formatting-sync
