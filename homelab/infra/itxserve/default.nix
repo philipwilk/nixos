@@ -67,6 +67,8 @@
 
   services.factorio.saveName = "space";
 
+  homelab.ci.runners.gitlab.csgitlab.enabled = true;
+
   boot.kernelModules = [ "nct6775" ];
   environment.etc."fancontrol".text = ''
     INTERVAL=10
