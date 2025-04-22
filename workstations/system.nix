@@ -96,12 +96,14 @@
           "optical"
           "plugdev"
           "podman"
+          "wireshark"
         ];
         hashedPasswordFile = config.age.secrets.workstation_password.path;
         packages = with pkgs; [
           # Browsers
           tor-browser-bundle-bin
           qbittorrent
+          bitwarden-desktop
           # Communication
           (discord.override { withOpenASAR = true; })
           slack
@@ -185,6 +187,10 @@
     programs = {
       adb.enable = true;
       kdeconnect.enable = true;
+      wireshark = {
+        enable = true;
+        package = pkgs.wireshark;
+      };
       steam = {
         enable = true;
         remotePlay.openFirewall = true;
