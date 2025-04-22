@@ -114,6 +114,15 @@ in
           }
         }
 
+        hook -group lsp-filetype-html global BufSetOption filetype=html %{
+          set-option buffer lsp_servers %{
+            [superhtml]
+            root_globs = ["package.json", ".git", ".hg"]
+            command = "superhtml"
+            args = ["lsp"]
+          }
+        }
+
         # # Format file on write
         hook global WinCreate .* %{
           hook buffer BufWritePre .* lsp-formatting-sync
