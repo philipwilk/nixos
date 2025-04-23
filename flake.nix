@@ -142,11 +142,6 @@
                     url = "https://github.com/NixOS/nixpkgs/pull/394826.patch";
                     hash = "sha256-nV5kn94h4v66Lj5/IWYyoByfs/OIbIXwfp8+SzPw3eE=";
                   }
-                  {
-                    meta.descripiton = "stalwart-mail: disable failing tests";
-                    url = "https://github.com/NixOS/nixpkgs/pull/398434.patch";
-                    hash = "sha256-jpCDvcHMkZz/dMe/izMWSv1O3JkXtMhO7JUhptii2Xo=";
-                  }
                 ];
 
                 hmPatches = [
