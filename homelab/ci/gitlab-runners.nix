@@ -28,7 +28,7 @@ in
           # `CI_SERVER_URL`
           # `CI_SERVER_TOKEN`
           authenticationTokenConfigFile = config.age.secrets.gitlab-runner-csgitlab.path;
-          dockerImage = "alpine";
+          dockerImage = "alpine:3";
           dockerVolumes = [
             "/nix/store:/nix/store:ro"
             "/nix/var/nix/db:/nix/var/nix/db:ro"
