@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.homelab.games.factorio;
-  package = pkgs.factorio-headless.override { versionsJson = ./factorio.json; };
+  package = pkgs.factorio-headless; # .override { versionsJson = ./factorio.json; };
 in
 {
   options.homelab.games.factorio = {
