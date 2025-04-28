@@ -232,6 +232,7 @@ in
         brightnessctl
         pamixer
         gnused
+        wdisplays
         # SOME SILLY DEVS USE THE GNOME SPECIFIC ICONS INSTEAD OF LIBADWAITA THANKS <3 <3 <3
         adwaita-icon-theme
         # Appindicator
