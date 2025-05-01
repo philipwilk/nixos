@@ -136,6 +136,7 @@ in
           ripunzip
           gparted
           baobab
+          traceroute
 
           # Chore replacements
           pavucontrol
