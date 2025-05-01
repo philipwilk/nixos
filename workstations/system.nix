@@ -191,6 +191,7 @@
         enable = true;
         package = pkgs.wireshark;
       };
+      trippy.enable = true;
       steam = {
         enable = true;
         remotePlay.openFirewall = true;
