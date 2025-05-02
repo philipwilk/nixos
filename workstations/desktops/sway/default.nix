@@ -121,6 +121,7 @@ in
             };
             modules-right = [
               "tray"
+              "custom/wdisplays"
               "bluetooth"
               "network"
               "backlight"
@@ -129,6 +130,10 @@ in
             ];
             tray = {
               spacing = 4;
+            };
+            "custom/wdisplays" = {
+              format = "󰍹";
+              on-click = "wdisplays";
             };
             bluetooth = {
               format-on = "󰂯";
