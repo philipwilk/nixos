@@ -13,8 +13,8 @@
     stateDir = "/pool";
     router = {
       enable = true;
-      devices.wan = "enp5s0";
-      devices.lan = "enp6s0";
+      devices.wan = "enp4s0";
+      devices.lan = "enp5s0";
     };
     services = {
       nginx.enable = true;
