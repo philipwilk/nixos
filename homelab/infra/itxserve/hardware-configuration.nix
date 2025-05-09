@@ -22,28 +22,26 @@
 
   fileSystems = {
     "/" = {
-      device = "rootpool/root";
+      device = "newroot/root";
       fsType = "zfs";
+      options = [ "zfsutil" ]; # removes need for dataset to have a legacy mountpoint
     };
     "/home" = {
-      device = "rootpool/home";
+      device = "newroot/home";
       fsType = "zfs";
-    };
-    "/mnt/zfs/rootTier" = {
-      device = "rootpool/rootTier";
-      fsType = "zfs";
-    };
-    "/pool" = {
-      device = "storagepool/pool";
-      fsType = "zfs";
+      options = [ "zfsutil" ]; # removes need for dataset to have a legacy mountpoint
     };
     "/boot" = {
-      device = "/dev/disk/by-uuid/301A-81CF";
+      device = "/dev/disk/by-uuid/8D51-74E2";
       fsType = "vfat";
       options = [
         "fmask=0022"
         "dmask=0022"
       ];
+    };
+    "/pool" = {
+      device = "storagepool/pool";
+      fsType = "zfs";
     };
     "/mnt/zfs/colossus" = {
       device = "colossus/root";
