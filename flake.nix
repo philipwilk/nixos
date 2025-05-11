@@ -128,11 +128,6 @@
                   #   hash = "";
                   # }
                   {
-                    meta.description = "fix mlxtend";
-                    url = "https://github.com/NixOS/nixpkgs/pull/392453.patch";
-                    hash = "sha256-8UM38Km67vHmUmFlFsHFZy5ESqgB+15xbNbIRSMnPAM=";
-                  }
-                  {
                     meta.description = "fix imbalanced-learn";
                     url = "https://github.com/NixOS/nixpkgs/pull/392405.patch";
                     hash = "sha256-CsXcpPyg+I5JTBLIozllFnCob9snOCUkbytkqLp7gqU=";
