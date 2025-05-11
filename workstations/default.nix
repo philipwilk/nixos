@@ -80,7 +80,7 @@ in
               nix-index-database.hmModules.nix-index
             ]
             ++ join-dirfile "programs" [
-              "nys"
+              "carapace"
               "direnv"
               "nix"
               "zoxide"
