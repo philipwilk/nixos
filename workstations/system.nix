@@ -70,10 +70,8 @@
         dash
       ];
       shellAliases = {
-        ls = "eza";
         grep = "rg";
         tree = "tre";
-        cd = "z";
         windows = "systemctl reboot --boot-loader-entry=auto-windows";
         ssh-home = "ssh -A -J fogbox.uk";
         ssh-insecure = "ssh -A -J fogbox.uk -oKexAlgorithms=+diffie-hellman-group14-sha1 -oHostKeyAlgorithms=+ssh-rsa";
