@@ -14,6 +14,7 @@ in
       nixfmt-rfc-style
       nil
       lemminx
+      python313Packages.editorconfig
     ];
 
     programs.kakoune = {
