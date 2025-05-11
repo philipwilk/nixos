@@ -71,7 +71,6 @@
       ];
       shellAliases = {
         ls = "eza";
-        find = "fd";
         grep = "rg";
         tree = "tre";
         cd = "z";
