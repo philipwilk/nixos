@@ -76,7 +76,7 @@ in
         users.philip = {
           imports =
             [
-              catppuccin.homeManagerModules.catppuccin
+              catppuccin.homeModules.catppuccin
               nix-index-database.hmModules.nix-index
             ]
             ++ join-dirfile "programs" [
