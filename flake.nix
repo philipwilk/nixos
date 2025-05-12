@@ -130,7 +130,7 @@
                   {
                     meta.description = "fix imbalanced-learn";
                     url = "https://github.com/NixOS/nixpkgs/pull/392405.patch";
-                    hash = "sha256-CsXcpPyg+I5JTBLIozllFnCob9snOCUkbytkqLp7gqU=";
+                    hash = "sha256-zJ1+QGoZ9oG74amN0Wghu9RSeMKohKW4vT8D8xY3K8I=";
                   }
                   {
                     meta.description = "nixos/hddfancontrol: use attrset for config";
