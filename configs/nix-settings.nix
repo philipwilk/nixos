@@ -61,7 +61,7 @@
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
-      FLAKE = lib.mkDefault "/home/philip/repos/nixos";
+      NH_FLAKE = lib.mkDefault "/home/philip/repos/nixos";
     };
   };
 
