@@ -72,10 +72,10 @@
   boot.kernelModules = [ "nct6775" ];
   environment.etc."fancontrol".text = ''
     INTERVAL=10
-    DEVPATH=hwmon1=devices/platform/nct6775.656
-    DEVNAME=hwmon1=nct6798
+    DEVPATH=hwmon0=devices/platform/nct6775.656
+    DEVNAME=hwmon0=nct6798
     FCTEMPS=
-    FCFANS= hwmon1/pwm1=hwmon1/fan1_input hwmon1/pwm4=hwmon1/fan4_input
+    FCFANS= hwmon0/pwm1=hwmon0/fan1_input hwmon0/pwm4=hwmon0/fan4_input
     MINTEMP=
     MAXTEMP=
     MINSTART=
@@ -90,7 +90,7 @@
       in
       {
         lffBay = {
-          pwmPaths = [ "/sys/class/hwmon/hwmon1/pwm4:25:10" ];
+          pwmPaths = [ "/sys/class/hwmon/hwmon0/pwm4:25:10" ];
           disks = byId [
             "scsi-35000cca2530a67ec"
             "scsi-35000cca2530c4cbc"
@@ -106,7 +106,7 @@
           ];
         };
         sffBay = {
-          pwmPaths = [ "/sys/class/hwmon/hwmon1/pwm1:80:55" ];
+          pwmPaths = [ "/sys/class/hwmon/hwmon0/pwm1:80:55" ];
           disks = byId [
             "ata-KIOXIA-EXCERIA_SATA_SSD_62RB71ENKFV4"
             "ata-KIOXIA-EXCERIA_SATA_SSD_72GB81JJKLQ4"
