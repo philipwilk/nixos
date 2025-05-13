@@ -34,6 +34,9 @@
       keyStatistics = true;
     };
 
+    nixpkgs.config.permittedInsecurePackages = [
+      "ventoy-1.1.05"
+    ];
     nixpkgs.overlays = [
       nix-matlab.overlay
       nix-your-shell.overlays.default
