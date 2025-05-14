@@ -53,6 +53,7 @@
       ethtool
       wireguard-tools
       lm_sensors
+      smartmontools
       # nix utils
       nix-output-monitor
       nh
