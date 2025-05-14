@@ -26,6 +26,8 @@
       theme = "blahaj";
     };
 
+    boot.kernelPackages = pkgs.linuxPackages_6_12;
+
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
     hardware.openrazer = {
