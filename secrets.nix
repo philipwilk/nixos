@@ -66,6 +66,8 @@ in
   ${s "prometheus/exporters/zfs/htpasswd"}.publicKeys = servers;
   ${s "prometheus/exporters/smartctl/basicAuthPassword"}.publicKeys = servers;
   ${s "prometheus/exporters/smartctl/htpasswd"}.publicKeys = servers;
+  ${s "prometheus/exporters/nut/basicAuthPassword"}.publicKeys = servers;
+  ${s "prometheus/exporters/nut/htpasswd"}.publicKeys = servers;
   # Mastodon
   ${s "mastodon/smtp"}.publicKeys = servers;
   ${s "mastodon/pub"}.publicKeys = servers;
@@ -87,4 +89,6 @@ in
   ${s "jupyter-envs"}.publicKeys = servers;
   #  gitlab-runner
   ${s "runners/csgitlab"}.publicKeys = servers;
+  # upsmon user
+  ${s "upsmon/sou"}.publicKeys = servers;
 }

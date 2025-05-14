@@ -367,6 +367,10 @@ in
           file = ../secrets/prometheus/exporters/smartctl/basicAuthPassword.age;
           owner = "prometheus";
         };
+        age.secrets.nutBasicAuthPassword = {
+          file = ../secrets/prometheus/exporters/nut/basicAuthPassword.age;
+          owner = "prometheus";
+        };
         services.prometheus =
           let
             genStatNames = hostnames: suff: map (hostname: "${suff}.stats.${hostname}") hostnames;
@@ -416,6 +420,27 @@ in
                 static_configs = [
                   {
                     targets = genStatNames targetHostnames "smart";
+                  }
+                ];
+              }
+              {
+                job_name = "nut";
+                metrics_path = "/ups_metrics";
+                params = {
+                  ups = [ "SMT1500I" ];
+                };
+                basic_auth = {
+                  username = "prometheus";
+                  password_file = config.age.secrets.nutBasicAuthPassword.path;
+                };
+                static_configs = [
+                  {
+                    targets = [
+                      "nut.stats.sou.uk.region.fogbox.uk"
+                    ];
+                    labels = {
+                      ups = "SMT1500I";
+                    };
                   }
                 ];
               }

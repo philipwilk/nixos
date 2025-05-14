@@ -126,4 +126,35 @@ in
         };
       };
   };
+  age.secrets.nutHtpasswd = {
+    file = ../../../secrets/prometheus/exporters/nut/htpasswd.age;
+    owner = "nginx";
+  };
+  services.prometheus.exporters.nut.enable = true;
+  services.nginx.virtualHosts."nut.stats.${config.homelab.hostname}" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.nut.port}";
+      proxyWebsockets = true;
+      basicAuthFile = config.age.secrets.nutHtpasswd.path;
+    };
+  };
+
+  age.secrets.upsmonSou.file = ../../../secrets/upsmon/sou.age;
+  power.ups = {
+    enable = true;
+
+    ups."SMT1500I" = {
+      driver = "usbhid-ups";
+      port = "auto";
+    };
+
+    users.upsmon = {
+      passwordFile = config.age.secrets.upsmonSou.path;
+      upsmon = "primary";
+    };
+
+    upsmon.monitor."SMT1500I".user = "upsmon";
+  };
 }
