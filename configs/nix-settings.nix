@@ -54,6 +54,7 @@
       wireguard-tools
       lm_sensors
       smartmontools
+      speedtest-go
       # nix utils
       nix-output-monitor
       nh
