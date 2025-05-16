@@ -152,6 +152,11 @@
                     url = "https://github.com/NixOS/nixpkgs/pull/394826.patch";
                     hash = "sha256-nV5kn94h4v66Lj5/IWYyoByfs/OIbIXwfp8+SzPw3eE=";
                   }
+                  {
+                    meta.description = "pin kernel 6.14.6";
+                    url = "https://github.com/NixOS/nixpkgs/commit/324d830906a3e4f9eae1884714ba5f8beab911d6.patch";
+                    hash = "sha256-YNn7dVbWESs15XJWwGGWW0nfyt2OTjJvnPG0XKpZqA8=";
+                  }
                 ];
 
                 hmPatches = [
