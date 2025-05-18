@@ -1,0 +1,110 @@
+From 8a3f3bf08944abfb0cde3230a5f9c75d99b4da95 Mon Sep 17 00:00:00 2001
+From: Philip Wilk <p.wilk@student.reading.ac.uk>
+Date: Sun, 18 May 2025 19:18:12 +0100
+Subject: [PATCH 1/2] nut: add override for apc_modbus feature
+
+---
+ pkgs/by-name/nu/nut/package.nix | 54 +++++++++++++++++++++++++--------
+ 1 file changed, 42 insertions(+), 12 deletions(-)
+
+diff --git a/pkgs/by-name/nu/nut/package.nix b/pkgs/by-name/nu/nut/package.nix
+index 6f5e774b74a7..c03c3ff5ff3f 100644
+--- a/pkgs/by-name/nu/nut/package.nix
++++ b/pkgs/by-name/nu/nut/package.nix
+@@ -21,7 +21,28 @@
+   systemd,
+   udev,
+   gnused,
++  withApcModbus ? false,
++  fetchFromGitHub,
+ }:
++let
++  # rebuild libmodbus with downstream usb patches from
++  # https://github.com/networkupstools/libmodbus
++  libmodbus' = libmodbus.overrideAttrs (finalAttrs: {
++    version = "3.1.11-withUsbRTU-NUT";
++
++    src = fetchFromGitHub {
++      owner = "networkupstools";
++      repo = "libmodbus";
++      rev = "8b9bdcde6938f85415098af74b720b7ad5ed74b4";
++      hash = "sha256-ZimIVLKhVjknLNFB+1jGA9N/3YqxHfGX1+l1mpk5im4=";
++    };
++
++    buildInputs = [
++      libusb1
++    ];
++  });
++  modbus = if withApcModbus then libmodbus' else libmodbus;
++in
+ 
+ stdenv.mkDerivation rec {
+   pname = "nut";
+@@ -46,7 +67,7 @@ stdenv.mkDerivation rec {
+       libgpiod = "${libgpiod_1}/lib";
+       libusb = "${libusb1}/lib";
+       neon = "${neon}/lib";
+-      libmodbus = "${libmodbus}/lib";
++      libmodbus = "${modbus}/lib";
+       netsnmp = "${net-snmp.lib}/lib";
+     })
+   ];
+@@ -59,11 +80,11 @@ stdenv.mkDerivation rec {
+     avahi
+     freeipmi
+     libgpiod_1
+-    libmodbus
+     libtool
+     i2c-tools
+     net-snmp
+     gd
++    modbus
+   ];
+ 
+   nativeBuildInputs = [
+@@ -72,16 +93,20 @@ stdenv.mkDerivation rec {
+     makeWrapper
+   ];
+ 
+-  configureFlags = [
+-    "--with-all"
+-    "--with-ssl"
+-    "--without-powerman" # Until we have it ...
+-    "--with-systemdsystempresetdir=$(out)/lib/systemd/system-preset"
+-    "--with-systemdsystemunitdir=$(out)/lib/systemd/system"
+-    "--with-systemdshutdowndir=$(out)/lib/systemd/system-shutdown"
+-    "--with-systemdtmpfilesdir=$(out)/lib/tmpfiles.d"
+-    "--with-udev-dir=$(out)/etc/udev"
+-  ];
++  configureFlags =
++    [
++      "--with-all"
++      "--with-ssl"
++      "--without-powerman" # Until we have it ...
++      "--with-systemdsystempresetdir=$(out)/lib/systemd/system-preset"
++      "--with-systemdsystemunitdir=$(out)/lib/systemd/system"
++      "--with-systemdshutdowndir=$(out)/lib/systemd/system-shutdown"
++      "--with-systemdtmpfilesdir=$(out)/lib/tmpfiles.d"
++      "--with-udev-dir=$(out)/etc/udev"
++    ]
++    ++ (lib.lists.optionals withApcModbus [
++      "--with-modbus+usb"
++    ]);
+ 
+   enableParallelBuilding = true;
+ 
+@@ -97,6 +122,11 @@ stdenv.mkDerivation rec {
+     "sbin"
+   ];
+ 
++  # otherwise nut doesnt find libmodbus when compiling with the apc_modbus feature
++  buildPhase = lib.optional withApcModbus ''
++    NIX_CFLAGS_COMPILE="$(pkg-config --cflags libmodbus) $NIX_CFLAGS_COMPILE"
++  '';
++
+   postInstall = ''
+     substituteInPlace $out/lib/systemd/system-shutdown/nutshutdown \
+       --replace /bin/sed "${gnused}/bin/sed" \
+-- 
+2.49.0
+

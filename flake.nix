@@ -76,7 +76,11 @@
             nixosConfigurations = withSystem "x86_64-linux" (
               { pkgs, ... }:
               let
-                join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
+                join-dirfile-gen =
+                  ext: dir: files:
+                  (map (file: ./${dir}/${file}${ext}) files);
+                join-dirfile = join-dirfile-gen ".nix";
+                join-dirpatch = join-dirfile-gen ".patch";
 
                 # Regional and nix settings for all machines
                 commonModules =
@@ -121,7 +125,7 @@
                     ./workstations/iwd.nix
                   ];
 
-                patches = [
+                remotePatches = map pkgs.fetchpatch [
                   # {
                   #   meta.description = "description for the patch" ;
                   #   url = "";
@@ -159,13 +163,19 @@
                   }
                 ];
 
+                localPatches = join-dirpatch "patches" [
+                  "nut"
+                  "0001-nut-add-override-for-apc_modbus-feature"
+                  "0002-nixos-ups-add-package-option"
+                ];
+
                 hmPatches = [
                 ];
 
                 nixpkgs = pkgs.applyPatches {
                   name = "nixpkgs-patched";
                   src = inputs.nixpkgs;
-                  patches = map pkgs.fetchpatch patches;
+                  patches = remotePatches ++ localPatches;
                 };
                 nixosSystem = import (nixpkgs + "/nixos/lib/eval-config.nix");
                 buildSystem =
