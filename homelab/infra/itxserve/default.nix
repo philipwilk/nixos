@@ -144,6 +144,11 @@ in
   age.secrets.upsmonSou.file = ../../../secrets/upsmon/sou.age;
   power.ups = {
     enable = true;
+    package = (
+      pkgs.nut.override {
+        withApcModbus = true;
+      }
+    );
 
     ups."SMT1500I" = {
       driver = "usbhid-ups";
