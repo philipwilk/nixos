@@ -55,6 +55,7 @@
       lm_sensors
       smartmontools
       speedtest-go
+      dust
       # nix utils
       nix-output-monitor
       nh
