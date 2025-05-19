@@ -63,14 +63,18 @@ in
       clientSettings.uri = config.services.kanidm.serverSettings.origin;
       enableServer = true;
       serverSettings = {
+        version = "2";
+        db_fs_type = "zfs";
         #db_path = lib.mkForce "${config.homelab.stateDir}/kanidm/kanidm.db"; # why is this read only you state heathens
         domain = cfg.domain;
         origin = "https://${cfg.domain}";
         bindaddress = "[::]:8991";
-        trust_x_forward_for = true;
+        http_client_address_info.x-forward-for = [ "127.0.0.1" ];
         ldapbindaddress = "[::]:636";
-        online_backup.path = cfg.backupPath;
-        online_backup.versions = cfg.backupCount;
+        online_backup = {
+          path = cfg.backupPath;
+          versions = cfg.backupCount;
+        };
 
         tls_key = "/run/credentials/kanidm.service/key.pem";
         tls_chain = "/run/credentials/kanidm.service/full.pem";
