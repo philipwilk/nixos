@@ -163,6 +163,11 @@
           openldap
           apache-directory-studio
 
+          (octodns.withProviders (ps: [
+            octodns-providers.desec
+            octodns-providers.bind
+          ]))
+
           ## Phone stuff
           pmbootstrap
 

@@ -1,0 +1,71 @@
+From ab69b6135dab3f0409b52b52991fdc616bf68085 Mon Sep 17 00:00:00 2001
+From: Philip Wilk <p.wilk@student.reading.ac.uk>
+Date: Mon, 19 May 2025 17:46:41 +0100
+Subject: [PATCH] octodns-providers.desec: init at 1.0.0
+
+---
+ .../oc/octodns/providers/desec/package.nix    | 52 +++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+ create mode 100644 pkgs/by-name/oc/octodns/providers/desec/package.nix
+
+diff --git a/pkgs/by-name/oc/octodns/providers/desec/package.nix b/pkgs/by-name/oc/octodns/providers/desec/package.nix
+new file mode 100644
+index 000000000000..4bf5d045f96d
+--- /dev/null
++++ b/pkgs/by-name/oc/octodns/providers/desec/package.nix
+@@ -0,0 +1,52 @@
++{
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  octodns,
++  pytestCheckHook,
++  pythonOlder,
++  requests,
++  requests-mock,
++  setuptools,
++}:
++
++buildPythonPackage rec {
++  pname = "octodns-desec";
++  version = "1.0.0";
++  pyproject = true;
++
++  disabled = pythonOlder "3.10";
++
++  src = fetchFromGitHub {
++    owner = "rootshell-labs";
++    repo = "octodns-desec";
++    tag = version;
++    hash = "sha256-0mrPyZSWfb82ZOCVDNI4QtgJerbn7fWiBQYfG2VD2j4=";
++  };
++
++  build-system = [
++    setuptools
++  ];
++
++  dependencies = [
++    octodns
++    requests
++  ];
++
++  env.OCTODNS_RELEASE = 1;
++
++  pythonImportsCheck = [ "octodns_desec" ];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++    requests-mock
++  ];
++
++  meta = {
++    description = "deSEC DNS provider for octoDNS";
++    homepage = "https://github.com/rootshell-labs/octodns-desec";
++    changelog = "https://github.com/rootshell-labs/octodns-desec/blob/${src.tag}/CHANGELOG.md";
++    license = lib.licenses.mit;
++    maintainers = [ ]; # TODO
++  };
++}
+-- 
+2.49.0
+

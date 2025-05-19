@@ -1,0 +1,78 @@
+From f45b6fe6c0dae0088f2bfc0705952960ecdcf459 Mon Sep 17 00:00:00 2001
+From: Philip Wilk <p.wilk@student.reading.ac.uk>
+Date: Thu, 20 Feb 2025 10:46:30 +0000
+Subject: [PATCH] octodns-providers.desec: init at 0-unstable-2024-10-51
+
+---
+ .../octodns/providers/desec/default.nix       | 49 +++++++++++++++++++
+ pkgs/top-level/all-packages.nix               |  1 +
+ 2 files changed, 50 insertions(+)
+ create mode 100644 pkgs/tools/networking/octodns/providers/desec/default.nix
+
+diff --git a/pkgs/tools/networking/octodns/providers/desec/default.nix b/pkgs/tools/networking/octodns/providers/desec/default.nix
+new file mode 100644
+index 00000000000000..b7669307769b6a
+--- /dev/null
++++ b/pkgs/tools/networking/octodns/providers/desec/default.nix
+@@ -0,0 +1,49 @@
++{
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  octodns,
++  pytestCheckHook,
++  pythonOlder,
++  requests,
++  requests-mock,
++  setuptools,
++}:
++buildPythonPackage rec {
++  pname = "octodns-desec";
++  version = "0-unstable-2024-10-5";
++  pyproject = true;
++
++  disabled = pythonOlder "3.10";
++
++  src = fetchFromGitHub {
++    owner = "TilCreator";
++    repo = "octodns-desec";
++    rev = "ae3a1cd4f675e3bf937fc428adf3dc7127c8b9e5";
++    hash = "sha256-n8xpsQni4YdR29FbYVIhLUrz44KXzSh4uocQwqPgL20=";
++  };
++
++  build-system = [
++    setuptools
++  ];
++
++  dependencies = [
++    octodns
++    requests
++  ];
++
++  pythonImportsCheck = ["octodns_desec"];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++    requests-mock
++  ];
++
++  meta = with lib; {
++    description = "deSEC DNS provider for octoDNS";
++    homepage = "https://github.com/TilCreator/octodns-desec"; # TODO
++    changelog = "https://github.com/TilCreator/octodns-desec/blob/${src.rev}/CHANGELOG.md"; # TODO
++    license = licenses.mit;
++    maintainers = []; # TODO
++  };
++}
+diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
+index 5b5096b10b200b..dff09b22d7c8e6 100644
+--- a/pkgs/top-level/all-packages.nix
++++ b/pkgs/top-level/all-packages.nix
+@@ -369,6 +369,7 @@ with pkgs;
+     gandi = python3Packages.callPackage ../tools/networking/octodns/providers/gandi { };
+     hetzner = python3Packages.callPackage ../tools/networking/octodns/providers/hetzner { };
+     powerdns = python3Packages.callPackage ../tools/networking/octodns/providers/powerdns { };
++    desec = python3Packages.callPackage ../tools/networking/octodns/providers/desec { };
+   };
+ 
+   oletools = with python3.pkgs; toPythonApplication oletools;
