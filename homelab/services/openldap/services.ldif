@@ -61,3 +61,10 @@ mail: zfs@services.fogbox.uk
 sn: zfs
 cn: zfs
 
+dn: uid=ntfy,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: ntfy
+mail: push@services.fogbox.uk
+sn: ntfy
+cn: ntfy
+

@@ -47,6 +47,8 @@ in
       "homeAssistant"
       "kanidm"
       "jupyter"
+      "ntfy"
+      "mollysocket"
     ]
     ++ join-dirfile "./websites" [ "fogbox" ]
     ++ join-dirfile "./nix" [
@@ -111,7 +113,15 @@ in
       default = "/var/lib";
       example = "/mnt/state";
       description = ''
-        Path to store state under
+        Path to store short-term state under
+      '';
+    };
+    archiveDir = lib.mkOption {
+      type = lib.types.str;
+      default = "/var/lib";
+      example = "/mnt/archive";
+      description = ''
+        Path to store long-term state under
       '';
     };
     net = {

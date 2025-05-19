@@ -4,6 +4,12 @@
   lib,
   ...
 }:
+
+# How to add new users atfer creating them in services.ldif
+# ldapmodify -a -x -W -f homelab/services/openldap/services.ldif -c
+# Remember to set a password!
+#  ldappasswd -x -W -S "uid=username,ou=users,dc=ldap,dc=fogbox,dc=uk"
+
 let
   ldapname = config.homelab.services.openldap.domain;
   createSuffix =
