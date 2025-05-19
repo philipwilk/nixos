@@ -18,6 +18,7 @@ in
     hostname = "sou.uk.region.fogbox.uk";
     isLeader = true;
     stateDir = "/pool";
+    archiveDir = "/mnt/zfs/colossus";
     router = {
       enable = true;
       devices.wan = "enp4s0";
@@ -43,6 +44,8 @@ in
       soft-serve.enable = true; # needs stateDir fix
       searxng.enable = true;
       jellyfin.enable = true;
+      ntfy.enable = true;
+      mollysocket.enable = true;
     };
   };
   homelab.buildbot = {

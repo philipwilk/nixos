@@ -91,4 +91,9 @@ in
   ${s "runners/csgitlab"}.publicKeys = servers;
   # upsmon user
   ${s "upsmon/sou"}.publicKeys = servers;
+  # ntfy-sh envs
+  ${s "ntfy/envs"}.publicKeys = servers;
+  ${s "ntfy/firebase"}.publicKeys = servers;
+  # Mollysocket vapid file
+  ${s "mollysocket-vapid"}.publicKeys = servers;
 }
