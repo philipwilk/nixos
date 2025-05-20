@@ -48,5 +48,7 @@ in
         zstd_types application/x-nix-archive;
       '';
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 }

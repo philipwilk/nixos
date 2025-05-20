@@ -110,5 +110,7 @@ in
       enableACME = lib.mkDefault true;
       forceSSL = lib.mkDefault true;
     };
+
+    networking.domains.subDomains.${conf.domain}.cname.data = config.homelab.hostname;
   };
 }

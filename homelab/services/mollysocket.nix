@@ -7,6 +7,7 @@ let
   cfg = config.homelab.services.mollysocket;
   credPath = "/run/credentials/mollysocket.service";
   stateDir = "${config.homelab.stateDir}/mollysocket";
+  domain = "mollysocket.${config.homelab.tld}";
 in
 {
 
@@ -45,10 +46,12 @@ in
       };
     };
 
-    services.nginx.virtualHosts."mollysocket.${config.homelab.tld}".locations."/" = {
+    services.nginx.virtualHosts.${domain}.locations."/" = {
       proxyPass = "http://${config.services.mollysocket.settings.host}:${builtins.toString config.services.mollysocket.settings.port}";
       proxyWebsockets = true;
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 
 }

@@ -44,6 +44,8 @@ in
       };
     };
 
+    networking.domains.subDomains.${cfg.domain}.cname.data = config.homelab.hostname;
+
     systemd.services.kanidm = {
       wants = [ "acme-${cfg.domain}.service" ];
       after = [ "acme-${cfg.domain}.service" ];

@@ -25,6 +25,8 @@ in
       locations."/".proxyPass = "http://localhost${httpAddr}";
     };
 
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
+
     networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [ 22 ];
 
     systemd.services.soft-serve = {

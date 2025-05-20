@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let
+  domain = "jelly.${config.homelab.tld}";
+in
 {
   options.homelab.services.jellyfin.enable = lib.mkOption {
     type = lib.types.bool;
@@ -55,9 +58,11 @@
       })
     ];
 
-    services.nginx.virtualHosts."jelly.${config.homelab.tld}".locations."/" = {
+    services.nginx.virtualHosts.${domain}.locations."/" = {
       proxyPass = "http://127.0.0.1:8096";
       proxyWebsockets = true;
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 }

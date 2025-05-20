@@ -201,6 +201,9 @@ in
           };
         };
 
+        # enable nixos-dns
+        networking.domains.enable = true;
+
         # Enable podman container support
         virtualisation.podman = {
           enable = true;
@@ -267,6 +270,8 @@ in
           file = ../secrets/prometheus/basicAuthPassword.age;
           owner = "grafana";
         };
+        networking.domains.subDomains.${config.homelab.services.grafana.domain}.cname.data =
+          config.homelab.hostname;
 
         services = {
           grafana = {
@@ -304,6 +309,7 @@ in
               };
             };
           };
+
           # nginx to proxy grafana
           nginx.virtualHosts.${config.homelab.services.grafana.domain} = {
             forceSSL = true;
@@ -316,6 +322,9 @@ in
         };
       })
       (lib.mkIf cfg.services.prometheusExporters.enable {
+        networking.domains.subDomains."*.stats.${config.homelab.hostname}".cname.data =
+          config.homelab.hostname;
+
         services.prometheus.exporters = {
           node.enable = true;
           zfs.enable = true;
@@ -381,6 +390,9 @@ in
           file = ../secrets/prometheus/exporters/nut/basicAuthPassword.age;
           owner = "prometheus";
         };
+
+        networking.domains.subDomains."prometheus.${cfg.tld}".cname.data = config.homelab.hostname;
+
         services.prometheus =
           let
             genStatNames = hostnames: suff: map (hostname: "${suff}.stats.${hostname}") hostnames;

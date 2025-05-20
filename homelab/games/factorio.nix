@@ -43,5 +43,8 @@ in
       autosave-interval = 5;
       extraSettingsFile = config.age.secrets.factorio_password.path;
     };
+
+    networking.domains.subDomains."factorio.game.${config.homelab.tld}".cname.data =
+      config.homelab.hostname;
   };
 }

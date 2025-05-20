@@ -96,4 +96,6 @@ in
   ${s "ntfy/firebase"}.publicKeys = servers;
   # Mollysocket vapid file
   ${s "mollysocket-vapid"}.publicKeys = servers;
+  # octodns desec token
+  ${s "octodns/desec"}.publicKeys = workstations;
 }

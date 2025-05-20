@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.homelab.services.jupyterhub;
+  domain = "notebooks.${config.homelab.tld}";
 in
 {
   options.homelab.services.jupyterhub.enable = lib.mkEnableOption "the JupyterHub server";
@@ -114,7 +115,7 @@ in
         };
     };
 
-    services.nginx.virtualHosts."notebooks.${config.homelab.tld}" = {
+    services.nginx.virtualHosts.${domain} = {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -122,5 +123,7 @@ in
         proxyWebsockets = true;
       };
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 }

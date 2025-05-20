@@ -1,6 +1,7 @@
 { lib, config, ... }:
 let
   credPath = "/run/credentials/mastodon.service";
+  domain = "masto.${config.homelab.tld}";
 in
 {
   options.homelab.services.mastodon.enable = lib.mkOption {
@@ -40,7 +41,7 @@ in
 
     services.mastodon = {
       enable = true;
-      localDomain = "masto.${config.homelab.tld}";
+      localDomain = domain;
       configureNginx = true;
       elasticsearch.host = "127.0.0.1";
       smtp = {
@@ -64,5 +65,7 @@ in
       otpSecretFile = config.age.secrets.mastodonOtpSec.path;
       secretKeyBaseFile = config.age.secrets.mastodonSecBase.path;
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 }

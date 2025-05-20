@@ -89,6 +89,9 @@
       };
     };
 
+    networking.domains.subDomains.${config.services.nextcloud.hostName}.cname.data =
+      config.homelab.hostname;
+
     services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
       forceSSL = true;
       enableACME = true;

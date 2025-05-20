@@ -56,5 +56,7 @@ in
       proxyPass = "http://${config.services.ntfy-sh.settings.listen-http}";
       proxyWebsockets = true;
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 }

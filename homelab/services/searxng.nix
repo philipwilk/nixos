@@ -23,6 +23,8 @@ in
       };
     };
 
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
+
     systemd.services.nginx.serviceConfig.ProtectHome = false;
     users.groups.searx.members = [ "nginx" ];
 

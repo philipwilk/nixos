@@ -136,5 +136,21 @@ in
       389
       636
     ];
+
+    networking.domains.subDomains = {
+      "_ldap._tcp.${ldapname}".srv.data = {
+        port = 389;
+        priority = 0;
+        target = ldapname;
+        weight = 0;
+      };
+      "_ldaps._tcp.${ldapname}".srv.data = {
+        port = 636;
+        priority = 0;
+        target = ldapname;
+        weight = 0;
+      };
+      ${ldapname}.cname.data = config.homelab.hostname;
+    };
   };
 }

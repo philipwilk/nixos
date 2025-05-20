@@ -1,4 +1,7 @@
 { config, lib, ... }:
+let
+  domain = "vault.${config.homelab.tld}";
+in
 {
   options.homelab.services.vaultwarden.enable = lib.mkOption {
     type = lib.types.bool;
@@ -30,7 +33,7 @@
       };
     };
 
-    services.nginx.virtualHosts."vault.${config.homelab.tld}" = {
+    services.nginx.virtualHosts.${domain} = {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -38,5 +41,7 @@
         proxyWebsockets = true;
       };
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 }

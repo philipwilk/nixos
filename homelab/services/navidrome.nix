@@ -4,6 +4,9 @@
   lib,
   ...
 }:
+let
+  domain = "navi.${config.homelab.tld}";
+in
 {
   options.homelab.services.navidrome.enable = lib.mkOption {
     type = lib.types.bool;
@@ -27,7 +30,7 @@
       };
     };
 
-    services.nginx.virtualHosts."navi.${config.homelab.tld}" = {
+    services.nginx.virtualHosts.${domain} = {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -35,5 +38,7 @@
         proxyWebsockets = true;
       };
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 }

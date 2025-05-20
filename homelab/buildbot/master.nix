@@ -41,5 +41,7 @@ in
       forceSSL = true;
       enableACME = true;
     };
+
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
   };
 }

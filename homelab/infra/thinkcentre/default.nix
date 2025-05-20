@@ -24,16 +24,17 @@
     backupCount = 0;
   };
 
-  networking.domains = {
-    enable = true;
-    baseDomains.${config.homelab.tld} = { };
-    subDomains = {
-      "rdg.uk.region.${config.homelab.tld}" = {
+  networking.domains =
+    let
+      self = {
         a.data = "94.174.146.130";
         #aaaa.data = "";
       };
-      "home.${config.homelab.tld}".a.data =
-        config.networking.domains.subDomains.${config.homelab.hostname}.a.data;
+    in
+    {
+      baseDomains.${config.homelab.tld} = { };
+      subDomains = {
+        ${config.homelab.hostname} = self;
+      };
     };
-  };
 }

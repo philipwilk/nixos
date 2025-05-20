@@ -10,6 +10,7 @@ let
   ezspRadio = "/dev/ttyUSB0";
   threadRadio = "/dev/ttyUSB1";
   dongleDevice = threadRadio;
+  domain = "home.${config.homelab.tld}";
 in
 {
   options.homelab.services.homeAssistant.enable = lib.mkEnableOption "the home assistant config";
@@ -127,7 +128,9 @@ in
       ];
     };
 
-    services.nginx.virtualHosts."home.${config.homelab.tld}" = {
+    networking.domains.subDomains.${domain}.cname.data = config.homelab.hostname;
+
+    services.nginx.virtualHosts.${domain} = {
       locations."/" = {
         proxyPass = "http://[::1]:${toString config.services.home-assistant.config.http.server_port}";
         proxyWebsockets = true;
