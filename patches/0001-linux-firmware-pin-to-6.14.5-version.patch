@@ -1,0 +1,30 @@
+From 313f5f5a35ef22813f963872c30b8327fdfd2557 Mon Sep 17 00:00:00 2001
+From: Philip Wilk <p.wilk@student.reading.ac.uk>
+Date: Thu, 22 May 2025 04:16:49 +0100
+Subject: [PATCH] linux-firmware: pin to 6.14.5 version
+
+---
+ pkgs/by-name/li/linux-firmware/package.nix | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/pkgs/by-name/li/linux-firmware/package.nix b/pkgs/by-name/li/linux-firmware/package.nix
+index e5f97ebebdb2..31f2c712ed95 100644
+--- a/pkgs/by-name/li/linux-firmware/package.nix
++++ b/pkgs/by-name/li/linux-firmware/package.nix
+@@ -22,11 +22,11 @@ let
+ in
+ stdenvNoCC.mkDerivation rec {
+   pname = "linux-firmware";
+-  version = "20250509";
++  version = "20250410";
+ 
+   src = fetchzip {
+     url = "https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-${version}.tar.xz ";
+-    hash = "sha256-0FrhgJQyCeRCa3s0vu8UOoN0ZgVCahTQsSH0o6G6hhY=";
++    hash = "sha256-aQdEl9+7zbNqWSII9hjRuPePvSfWVql5u5TIrGsa+Ao=";
+   };
+ 
+   postUnpack = ''
+-- 
+2.49.0
+

@@ -137,6 +137,7 @@
                   "0001-python3Packages.mlxtend-0.23.3-0.23.4"
                   "0003-python3Packages.mlxtend-fix-scikit-1.6.0-compat"
                   "0004-python3Packages.mlxtend-disable-failing-tests-test_e"
+                  "0001-linux-firmware-pin-to-6.14.5-version"
                 ];
 
                 hmPatches = [
