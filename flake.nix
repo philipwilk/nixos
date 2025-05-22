@@ -131,42 +131,16 @@
                   #   url = "";
                   #   hash = "";
                   # }
-                  {
-                    meta.description = "python3Packages.mlxtend: 0.23.3->0.23.4";
-                    url = "https://github.com/NixOS/nixpkgs/pull/392453/commits/09de72aad036c5b9fb1cca78642cbe04531ea9d8.patch";
-                    hash = "sha256-UOIRiRQz11S5ejZuq2MR6TFXdTSDtpcL0B2D6IgpF2k=";
-                  }
-                  {
-                    meta.description = "python3Packages.mlxtend: fix scikit >1.6.0 compat";
-                    url = "https://github.com/NixOS/nixpkgs/pull/392453/commits/faa73bb540fd99bae4b14e057b34123d3e8cef61.patch";
-                    hash = "sha256-p+VVAb3caRTiR2i/67jgclw6l87x7VoozYhd7kys0EY=";
-                  }
-                  {
-                    meta.description = "python3Packages.mlxtend: disable failing tests test_ensemble_vote_classifier, test_stacking_classifier, test_stacking_cv_classifier";
-                    url = "https://github.com/NixOS/nixpkgs/pull/392453/commits/9891bef5073b7e2d25a08b336aa5551e663db58c.patch";
-                    hash = "sha256-zh8vcuuHMVAQYnFnXKbXbnVyUxBbmRe02dA2LOI8Nzw=";
-                  }
-                  {
-                    meta.description = "fix imbalanced-learn";
-                    url = "https://github.com/NixOS/nixpkgs/pull/392405.patch";
-                    hash = "sha256-zJ1+QGoZ9oG74amN0Wghu9RSeMKohKW4vT8D8xY3K8I=";
-                  }
-                  {
-                    meta.description = "nixos/hddfancontrol: use attrset for config";
-                    url = "https://github.com/NixOS/nixpkgs/pull/394826.patch";
-                    hash = "sha256-nV5kn94h4v66Lj5/IWYyoByfs/OIbIXwfp8+SzPw3eE=";
-                  }
-                  {
-                    meta.description = "pin kernel 6.14.6";
-                    url = "https://github.com/NixOS/nixpkgs/commit/324d830906a3e4f9eae1884714ba5f8beab911d6.patch";
-                    hash = "sha256-YNn7dVbWESs15XJWwGGWW0nfyt2OTjJvnPG0XKpZqA8=";
-                  }
                 ];
 
                 localPatches = join-dirpatch "patches" [
                   "nut"
                   "0001-nut-add-override-for-apc_modbus-feature"
                   "0002-nixos-ups-add-package-option"
+                  # mlxtend patchset
+                  "0001-python3Packages.mlxtend-0.23.3-0.23.4"
+                  "0003-python3Packages.mlxtend-fix-scikit-1.6.0-compat"
+                  "0004-python3Packages.mlxtend-disable-failing-tests-test_e"
                 ];
 
                 hmPatches = [
