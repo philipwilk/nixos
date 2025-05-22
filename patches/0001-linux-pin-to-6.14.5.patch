@@ -1,0 +1,45 @@
+From 162383437c8ed98192ff3d0ce86550f23fac334f Mon Sep 17 00:00:00 2001
+From: Philip Wilk <p.wilk@student.reading.ac.uk>
+Date: Wed, 21 May 2025 22:29:47 +0100
+Subject: [PATCH] linux: pin to 6.14.5
+
+---
+ pkgs/by-name/li/linux-firmware/package.nix     | 4 ++--
+ pkgs/os-specific/linux/kernel/kernels-org.json | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/pkgs/by-name/li/linux-firmware/package.nix b/pkgs/by-name/li/linux-firmware/package.nix
+index e5f97ebebdb2..31f2c712ed95 100644
+--- a/pkgs/by-name/li/linux-firmware/package.nix
++++ b/pkgs/by-name/li/linux-firmware/package.nix
+@@ -22,11 +22,11 @@ let
+ in
+ stdenvNoCC.mkDerivation rec {
+   pname = "linux-firmware";
+-  version = "20250509";
++  version = "20250410";
+ 
+   src = fetchzip {
+     url = "https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-${version}.tar.xz ";
+-    hash = "sha256-0FrhgJQyCeRCa3s0vu8UOoN0ZgVCahTQsSH0o6G6hhY=";
++    hash = "sha256-aQdEl9+7zbNqWSII9hjRuPePvSfWVql5u5TIrGsa+Ao=";
+   };
+ 
+   postUnpack = ''
+diff --git a/pkgs/os-specific/linux/kernel/kernels-org.json b/pkgs/os-specific/linux/kernel/kernels-org.json
+index de02f05797e3..8f38e8a23931 100644
+--- a/pkgs/os-specific/linux/kernel/kernels-org.json
++++ b/pkgs/os-specific/linux/kernel/kernels-org.json
+@@ -32,7 +32,7 @@
+         "hash": "sha256:0hhj49k3ksjcp0dg5yiahqzryjfdpr9c1a9ph6j9slzmkikbn7v1"
+     },
+     "6.14": {
+-        "version": "6.14.6",
+-        "hash": "sha256:1acpjxscw5nvgp19jzd29zhl1c6wdzx0bxp4yy0hy8z2k0cpz091"
++        "version": "6.14.5",
++        "hash": "sha256:02gl4hdxzijyyk57jsr85grdkxs2yi2gkvqa043kbamy5g2pw818"
+     }
+ }
+-- 
+2.49.0
+
