@@ -25,7 +25,7 @@
       theme = "blahaj";
     };
 
-    kernelPackages = pkgs.linuxPackagesFor (
+    boot.kernelPackages = pkgs.linuxPackagesFor (
       pkgs.linuxKernel.kernels.linux_6_14.override {
         argsOverride = rec {
           src = pkgs.fetchurl {
