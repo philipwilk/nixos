@@ -4,7 +4,6 @@
   config,
   lib,
   nix-matlab,
-  nix-your-shell,
   ...
 }:
 {
@@ -26,6 +25,19 @@
       theme = "blahaj";
     };
 
+    kernelPackages = pkgs.linuxPackagesFor (
+      pkgs.linuxKernel.kernels.linux_6_14.override {
+        argsOverride = rec {
+          src = pkgs.fetchurl {
+            url = "mirror://kernel/linux/kernel/v${lib.versions.major version}.x/linux-${version}.tar.xz";
+            hash = "sha256-KCB+xSu+qjUHAQrv+UT0QvfZ8isoa3nK9F7G3xsk9Ak=";
+          };
+          version = "6.14.5";
+          modDirVersion = "6.14.5";
+        };
+      }
+    );
+
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
     hardware.openrazer = {
@@ -39,7 +51,6 @@
     ];
     nixpkgs.overlays = [
       nix-matlab.overlay
-      nix-your-shell.overlays.default
       # directly stolen from https://github.com/hercules-ci/arion/issues/48#issuecomment-1768406041
       (self: super: {
         docker-compose-compat = (

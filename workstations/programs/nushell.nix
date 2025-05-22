@@ -6,9 +6,6 @@
 {
   programs.nushell = {
     enable = true;
-    configFile.text = ''
-      source "${config.xdg.configHome}/nushell/nix-your-shell.nu"
-    '';
     shellAliases = osConfig.environment.shellAliases;
     extraConfig = ''
       let carapace_completer = {|spans|
