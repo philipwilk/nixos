@@ -154,8 +154,12 @@ in
     );
 
     ups."SMT1500I" = {
-      driver = "usbhid-ups";
+      driver = "apc_modbus";
       port = "auto";
+      directives = [
+        ''vendorid = "051D"''
+        ''productid = "0000"''
+      ];
     };
 
     users.upsmon = {
