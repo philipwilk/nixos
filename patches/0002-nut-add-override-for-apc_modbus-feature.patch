@@ -1,17 +1,17 @@
-From 8a3f3bf08944abfb0cde3230a5f9c75d99b4da95 Mon Sep 17 00:00:00 2001
+From 0cbb496ed4b152eeea4798b84a3393c4d281797c Mon Sep 17 00:00:00 2001
 From: Philip Wilk <p.wilk@student.reading.ac.uk>
-Date: Sun, 18 May 2025 19:18:12 +0100
-Subject: [PATCH 1/2] nut: add override for apc_modbus feature
+Date: Mon, 26 May 2025 15:45:30 +0100
+Subject: [PATCH 2/3] nut: add override for apc_modbus feature
 
 ---
- pkgs/by-name/nu/nut/package.nix | 54 +++++++++++++++++++++++++--------
- 1 file changed, 42 insertions(+), 12 deletions(-)
+ pkgs/by-name/nu/nut/package.nix | 52 +++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 12 deletions(-)
 
 diff --git a/pkgs/by-name/nu/nut/package.nix b/pkgs/by-name/nu/nut/package.nix
-index 6f5e774b74a7..c03c3ff5ff3f 100644
+index 6f5e774b74a7..78b149b37b72 100644
 --- a/pkgs/by-name/nu/nut/package.nix
 +++ b/pkgs/by-name/nu/nut/package.nix
-@@ -21,7 +21,28 @@
+@@ -21,7 +21,31 @@
    systemd,
    udev,
    gnused,
@@ -21,6 +21,9 @@ index 6f5e774b74a7..c03c3ff5ff3f 100644
 +let
 +  # rebuild libmodbus with downstream usb patches from
 +  # https://github.com/networkupstools/libmodbus
++  # finding the docs for this was actually relatively hard
++  # so save them here for reference
++  # https://github.com/networkupstools/nut/wiki/APC-UPS-with-Modbus-protocol
 +  libmodbus' = libmodbus.overrideAttrs (finalAttrs: {
 +    version = "3.1.11-withUsbRTU-NUT";
 +
@@ -40,7 +43,7 @@ index 6f5e774b74a7..c03c3ff5ff3f 100644
  
  stdenv.mkDerivation rec {
    pname = "nut";
-@@ -46,7 +67,7 @@ stdenv.mkDerivation rec {
+@@ -46,7 +70,7 @@ stdenv.mkDerivation rec {
        libgpiod = "${libgpiod_1}/lib";
        libusb = "${libusb1}/lib";
        neon = "${neon}/lib";
@@ -49,7 +52,7 @@ index 6f5e774b74a7..c03c3ff5ff3f 100644
        netsnmp = "${net-snmp.lib}/lib";
      })
    ];
-@@ -59,11 +80,11 @@ stdenv.mkDerivation rec {
+@@ -59,11 +83,11 @@ stdenv.mkDerivation rec {
      avahi
      freeipmi
      libgpiod_1
@@ -62,7 +65,7 @@ index 6f5e774b74a7..c03c3ff5ff3f 100644
    ];
  
    nativeBuildInputs = [
-@@ -72,16 +93,20 @@ stdenv.mkDerivation rec {
+@@ -72,16 +96,20 @@ stdenv.mkDerivation rec {
      makeWrapper
    ];
  
@@ -93,18 +96,6 @@ index 6f5e774b74a7..c03c3ff5ff3f 100644
  
    enableParallelBuilding = true;
  
-@@ -97,6 +122,11 @@ stdenv.mkDerivation rec {
-     "sbin"
-   ];
- 
-+  # otherwise nut doesnt find libmodbus when compiling with the apc_modbus feature
-+  buildPhase = lib.optional withApcModbus ''
-+    NIX_CFLAGS_COMPILE="$(pkg-config --cflags libmodbus) $NIX_CFLAGS_COMPILE"
-+  '';
-+
-   postInstall = ''
-     substituteInPlace $out/lib/systemd/system-shutdown/nutshutdown \
-       --replace /bin/sed "${gnused}/bin/sed" \
 -- 
 2.49.0
 

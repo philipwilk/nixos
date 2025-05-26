@@ -1,0 +1,32 @@
+From 94bb1444904f774e08f2e38484adc579ef29a5d8 Mon Sep 17 00:00:00 2001
+From: Philip Wilk <p.wilk@student.reading.ac.uk>
+Date: Mon, 26 May 2025 16:25:45 +0100
+Subject: [PATCH] nixos/prometheus/exporters/nut: export all variables by
+ default instead of an arbitrary selection
+
+---
+ .../services/monitoring/prometheus/exporters/nut.nix      | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/nixos/modules/services/monitoring/prometheus/exporters/nut.nix b/nixos/modules/services/monitoring/prometheus/exporters/nut.nix
+index 47b45d46f99e..592e4d27c6ca 100644
+--- a/nixos/modules/services/monitoring/prometheus/exporters/nut.nix
++++ b/nixos/modules/services/monitoring/prometheus/exporters/nut.nix
+@@ -67,11 +67,9 @@ in
+         --nut.server=${cfg.nutServer} \
+         --web.listen-address="${cfg.listenAddress}:${toString cfg.port}" \
+         ${optionalString (cfg.nutUser != "") "--nut.username=${cfg.nutUser}"} \
+-        ${
+-          optionalString (
+-            cfg.nutVariables != [ ]
+-          ) "--nut.vars_enable=${concatStringsSep "," cfg.nutVariables}"
+-        } \
++        "--nut.vars_enable=${
++          if cfg.nutVariables != [ ] then (concatStringsSep "," cfg.nutVariables) else " "
++        }" \
+         ${concatStringsSep " " cfg.extraFlags}
+     '';
+   };
+-- 
+2.49.0
+

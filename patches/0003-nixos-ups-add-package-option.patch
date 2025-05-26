@@ -1,7 +1,7 @@
-From b775a46385d9f66e1624c517cb88f1e4f01544f7 Mon Sep 17 00:00:00 2001
+From 44069c52d3d99341a9ab93533ac88f4edab3fde6 Mon Sep 17 00:00:00 2001
 From: Philip Wilk <p.wilk@student.reading.ac.uk>
-Date: Sun, 18 May 2025 19:18:20 +0100
-Subject: [PATCH 2/2] nixos/ups: add package option
+Date: Mon, 26 May 2025 15:45:41 +0100
+Subject: [PATCH 3/3] nixos/ups: add package option
 
 ---
  nixos/modules/services/monitoring/ups.nix | 24 ++++++++++++-----------
