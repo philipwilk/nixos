@@ -54,6 +54,7 @@
       wireguard-tools
       lm_sensors
       smartmontools
+      sg3_utils
       speedtest-go
       dust
       # nix utils
