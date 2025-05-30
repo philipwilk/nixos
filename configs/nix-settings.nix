@@ -15,7 +15,11 @@
   };
 
   nix = {
-    package = pkgs.nixVersions.latest;
+    package = pkgs.nixVersions.latest.overrideAttrs {
+      patches = [
+        ../patches/0001-Gracefully-fallback-from-failing-substituters.patch
+      ];
+    };
     registry = lib.mapAttrs (_: value: { flake = value; }) {
       inherit nixpkgs;
     };
