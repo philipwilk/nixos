@@ -4,6 +4,9 @@
   lib,
   ...
 }:
+let
+  musicFolder = "/mnt/zfs/colossus/media/music";
+in
 {
   options.homelab.services.navidrome.enable = lib.mkOption {
     type = lib.types.bool;
@@ -19,13 +22,17 @@
       settings = {
         Address = "127.0.0.1";
         Port = 4533;
-        MusicFolder = "/mnt/zfs/colossus/media/music";
+        MusicFolder = musicFolder;
         DataFolders = "${config.homelab.stateDir}/navidrome";
         CoverJpegQuality = 100;
         EnableSharing = true;
         ImageCacheSize = "250MB";
       };
     };
+
+    systemd.services.navidrome.serviceConfig.ReadOnlyPaths = [
+      musicFolder
+    ];
 
     services.nginx.virtualHosts."navi.${config.homelab.tld}" = {
       forceSSL = true;
