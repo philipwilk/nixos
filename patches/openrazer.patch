@@ -1,0 +1,29 @@
+From 4988926ed733c76e6d6e6824d9fe4fc322947c3f Mon Sep 17 00:00:00 2001
+From: Babbaj <babbaj45@gmail.com>
+Date: Wed, 4 Jun 2025 01:30:18 -0400
+Subject: [PATCH] openrazer: 3.10.1 -> 3.10.3
+
+---
+ pkgs/development/python-modules/openrazer/common.nix | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/pkgs/development/python-modules/openrazer/common.nix b/pkgs/development/python-modules/openrazer/common.nix
+index df6f5ef4d8a9f2..d9dd55c2c52867 100644
+--- a/pkgs/development/python-modules/openrazer/common.nix
++++ b/pkgs/development/python-modules/openrazer/common.nix
+@@ -1,13 +1,13 @@
+ { lib, fetchFromGitHub }:
+ rec {
+-  version = "3.10.1";
++  version = "3.10.3";
+   pyproject = true;
+ 
+   src = fetchFromGitHub {
+     owner = "openrazer";
+     repo = "openrazer";
+     tag = "v${version}";
+-    hash = "sha256-igrGx7Y6ENtZatJCTAW43/0q6ZjljJ9/kU3QFli4yIU=";
++    hash = "sha256-M5g3Rn9WuyudhWQfDooopjexEgGVB0rzfJsPg+dqwn4=";
+   };
+ 
+   meta = {

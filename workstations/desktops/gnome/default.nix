@@ -30,12 +30,9 @@
 
     services = {
       libinput.mouse.accelProfile = "flat";
-      xserver = {
-        enable = true;
-        displayManager.gdm.enable = true;
-        desktopManager.gnome.enable = true;
-        excludePackages = with pkgs; [ xterm ];
-      };
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
+      xserver.excludePackages = with pkgs; [ xterm ];
     };
   };
 }

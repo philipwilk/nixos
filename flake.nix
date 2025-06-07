@@ -130,15 +130,11 @@
                 ];
 
                 localPatches = join-dirpatch "patches" [
-                  "0001-nut-2.8.2-2.8.3"
                   "0002-nut-add-override-for-apc_modbus-feature"
                   "0003-nixos-ups-add-package-option"
                   "0001-nixos-prometheus-exporters-nut-export-all-variables-"
-                  # mlxtend patchset
-                  "0001-python3Packages.mlxtend-0.23.3-0.23.4"
-                  "0003-python3Packages.mlxtend-fix-scikit-1.6.0-compat"
-                  "0004-python3Packages.mlxtend-disable-failing-tests-test_e"
-                  "0001-linux-firmware-pin-to-6.14.5-version"
+                  # Fix openrazer
+                  "openrazer"
                 ];
 
                 hmPatches = [
