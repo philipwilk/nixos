@@ -25,6 +25,17 @@
       theme = "blahaj";
     };
 
+    /*
+      boot.kernelPackages = pkgs.linuxPackagesFor (
+        pkgs.linuxKernel.kernels.linux_6_15.override {
+          argsOverride = {
+            patches = [
+              ../patches/ath12k.patch
+            ];
+          };
+        }
+      );
+    */
     boot.kernelPackages = pkgs.linuxPackagesFor (
       pkgs.linuxKernel.kernels.linux_6_14.override {
         argsOverride = rec {
@@ -37,7 +48,6 @@
         };
       }
     );
-
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
     hardware.openrazer = {
