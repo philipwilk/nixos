@@ -44,6 +44,7 @@
       fsType = "zfs";
     };
     "/mnt/zfs/colossus" = {
+      enable = false;
       device = "colossus/root";
       fsType = "zfs";
       options = [ "zfsutil" ]; # removes need for dataset to have a legacy mountpoint
