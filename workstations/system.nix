@@ -25,29 +25,20 @@
       theme = "blahaj";
     };
 
-    /*
-      boot.kernelPackages = pkgs.linuxPackagesFor (
-        pkgs.linuxKernel.kernels.linux_6_15.override {
-          argsOverride = {
-            patches = [
-              ../patches/ath12k.patch
-            ];
-          };
-        }
-      );
-    */
     boot.kernelPackages = pkgs.linuxPackagesFor (
-      pkgs.linuxKernel.kernels.linux_6_14.override {
+      pkgs.linuxKernel.kernels.linux_latest.override {
         argsOverride = rec {
           src = pkgs.fetchurl {
-            url = "mirror://kernel/linux/kernel/v${lib.versions.major version}.x/linux-${version}.tar.xz";
-            hash = "sha256-KCB+xSu+qjUHAQrv+UT0QvfZ8isoa3nK9F7G3xsk9Ak=";
+            url = "https://git.kernel.org/torvalds/t/linux-6.16-rc1.tar.gz";
+            hash = "sha256-oJO9EH3zhksuCCUMeqS2L2EqMl8j6aUr412IY3MA1fw=";
           };
-          version = "6.14.5";
-          modDirVersion = "6.14.5";
+          version = "6.16.0-rc1";
+          modDirVersion = "6.16.0-rc1";
+          ignoreConfigErrors = true;
         };
       }
     );
+
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
     hardware.openrazer = {
@@ -83,6 +74,20 @@
             '';
           })
         );
+      })
+
+      # latest linux-firmware
+      (self: super: {
+        linux-firmware = super.linux-firmware.overrideAttrs {
+          version = "2e91d8c3c4bd34a27177180a38f62d3ba3c96031";
+
+          src = pkgs.fetchFromGitLab {
+            owner = "kernel-firmware";
+            repo = "linux-firmware";
+            rev = "2e91d8c3c4bd34a27177180a38f62d3ba3c96031";
+            hash = "sha256-WmCw9xRUP8HT3yY5EEJVSbUEVAKCJ2wk3KNoApsPzMU=";
+          };
+        };
       })
     ];
 
