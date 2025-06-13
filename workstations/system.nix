@@ -26,15 +26,14 @@
     };
 
     boot.kernelPackages = pkgs.linuxPackagesFor (
-      pkgs.linuxKernel.kernels.linux_latest.override {
+      pkgs.linuxKernel.kernels.linux_6_15.override {
         argsOverride = rec {
-          src = pkgs.fetchurl {
-            url = "https://git.kernel.org/torvalds/t/linux-6.16-rc1.tar.gz";
-            hash = "sha256-oJO9EH3zhksuCCUMeqS2L2EqMl8j6aUr412IY3MA1fw=";
-          };
-          version = "6.16.0-rc1";
-          modDirVersion = "6.16.0-rc1";
-          ignoreConfigErrors = true;
+          kernelPatches = [
+            {
+              name = "backport ath12k patch to fix wifi";
+              patch = ../patches/ath12k.patch;
+            }
+          ];
         };
       }
     );
