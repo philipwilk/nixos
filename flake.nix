@@ -133,10 +133,6 @@
                   "0002-nut-add-override-for-apc_modbus-feature"
                   "0003-nixos-ups-add-package-option"
                   "0001-nixos-prometheus-exporters-nut-export-all-variables-"
-                  # Fix openrazer
-                  "openrazer"
-                  # Fix stalwart-mail
-                  "7103bfc8f01a085c304e92a3464ea48f64c49d2b"
                 ];
 
                 hmPatches = [
