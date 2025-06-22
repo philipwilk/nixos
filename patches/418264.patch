@@ -1,0 +1,62 @@
+From 53aac1d02ac39de3ef099afb0f7f649b1e1e46ef Mon Sep 17 00:00:00 2001
+From: Marie Ramlow <me@nycode.dev>
+Date: Thu, 19 Jun 2025 22:35:36 +0200
+Subject: [PATCH] zfs_{2_3,unstable}: 2.3.2 -> 2.3.3
+
+---
+ pkgs/os-specific/linux/zfs/2_3.nix      | 6 +++---
+ pkgs/os-specific/linux/zfs/unstable.nix | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/pkgs/os-specific/linux/zfs/2_3.nix b/pkgs/os-specific/linux/zfs/2_3.nix
+index e88b4c59159419..965f4ee874f3cd 100644
+--- a/pkgs/os-specific/linux/zfs/2_3.nix
++++ b/pkgs/os-specific/linux/zfs/2_3.nix
+@@ -11,10 +11,10 @@ callPackage ./generic.nix args {
+   # this attribute is the correct one for this package.
+   kernelModuleAttribute = "zfs_2_3";
+   # check the release notes for compatible kernels
+-  kernelCompatible = kernel: kernel.kernelOlder "6.15";
++  kernelCompatible = kernel: kernel.kernelOlder "6.16";
+ 
+   # this package should point to the latest release.
+-  version = "2.3.2";
++  version = "2.3.3";
+ 
+   tests =
+     {
+@@ -29,5 +29,5 @@ callPackage ./generic.nix args {
+     amarshall
+   ];
+ 
+-  hash = "sha256-+DqpIgHCVi0fDOqvKwaGXIiiXw8xEnlv2tgRwgLX9G8=";
++  hash = "sha256-NXAbyGBfpzWfm4NaP1/otTx8fOnoRV17343qUMdQp5U=";
+ }
+diff --git a/pkgs/os-specific/linux/zfs/unstable.nix b/pkgs/os-specific/linux/zfs/unstable.nix
+index be9ad8b682e718..5bd1412d6c323d 100644
+--- a/pkgs/os-specific/linux/zfs/unstable.nix
++++ b/pkgs/os-specific/linux/zfs/unstable.nix
+@@ -9,20 +9,20 @@ callPackage ./generic.nix args {
+   # this attribute is the correct one for this package.
+   kernelModuleAttribute = "zfs_unstable";
+   # check the release notes for compatible kernels
+-  kernelCompatible = kernel: kernel.kernelOlder "6.15";
++  kernelCompatible = kernel: kernel.kernelOlder "6.16";
+ 
+   # this package should point to a version / git revision compatible with the latest kernel release
+   # IMPORTANT: Always use a tagged release candidate or commits from the
+   # zfs-<version>-staging branch, because this is tested by the OpenZFS
+   # maintainers.
+-  version = "2.3.2";
++  version = "2.3.3";
+   # rev = "";
+ 
+   tests = {
+     inherit (nixosTests.zfs) unstable;
+   };
+ 
+-  hash = "sha256-+DqpIgHCVi0fDOqvKwaGXIiiXw8xEnlv2tgRwgLX9G8=";
++  hash = "sha256-NXAbyGBfpzWfm4NaP1/otTx8fOnoRV17343qUMdQp5U=";
+ 
+   extraLongDescription = ''
+     This is "unstable" ZFS, and will usually be a pre-release version of ZFS.
