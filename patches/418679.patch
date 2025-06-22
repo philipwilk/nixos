@@ -1,0 +1,92 @@
+From 8dde35316ad11d74c9743a21ab051e7cb43ed490 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Gutyina=20Gerg=C5=91?= <gutyina.gergo.2@gmail.com>
+Date: Sat, 21 Jun 2025 11:32:13 +0200
+Subject: [PATCH 1/2] ciscoPakcetTracer8: fix build
+
+---
+ pkgs/by-name/ci/ciscoPacketTracer8/package.nix | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/pkgs/by-name/ci/ciscoPacketTracer8/package.nix b/pkgs/by-name/ci/ciscoPacketTracer8/package.nix
+index 45d2f3fab038b3..10472dc0f356ce 100644
+--- a/pkgs/by-name/ci/ciscoPacketTracer8/package.nix
++++ b/pkgs/by-name/ci/ciscoPacketTracer8/package.nix
+@@ -7,6 +7,7 @@
+   alsa-lib,
+   dbus,
+   expat,
++  fetchurl,
+   fontconfig,
+   glib,
+   libdrm,
+@@ -40,6 +41,14 @@ let
+     "8.2.2" = "CiscoPacketTracer822_amd64_signed.deb";
+   };
+ 
++  libxml2' = libxml2.overrideAttrs rec {
++    version = "2.13.8";
++    src = fetchurl {
++      url = "mirror://gnome/sources/libxml2/${lib.versions.majorMinor version}/libxml2-${version}.tar.xz";
++      hash = "sha256-J3KUyzMRmrcbK8gfL0Rem8lDW4k60VuyzSsOhZoO6Eo=";
++    };
++  };
++
+   unwrapped = stdenvNoCC.mkDerivation {
+     name = "ciscoPacketTracer8-unwrapped";
+     inherit version;
+@@ -68,7 +77,7 @@ let
+         libpulseaudio
+         libudev0-shim
+         libxkbcommon
+-        libxml2
++        libxml2'
+         libxslt
+         nspr
+         nss
+
+From 982c8d0bc787b6e96303954ffc79e0a75ce1751c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Gutyina=20Gerg=C5=91?= <gutyina.gergo.2@gmail.com>
+Date: Sat, 21 Jun 2025 11:42:33 +0200
+Subject: [PATCH 2/2] ciscoPacketTracer7: fix build
+
+---
+ pkgs/by-name/ci/ciscoPacketTracer7/package.nix | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/pkgs/by-name/ci/ciscoPacketTracer7/package.nix b/pkgs/by-name/ci/ciscoPacketTracer7/package.nix
+index f91e6612a00405..01a9e7d6ee098b 100644
+--- a/pkgs/by-name/ci/ciscoPacketTracer7/package.nix
++++ b/pkgs/by-name/ci/ciscoPacketTracer7/package.nix
+@@ -4,6 +4,8 @@
+   buildFHSEnv,
+   copyDesktopItems,
+   dpkg,
++  fetchurl,
++  libxml2,
+   lndir,
+   makeDesktopItem,
+   makeWrapper,
+@@ -48,6 +50,14 @@ let
+     ];
+   };
+ 
++  libxml2' = libxml2.overrideAttrs rec {
++    version = "2.13.8";
++    src = fetchurl {
++      url = "mirror://gnome/sources/libxml2/${lib.versions.majorMinor version}/libxml2-${version}.tar.xz";
++      hash = "sha256-J3KUyzMRmrcbK8gfL0Rem8lDW4k60VuyzSsOhZoO6Eo=";
++    };
++  };
++
+   fhs = buildFHSEnv {
+     pname = "packettracer7";
+     inherit version;
+@@ -64,7 +74,7 @@ let
+         libpulseaudio
+         libudev0-shim
+         libxkbcommon
+-        libxml2
++        libxml2'
+         libxslt
+         nspr
+         nss

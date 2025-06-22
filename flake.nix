@@ -135,6 +135,8 @@
                   "0001-nixos-prometheus-exporters-nut-export-all-variables-"
                   # fix handbrake
                   "418610"
+                  # fix packet tracer
+                  "418679"
                 ];
 
                 hmPatches = [
