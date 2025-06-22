@@ -63,7 +63,7 @@ in
       kernels.python3 =
         let
           env = (
-            pkgs.python3.withPackages (
+            pkgs.python312.withPackages (
               pythonPackages: with pythonPackages; [
                 nbclassic
                 pandas
