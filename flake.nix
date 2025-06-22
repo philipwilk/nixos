@@ -137,6 +137,8 @@
                   "418610"
                   # fix packet tracer
                   "418679"
+                  # Update zfs to add 6.15 support
+                  "418264"
                 ];
 
                 hmPatches = [
