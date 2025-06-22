@@ -1,0 +1,37 @@
+From 374f03332bff676596cb6fde57413a1c7d08feea Mon Sep 17 00:00:00 2001
+From: Colin <colin@uninsane.org>
+Date: Sat, 21 Jun 2025 03:15:43 +0000
+Subject: [PATCH] handbrake: fix build
+
+---
+ pkgs/by-name/ha/handbrake/package.nix | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/pkgs/by-name/ha/handbrake/package.nix b/pkgs/by-name/ha/handbrake/package.nix
+index 679c110e90449c..f8c121d7ab9232 100644
+--- a/pkgs/by-name/ha/handbrake/package.nix
++++ b/pkgs/by-name/ha/handbrake/package.nix
+@@ -15,6 +15,7 @@
+   testers,
+   runCommand,
+   fetchurl,
++  fetchpatch2,
+   # Main build tools
+   pkg-config,
+   autoconf,
+@@ -183,6 +184,15 @@ let
+     pname = "handbrake";
+     inherit version src;
+ 
++    patches = [
++      (fetchpatch2 {
++        # fixes build against ffmpeg 7.1.1+; remove for handbrake > 1.9.2.
++        # https://github.com/HandBrake/HandBrake/pull/6657
++        url = "https://github.com/HandBrake/HandBrake/commit/75f9c84c140c8841cfe1324ef59452025899ad8b.patch?full_index=1";
++        hash = "sha256-glUyCttS2S/G+bSgIAB4nggECe0iEJIsUyr0RkAKEbE=";
++      })
++    ];
++
+     postPatch =
+       ''
+         install -Dm444 ${versionFile} ${versionFile.name}
