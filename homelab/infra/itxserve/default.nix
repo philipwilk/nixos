@@ -21,8 +21,8 @@ in
     archiveDir = "/mnt/zfs/colossus";
     router = {
       enable = true;
-      devices.wan = "enp4s0";
-      devices.lan = "enp5s0";
+      devices.wan = "enp9s0";
+      devices.lan = "enp8s0";
     };
     services = {
       nginx.enable = true;
