@@ -4,7 +4,7 @@
   ...
 }:
 let
-  platformControllerId = "/sys/devices/platform/nct6775.656/hwmon/hwmon0";
+  platformControllerId = "/sys/devices/platform/nct6775.656/hwmon/hwmon1";
 in
 {
   imports = [ ./hardware-configuration.nix ];
@@ -85,7 +85,7 @@ in
     DEVPATH=hwmon0=${platformControllerId}
     DEVNAME=hwmon0=nct6798
     FCTEMPS=
-    FCFANS= hwmon0/pwm1=hwmon0/fan1_input hwmon0/pwm4=hwmon0/fan4_input
+    FCFANS= hwmon1/pwm1=hwmon1/fan1_input hwmon1/pwm4=hwmon1/fan4_input
     MINTEMP=
     MAXTEMP=
     MINSTART=
@@ -102,14 +102,14 @@ in
         lffBay = {
           pwmPaths = [ "${platformControllerId}/pwm4:25:10" ];
           disks = byId [
-            "scsi-35000cca2530a67ec"
             "scsi-35000cca2530c4cbc"
-            "scsi-35000cca2530cd21c"
             "scsi-35000cca2530cf7b8"
             "scsi-35000cca2530d3dd4"
             "scsi-35000cca2530d5a24"
             "scsi-35000cca2530a7f1c"
             "scsi-35000cca2530cf2a4"
+            "scsi-35000c500aeea60e3"
+            "scsi-35000c500af0fe2cf"
           ];
           extraArgs = [
             "--interval=30s"
