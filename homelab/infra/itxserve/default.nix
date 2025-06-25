@@ -4,7 +4,7 @@
   ...
 }:
 let
-  platformControllerId = "/sys/devices/platform/nct6775.656/hwmon/hwmon1";
+  platformControllerId = "/sys/devices/platform/nct6775.656/hwmon/hwmon[[:print:]]*";
 in
 {
   imports = [ ./hardware-configuration.nix ];
@@ -97,10 +97,11 @@ in
     settings =
       let
         byId = builtins.map (disk: "/dev/disk/by-id/${disk}");
+        hwmon = "/sys/devices/platform/nct6775.656/hwmon/hwmon1";
       in
       {
         lffBay = {
-          pwmPaths = [ "${platformControllerId}/pwm4:25:10" ];
+          pwmPaths = [ "${hwmon}/pwm4:25:10" ];
           disks = byId [
             "scsi-35000cca2530c4cbc"
             "scsi-35000cca2530cf7b8"
@@ -116,7 +117,7 @@ in
           ];
         };
         sffBay = {
-          pwmPaths = [ "${platformControllerId}/pwm1:80:55" ];
+          pwmPaths = [ "${hwmon}/pwm1:80:55" ];
           disks = byId [
             "ata-KIOXIA-EXCERIA_SATA_SSD_62RB71ENKFV4"
             "ata-KIOXIA-EXCERIA_SATA_SSD_72GB81JJKLQ4"
