@@ -10,6 +10,13 @@ in
 
   options.homelab.router = {
     enable = lib.mkEnableOption "Router components";
+    linkLocal = lib.mkOption {
+      type = lib.types.str;
+      example = "fe80::...";
+      description = ''
+        Link local ip address of the router's lan port.
+      '';
+    };
     devices = {
       wan = lib.mkOption {
         type = lib.types.str;

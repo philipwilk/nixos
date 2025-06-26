@@ -1,13 +1,14 @@
 { config, lib, ... }:
 let
   routerIp = "192.168.1.1";
+  linkLocal = config.homelab.router.linkLocal;
 
   cfg = config.homelab.router.systemd;
   lan = config.homelab.router.devices.lan;
   wan = config.homelab.router.devices.wan;
 
-  dns4 = "1.1.1.1 9.9.9.9";
-  dns6 = "2606:4700:4700::1111 2620:fe::fe";
+  dns4 = routerIp;
+  dns6 = linkLocal;
 
   dnsCfg = {
     DNS = "${dns6} ${dns4}";
