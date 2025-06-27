@@ -14,6 +14,35 @@ in
 
   system.stateVersion = "24.11"; # Did you read the comment?
 
+  systemd.network.links =
+    let
+      lan = config.homelab.router.devices.lan;
+      wan = config.homelab.router.devices.wan;
+    in
+    {
+      "link-${wan}" = {
+        matchConfig.Name = wan;
+        linkConfig = {
+          # WAN link is defaulting to 100mbps
+          # Think it is due to spurious rx errors
+          # Need to replace the link cable so it doesn't happen in the first place
+          # but i cba atm
+          BitsPerSecond = "1G";
+          Duplex = "full";
+        };
+      };
+      "link-${lan}" = {
+        matchConfig.Name = lan;
+        linkConfig = {
+          # LAN link is defaulting to 100mbps
+          # ethtool claims link partner only advertises up to 100baseT/Full...
+          # xiaomi ax3000t router MAY be bugged
+          BitsPerSecond = "1G";
+          Duplex = "full";
+        };
+      };
+    };
+
   homelab = {
     hostname = "sou.uk.region.fogbox.uk";
     isLeader = true;
