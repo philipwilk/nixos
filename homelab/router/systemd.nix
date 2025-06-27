@@ -1,19 +1,15 @@
 { config, lib, ... }:
 let
-  routerIp = "192.168.1.1";
+  r = config.homelab.router;
+  routerIp = r.ip4;
+  linkLocal = r.linkLocal;
 
   cfg = config.homelab.router.systemd;
   lan = config.homelab.router.devices.lan;
   wan = config.homelab.router.devices.wan;
 
-  dns4 = "9.9.9.9 149.112.112.112";
-  dns6 = "2620:fe::fe 2620:fe::9";
-
-  dnsCfg = {
-    DNS = "${dns6} ${dns4}";
-    DNSSEC = "yes";
-    DNSOverTLS = "yes";
-  };
+  dns4 = routerIp;
+  dns6 = linkLocal;
 in
 {
   options.homelab.router.systemd = {
@@ -43,15 +39,12 @@ in
       networks = {
         "10-${wan}" = {
           matchConfig.Name = wan;
-          networkConfig = lib.mkMerge [
-            {
-              DHCP = "yes";
-              IPv6AcceptRA = "yes";
-              LinkLocalAddressing = "ipv6";
-              IPv4Forwarding = "yes";
-            }
-            dnsCfg
-          ];
+          networkConfig = {
+            DHCP = "yes";
+            IPv6AcceptRA = "yes";
+            LinkLocalAddressing = "ipv6";
+            IPv4Forwarding = "yes";
+          };
 
           dhcpV4Config = {
             UseHostname = "no";
@@ -78,19 +71,17 @@ in
         };
         "15-${lan}" = {
           matchConfig.Name = lan;
-          networkConfig = lib.mkMerge [
-            {
-              IPv6AcceptRA = "no";
-              IPv6SendRA = "yes";
-              LinkLocalAddressing = "ipv6";
-              DHCPPrefixDelegation = "yes";
-              DHCPServer = "yes";
-              Address = "${routerIp}/16";
-              IPv4Forwarding = "yes";
-              IPMasquerade = "ipv4";
-            }
-            dnsCfg
-          ];
+          networkConfig = {
+            IPv6AcceptRA = "no";
+            IPv6SendRA = "yes";
+            LinkLocalAddressing = "ipv6";
+            DHCPPrefixDelegation = "yes";
+            DHCPServer = "yes";
+            Address = "${routerIp}/16";
+            IPv4Forwarding = "yes";
+            IPMasquerade = "ipv4";
+          };
+
           dhcpServerConfig = {
             EmitRouter = "yes";
             EmitDNS = "yes";

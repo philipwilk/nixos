@@ -21,6 +21,7 @@ in
     archiveDir = "/mnt/zfs/colossus";
     router = {
       enable = true;
+      linkLocal = "fe80::eaea:6aff:fe93:e79f";
       devices.wan = "enp8s0";
       devices.lan = "enp7s0";
     };
