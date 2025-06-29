@@ -133,12 +133,6 @@
                   "0002-nut-add-override-for-apc_modbus-feature"
                   "0003-nixos-ups-add-package-option"
                   "0001-nixos-prometheus-exporters-nut-export-all-variables-"
-                  # fix handbrake
-                  "418610"
-                  # fix packet tracer
-                  "418679"
-                  # Update zfs to add 6.15 support
-                  "418264"
                 ];
 
                 hmPatches = [
