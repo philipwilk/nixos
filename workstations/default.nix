@@ -115,6 +115,12 @@ in
     (lib.mkIf config.workstation.enable {
       boot.kernelParams = [ "mem_sleep_default=deep" ];
 
+      boot.plymouth = {
+        enable = true;
+        themePackages = with pkgs; [ nixos-bgrt-plymouth ];
+        theme = lib.mkDefault "nixos-bgrt";
+      };
+
       environment = {
         sessionVariables.NIXOS_OZONE_WL = "1";
         binsh = "${pkgs.dash}/bin/dash";
