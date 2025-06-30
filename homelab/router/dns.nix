@@ -40,6 +40,8 @@ in
           prefetch-key = true;
           edns-buffer-size = 1232;
 
+          module-config = "\"validator iterator\"";
+
           hide-identity = true;
           hide-version = true;
         };
@@ -76,6 +78,9 @@ in
             bootstrap_dns = local;
             bootstrap_prefer_ipv6 = true;
             upstream_dns = local;
+            upstream_mode = "parallel";
+            enable_dnssec = true;
+            serve_http3 = true;
             bind_hosts = [
               "127.0.0.1"
               "::1"
