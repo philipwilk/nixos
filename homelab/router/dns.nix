@@ -36,6 +36,7 @@ in
       };
       settings = {
         server = {
+          verbosity = 3;
           interface = [
             "127.0.0.1"
             "::1"
@@ -48,6 +49,8 @@ in
           prefetch = true;
           prefetch-key = true;
           edns-buffer-size = 1232;
+          serve-expired = true;
+          serve-expired-client-timeout = 50;
 
           module-config = "\"validator cachedb iterator\"";
 
