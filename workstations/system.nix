@@ -134,6 +134,7 @@
           slack
           teams-for-linux
           telegram-desktop
+          signal-desktop
           # TTY/serial
           minicom
           heimdall
