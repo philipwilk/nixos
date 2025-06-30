@@ -33,6 +33,7 @@ in
       enable = true;
       package = pkgs.unbound.override {
         withRedis = true;
+        withSystemd = true;
       };
       settings = {
         server = {
