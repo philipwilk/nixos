@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -23,8 +24,16 @@ in
     # Since we manage links using networkd, need to force disable resolved so 127.0.0.53 is free
     services.resolved.enable = lib.mkForce false;
 
+    services.redis.servers.unbound = {
+      enable = true;
+      port = 6399;
+    };
+
     services.unbound = {
       enable = true;
+      package = pkgs.unbound.override {
+        withRedis = true;
+      };
       settings = {
         server = {
           interface = [
@@ -40,10 +49,16 @@ in
           prefetch-key = true;
           edns-buffer-size = 1232;
 
-          module-config = "\"validator iterator\"";
+          module-config = "\"validator cachedb iterator\"";
 
           hide-identity = true;
           hide-version = true;
+        };
+        cachedb = {
+          backend = "\"redis\"";
+          redis-server-host = "127.0.0.1";
+          redis-server-port = config.services.redis.servers.unbound.port;
+          redis-expire-records = true;
         };
         forward-zone = [
           {
