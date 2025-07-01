@@ -191,6 +191,8 @@ in
       {
         environment.sessionVariables.EDITOR = "hx";
 
+        powerManagement.powertop.enable = true;
+
         # Accept acme terms
         security.acme = {
           acceptTerms = true;
