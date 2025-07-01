@@ -78,8 +78,8 @@ in
   ${s "forgejo/smtp"}.publicKeys = servers;
   ${s "forgejo/runner_tok"}.publicKeys = servers;
   ${s "searxng/sec"}.publicKeys = servers;
-  # zfs notifs
-  ${s "zedMailPwd"}.publicKeys = servers;
+  # msmtp passwords
+  ${s "msmtp/zedPwd"}.publicKeys = servers;
   # Wireguard
   ${s "wireguard/itxserve/private"}.publicKeys = [ itxserve ];
   ${s "wireguard/thinkcentre/private"}.publicKeys = [ thinkcentre ];

@@ -476,9 +476,9 @@ in
       })
       # Zfs monitoring
       (lib.mkIf config.boot.zfs.enabled {
-        age.secrets.zedMailPwd.file = ../secrets/zedMailPwd.age;
+        age.secrets.zedPwd.file = ../secrets/msmtp/zedPwd.age;
         systemd.services.zfs-zed.serviceConfig.LoadCredential = [
-          "smtpPwd:${config.age.secrets.zedMailPwd.path}"
+          "smtpPwd:${config.age.secrets.zedPwd.path}"
         ];
 
         programs.msmtp = {
@@ -496,7 +496,7 @@ in
             default = {
               host = "${cfg.tld}";
               passwordeval = "cat /run/credentials/zfs-zed.service/smtpPwd";
-              user = "zfs@services.${cfg.tld}";
+              user = "zfs";
               from = "zfs@services.${cfg.tld}";
             };
           };
@@ -507,13 +507,13 @@ in
             settings = {
               ZED_EMAIL_ADDR = [ "philipwilk@fogbox.uk" ];
               ZED_EMAIL_PROG = "${pkgs.msmtp}/bin/msmtp";
-              ZED_EMAIL_OPTS = "-s '@SUBJECT@' @ADDRESS@";
+              ZED_EMAIL_OPTS = "@ADDRESS@";
 
-              ZED_NOTIFY_INTERVAL_SECS = 3600;
-              ZED_NOTIFY_VERBOSE = false;
+              ZED_NOTIFY_INTERVAL_SECS = 360;
+              ZED_NOTIFY_VERBOSE = true;
 
               ZED_USE_ENCLOSURE_LEDS = true;
-              ZED_SCRUB_AFTER_RESILVER = false;
+              ZED_SCRUB_AFTER_RESILVER = true;
             };
             enableMail = false;
           };
