@@ -27,11 +27,11 @@
 
     boot.kernelPackages = pkgs.linuxPackagesFor (
       pkgs.linuxKernel.kernels.linux_6_15.override {
-        argsOverride = rec {
+        argsOverride = {
           kernelPatches = [
             {
               name = "backport ath12k patch to fix wifi";
-              patch = ../patches/ath12k.patch;
+              patch = ../overlays/kernel/ath12k.patch;
             }
           ];
         };
