@@ -1,0 +1,109 @@
+From 29f9facf763324a507f8fe7016a3078fb0350bbc Mon Sep 17 00:00:00 2001
+From: Philip Wilk <p.wilk@student.reading.ac.uk>
+Date: Fri, 30 May 2025 20:40:42 +0100
+Subject: [PATCH] Gracefully fallback from failing substituters
+
+---
+ src/libstore/build/substitution-goal.cc | 17 ++++++++++++++---
+ src/libstore/http-binary-cache-store.cc | 10 ++++------
+ src/libstore/store-api.cc               | 14 +++++++++++---
+ 3 files changed, 29 insertions(+), 12 deletions(-)
+
+diff --git a/src/libstore/build/substitution-goal.cc b/src/libstore/build/substitution-goal.cc
+index 9ffc8219d..59afc12cd 100644
+--- a/src/libstore/build/substitution-goal.cc
++++ b/src/libstore/build/substitution-goal.cc
+@@ -60,6 +60,10 @@ Goal::Co PathSubstitutionGoal::init()
+ 
+     for (const auto & sub : subs) {
+         trace("trying next substituter");
++        // If sub is not first, previous one must have failed, so warn
++        if (&sub != &subs.front()) {
++            warn("trying next substituter, '%s'", sub->getUri());
++        }
+ 
+         cleanup();
+ 
+@@ -80,14 +84,21 @@ Goal::Co PathSubstitutionGoal::init()
+             continue;
+         }
+ 
++        auto path = subPath ? *subPath : storePath;
+         try {
+             // FIXME: make async
+-            info = sub->queryPathInfo(subPath ? *subPath : storePath);
++            info = sub->queryPathInfo(path);
++            // Because the path doesn't exist
+         } catch (InvalidPath &) {
+             continue;
++            // Because the substituter has failed recently
+         } catch (SubstituterDisabled & e) {
+-            if (settings.tryFallback) continue;
+-            else throw e;
++            warn(
++                "Substituter '%s' was disabled when getting info for path '%s'",
++                sub->getUri(),
++                sub->printStorePath(path));
++            continue;
++            // Any other error
+         } catch (Error & e) {
+             if (settings.tryFallback) {
+                 logError(e.info());
+diff --git a/src/libstore/http-binary-cache-store.cc b/src/libstore/http-binary-cache-store.cc
+index e44d146b9..7fa9203b5 100644
+--- a/src/libstore/http-binary-cache-store.cc
++++ b/src/libstore/http-binary-cache-store.cc
+@@ -97,12 +97,10 @@ protected:
+     void maybeDisable()
+     {
+         auto state(_state.lock());
+-        if (state->enabled && settings.tryFallback) {
+-            int t = 60;
+-            printError("disabling binary cache '%s' for %s seconds", getUri(), t);
+-            state->enabled = false;
+-            state->disabledUntil = std::chrono::steady_clock::now() + std::chrono::seconds(t);
+-        }
++        int t = 60;
++        warn("disabling binary cache '%s' for %s seconds", getUri(), t);
++        state->enabled = false;
++        state->disabledUntil = std::chrono::steady_clock::now() + std::chrono::seconds(t);
+     }
+ 
+     void checkEnabled()
+diff --git a/src/libstore/store-api.cc b/src/libstore/store-api.cc
+index 296f2251a..4aaffdbd6 100644
+--- a/src/libstore/store-api.cc
++++ b/src/libstore/store-api.cc
+@@ -520,7 +520,8 @@ StorePathSet Store::queryDerivationOutputs(const StorePath & path)
+ void Store::querySubstitutablePathInfos(const StorePathCAMap & paths, SubstitutablePathInfos & infos)
+ {
+     if (!settings.useSubstitutes) return;
+-    for (auto & sub : getDefaultSubstituters()) {
++    auto substituters = getDefaultSubstituters();
++    for (auto & sub : substituters) {
+         for (auto & path : paths) {
+             if (infos.count(path.first))
+                 // Choose first succeeding substituter.
+@@ -557,10 +558,17 @@ void Store::querySubstitutablePathInfos(const StorePathCAMap & paths, Substituta
+             } catch (InvalidPath &) {
+             } catch (SubstituterDisabled &) {
+             } catch (Error & e) {
+-                if (settings.tryFallback)
++                // if last substituter, THEN log error and throw, otherwise warn
++                if (&sub == &substituters.back() && settings.tryFallback) {
+                     logError(e.info());
+-                else
+                     throw;
++                } else {
++                    warn(
++                        "Unable to download '%s' from subsituter '%s'\n%s",
++                        sub->printStorePath(subPath),
++                        sub->getUri(),
++                        e.message());
++                }
+             }
+         }
+     }
+-- 
+2.49.0
+
