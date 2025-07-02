@@ -70,13 +70,9 @@
           }:
           {
             nixosConfigurations = withSystem "x86_64-linux" (
-              { pkgs, ... }:
+              { pkgs, system, ... }:
               let
-                join-dirfile-gen =
-                  ext: dir: files:
-                  (map (file: ./${dir}/${file}${ext}) files);
-                join-dirfile = join-dirfile-gen ".nix";
-                join-dirpatch = join-dirfile-gen ".patch";
+                join-dirfile = dir: files: (map (file: ./${dir}/${file}${".nix"}) files);
 
                 # Regional and nix settings for all machines
                 commonModules =
@@ -112,7 +108,7 @@
                   ])
                   ++ commonModules
                   ++ [
-                    hm
+                    inputs.home-manager.nixosModules.default
                     inputs.agenix.nixosModules.default
                     inputs.catppuccin.nixosModules.catppuccin
                     inputs.nix-index-database.nixosModules.nix-index
@@ -121,45 +117,26 @@
                     ./workstations/iwd.nix
                   ];
 
-                remotePatches = map pkgs.fetchpatch [
-                  # {
-                  #   meta.description = "description for the patch" ;
-                  #   url = "";
-                  #   hash = "";
-                  # }
-                ];
-
-                localPatches = join-dirpatch "patches" [
-                  "0002-nut-add-override-for-apc_modbus-feature"
-                  "0003-nixos-ups-add-package-option"
-                  "0001-nixos-prometheus-exporters-nut-export-all-variables-"
-                ];
-
-                hmPatches = [
-                ];
-
-                nixpkgs = pkgs.applyPatches {
-                  name = "nixpkgs-patched";
-                  src = inputs.nixpkgs;
-                  patches = remotePatches ++ localPatches;
-                };
-                nixosSystem = import (nixpkgs + "/nixos/lib/eval-config.nix");
                 buildSystem =
-                  modules:
-                  nixosSystem {
-                    inherit modules;
-                    system = "x86_64-linux";
+                  _modules:
+                  let
+                    modules = _modules ++ [
+                      ./nixos/modules
+                      (
+                        { ... }:
+                        {
+                          nixpkgs.overlays = [
+                            # add libmodbus build option to nut
+                            (import ./overlays/nut)
+                          ];
+                        }
+                      )
+                    ];
+                  in
+                  inputs.nixpkgs.lib.nixosSystem {
+                    inherit modules system;
                     specialArgs = inputs;
                   };
-
-                hm = import (
-                  (pkgs.applyPatches {
-                    name = "home-manager-patched";
-                    src = inputs.home-manager;
-                    patches = map pkgs.fetchpatch hmPatches;
-                  })
-                  + "/nixos/default.nix"
-                );
               in
               {
                 # Systemd machines

@@ -77,16 +77,19 @@
 
       # latest linux-firmware
       (self: super: {
-        linux-firmware = super.linux-firmware.overrideAttrs {
-          version = "2e91d8c3c4bd34a27177180a38f62d3ba3c96031";
+        linux-firmware = super.linux-firmware.overrideAttrs (
+          final: prev: {
+            version = "20250627";
 
-          src = pkgs.fetchFromGitLab {
-            owner = "kernel-firmware";
-            repo = "linux-firmware";
-            rev = "2e91d8c3c4bd34a27177180a38f62d3ba3c96031";
-            hash = "sha256-WmCw9xRUP8HT3yY5EEJVSbUEVAKCJ2wk3KNoApsPzMU=";
-          };
-        };
+            src = pkgs.fetchFromGitLab {
+              owner = "kernel-firmware";
+              repo = "linux-firmware";
+
+              tag = final.version;
+              hash = "sha256-mNjCl+HtvvFxyLjlBFsyfyu2TAf6D/9lbRiouKC/vVY=";
+            };
+          }
+        );
       })
     ];
 
