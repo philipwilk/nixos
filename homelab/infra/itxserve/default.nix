@@ -1,11 +1,9 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
-let
-  platformControllerId = "/sys/devices/platform/nct6775.656/hwmon/hwmon[[:print:]]*";
-in
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -110,49 +108,27 @@ in
   homelab.ci.runners.gitlab.csgitlab.enabled = true;
 
   boot.kernelModules = [ "nct6775" ];
-  environment.etc."fancontrol".text = ''
-    INTERVAL=10
-    DEVPATH=hwmon0=${platformControllerId}
-    DEVNAME=hwmon0=nct6798
-    FCTEMPS=
-    FCFANS= hwmon1/pwm1=hwmon1/fan1_input hwmon1/pwm4=hwmon1/fan4_input
-    MINTEMP=
-    MAXTEMP=
-    MINSTART=
-    MINSTOP=
-  '';
   environment.systemPackages = with pkgs; [ hddfancontrol ];
   services.hddfancontrol = {
     enable = true;
     settings =
       let
-        byId = builtins.map (disk: "/dev/disk/by-id/${disk}");
-        hwmon = "/sys/devices/platform/nct6775.656/hwmon/hwmon1";
+        platformControllerId = "`echo /sys/devices/platform/nct6775.656/hwmon/hwmon[[:print:]]`";
       in
       {
         lffBay = {
-          pwmPaths = [ "${hwmon}/pwm4:25:10" ];
-          disks = byId [
-            "scsi-35000cca2530c4cbc"
-            "scsi-35000cca2530cf7b8"
-            "scsi-35000cca2530d3dd4"
-            "scsi-35000cca2530d5a24"
-            "scsi-35000cca2530a7f1c"
-            "scsi-35000cca2530cf2a4"
-            "scsi-35000c500aeea60e3"
-            "scsi-35000c500af0fe2cf"
+          pwmPaths = [ "${platformControllerId}/pwm4:25:10" ];
+          disks = [
+            "`find /dev/disk/by-id -name \"scsi*\" -and -not -name \"*-part*\" -printf \"%p \"`"
           ];
           extraArgs = [
             "--interval=30s"
           ];
         };
         sffBay = {
-          pwmPaths = [ "${hwmon}/pwm1:80:55" ];
-          disks = byId [
-            "ata-KIOXIA-EXCERIA_SATA_SSD_62RB71ENKFV4"
-            "ata-KIOXIA-EXCERIA_SATA_SSD_72GB81JJKLQ4"
-            "ata-KIOXIA-EXCERIA_SATA_SSD_72JB81UEKFV4"
-            "ata-KIOXIA-EXCERIA_SATA_SSD_72JB81UIKFV4"
+          pwmPaths = [ "${platformControllerId}/pwm1:80:55" ];
+          disks = [
+            "`find /dev/disk/by-id -name \"ata*\" -and -not -name \"*-part*\" -printf \"%p \"`"
           ];
           extraArgs = [
             "--interval=30s"
