@@ -10,8 +10,6 @@ in
 {
   imports = [ ./hardware-configuration.nix ];
 
-  networking.hostName = "mini";
-
   workstation = {
     declarativeHome = false;
     desktop = "gnome";

@@ -8,7 +8,6 @@
   };
 
   networking = {
-    hostName = "nixosvmtest";
     networkmanager.enable = true;
   };
 

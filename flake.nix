@@ -74,79 +74,74 @@
               let
                 join-dirfile = dir: files: (map (file: ./${dir}/${file}${".nix"}) files);
 
-                # Regional and nix settings for all machines
-                commonModules =
-                  (join-dirfile "configs" [
+                globalModules = (
+                  join-dirfile "configs" [
                     "nix-settings"
                     "uk-region"
-                  ])
+                    "boot/systemd"
+                  ]
                   ++ [
-                    ./homelab/networking/wireguard.nix
-                  ];
-
-                # Homelab
-                homelabSys =
-                  commonModules
-                  ++ [
-                    ./homelab
+                    ./nixos/modules
+                    ./overlays
                     inputs.agenix.nixosModules.default
-                    ./homelab/config.nix
+                  ]
+                );
+                mkSystemFactory =
+                  classModules: hostModule:
+                  inputs.nixpkgs.lib.nixosSystem {
+                    inherit system;
+                    modules =
+                      globalModules
+                      ++ classModules
+                      ++ [
+                        (
+                          { ... }:
+                          {
+                            networking.hostName = lib.mkDefault (builtins.baseNameOf hostModule);
+                          }
+                        )
+                        hostModule
+                      ];
+                    specialArgs = inputs;
+                  };
+
+                mkWorkstationSystem = mkSystemFactory [
+                  ./nixos/modules/workstations.nix
+                  ./overlays/workstation.nix
+                  ./workstations
+                  ./configs/boot/lanzaboote.nix
+                  inputs.lanzaboote.nixosModules.lanzaboote
+                  inputs.home-manager.nixosModules.default
+                  inputs.catppuccin.nixosModules.catppuccin
+                  inputs.nix-index-database.nixosModules.nix-index
+                ];
+
+                mkHomelabSystem = mkSystemFactory (
+                  [
+                    ./nixos/modules/homelab.nix
+                    ./overlays/homelab.nix
+                    ./homelab
                     inputs.buildbot-nix.nixosModules.buildbot-master
                     inputs.buildbot-nix.nixosModules.buildbot-worker
                   ]
                   ++ (join-dirfile "configs/" [
-                    "boot/systemd"
                     "idmUserAuth"
                     "zfs"
-                  ]);
-
-                # Desktops
-                workstationModules =
-                  (join-dirfile "configs/boot" [
-                    "systemd"
-                    "lanzaboote"
                   ])
-                  ++ commonModules
-                  ++ [
-                    inputs.home-manager.nixosModules.default
-                    inputs.agenix.nixosModules.default
-                    inputs.catppuccin.nixosModules.catppuccin
-                    inputs.nix-index-database.nixosModules.nix-index
-                    inputs.lanzaboote.nixosModules.lanzaboote
-                    ./workstations
-                    ./workstations/iwd.nix
-                  ];
-
-                buildSystem =
-                  _modules:
-                  let
-                    modules = _modules ++ [
-                      ./nixos/modules
-                      (
-                        { ... }:
-                        {
-                          nixpkgs.overlays = [
-                            # add libmodbus build option to nut
-                            (import ./overlays/nut)
-                          ];
-                        }
-                      )
-                    ];
-                  in
-                  inputs.nixpkgs.lib.nixosSystem {
-                    inherit modules system;
-                    specialArgs = inputs;
-                  };
+                );
               in
-              {
-                # Systemd machines
-                prime = buildSystem ([ ./workstations/infra/prime ] ++ workstationModules);
-                probook = buildSystem ([ ./workstations/infra/probook ] ++ workstationModules);
-                mini = buildSystem ([ ./workstations/infra/mini ] ++ workstationModules);
-                # nixosvmtest = unstableSystem ([ ./homelab/infra/nixosvmtest.nix ] ++ commonModules);
-                thinkcentre = buildSystem ([ ./homelab/infra/thinkcentre ] ++ homelabSys);
-                itxserve = buildSystem ([ ./homelab/infra/itxserve ] ++ homelabSys);
-              }
+              (lib.mkMerge [
+                (lib.attrsets.genAttrs [
+                  "prime"
+                  "probook"
+                  "mini"
+                  #"nixosvmtest"
+                ] (hostname: mkWorkstationSystem ./workstations/infra/${hostname}))
+                (lib.attrsets.genAttrs [
+                  "thinkcentre"
+                  "itxserve"
+                ] (hostname: mkHomelabSystem ./homelab/infra/${hostname}))
+              ])
             );
           };
 

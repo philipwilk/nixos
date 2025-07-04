@@ -62,6 +62,7 @@ in
     ++ [
       ./router
       ./buildbot
+      ./config.nix
     ];
 
   options.homelab = {

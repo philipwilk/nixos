@@ -13,6 +13,7 @@ in
   imports =
     [
       ./system.nix
+      ./iwd.nix
       ./desktops/gnome
       ./desktops/sway
     ]
