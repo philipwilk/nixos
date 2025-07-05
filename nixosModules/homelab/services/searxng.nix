@@ -109,7 +109,7 @@ in
           (lib.mapAttrsToList (name: value: { inherit name; } // value) {
             # General search
             "duckduckgo".disabled = false;
-            "bing".disabled = false;
+            "bing".disabled = true;
             "google".disabled = true;
             "brave".disabled = true;
             # IT/Development
