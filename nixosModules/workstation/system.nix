@@ -194,12 +194,6 @@
 
           ## Phone stuff
           pmbootstrap
-
-          # Theming
-          (catppuccin.override {
-            accent = "peach";
-            variant = "latte";
-          })
         ];
       };
     };
