@@ -2,26 +2,15 @@
   lib,
   pkgs,
   config,
-  catppuccin,
-  nix-index-database,
   ...
 }:
-let
-  join-dirfile = dir: map (file: ./${dir}/${file}.nix);
-in
 {
-  imports =
-    [
-      ./system.nix
-      ./iwd.nix
-      ./desktops/gnome
-      ./desktops/sway
-    ]
-    ++ join-dirfile "programs" [
-      "git"
-      "mercurial"
-      "i18n"
-    ];
+  imports = [
+    ./system.nix
+    ./iwd.nix
+    ./desktops/gnome
+    ./desktops/sway
+  ];
 
   options.workstation = {
     enable = lib.mkOption {
@@ -30,14 +19,6 @@ in
       example = false;
       description = ''
         Whether to enable the workstation app suite.
-      '';
-    };
-    declarativeHome = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      example = false;
-      description = ''
-        Whether to enable the use of home-manager to manage configs.
       '';
     };
 
@@ -53,66 +34,31 @@ in
       '';
     };
 
-    sourceControl = {
-      userName = lib.mkOption {
-        type = lib.types.str;
-        default = "Philip Wilk";
-        example = "Joe Bloggs";
-      };
-      userEmail = lib.mkOption {
-        type = lib.types.str;
-        default = "p.wilk@student.reading.ac.uk";
-        example = "joe.bloggs@example.com";
-      };
-    };
+    i18n.enable = lib.mkEnableOption "IMF/IME input methods";
   };
 
   config = lib.mkMerge [
-    (lib.mkIf config.workstation.declarativeHome {
-      workstations.i18n.enable = true;
-
-      home-manager = {
-        useGlobalPkgs = true;
-        useUserPackages = true;
-        users.philip = {
-          imports =
-            [
-              catppuccin.homeModules.catppuccin
-              nix-index-database.hmModules.nix-index
-            ]
-            ++ join-dirfile "programs" [
-              "carapace"
-              "direnv"
-              "nix"
-              "zoxide"
-              "virtman"
-              "ssh"
-              "easyeffects"
-              "catppuccin"
-              "ldap"
-              "kakoune/default"
-              "matlab"
-              "fish"
-              "starship"
-              "helix"
-              "kitty"
-              "bottom"
-              "bat"
-              "skim"
-              "carapace"
-              "eza"
-              "nix-index"
-            ];
-
-          home = {
-            username = "philip";
-            homeDirectory = "/home/philip";
-            stateVersion = "24.05";
+    (lib.mkIf config.workstation.i18n.enable {
+      i18n.inputMethod = {
+        enable = true;
+        type = "fcitx5";
+        fcitx5 = {
+          waylandFrontend = true;
+          plasma6Support = true;
+          addons = with pkgs; [
+            fcitx5-gtk
+            fcitx5-rime
+            fcitx5-hangul
+          ];
+          settings = {
+            addons = {
+              pinyin.globalSection.EmojiEnabled = "True";
+            };
           };
-          programs.home-manager.enable = true;
         };
       };
     })
+
     (lib.mkIf config.workstation.enable {
       boot.kernelParams = [ "mem_sleep_default=deep" ];
 

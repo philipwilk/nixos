@@ -57,6 +57,7 @@
         imports = [
           inputs.treefmt-nix.flakeModule
           inputs.make-shell.flakeModules.default
+          inputs.home-manager.flakeModules.home-manager
         ];
 
         systems = [
@@ -66,11 +67,16 @@
         flake =
           {
             lib,
+            pkgs,
             ...
           }:
           {
             nixosConfigurations = withSystem "x86_64-linux" (
-              { pkgs, system, ... }:
+              {
+                pkgs,
+                system,
+                ...
+              }:
               let
                 mkSystemFactory =
                   classModules: hostModule:
@@ -94,10 +100,8 @@
                 mkWorkstationSystem = mkSystemFactory [
                   ./overlays/workstation.nix
                   ./nixosModules/workstation.nix
-                  inputs.lanzaboote.nixosModules.lanzaboote
                   inputs.home-manager.nixosModules.default
-                  inputs.catppuccin.nixosModules.catppuccin
-                  inputs.nix-index-database.nixosModules.nix-index
+                  inputs.lanzaboote.nixosModules.lanzaboote
                 ];
 
                 mkHomelabSystem = mkSystemFactory [
@@ -163,9 +167,9 @@
             checks = # nixosConfigurations.machine -> nixosConfigurations-machine
               (
                 lib.filterAttrs (lib.const (deriv: deriv.system == system)) (
-                  lib.mapAttrs' (
+                  (lib.mapAttrs' (
                     name: value: lib.nameValuePair "nixosConfigurations-${name}" value.config.system.build.toplevel
-                  ) self.nixosConfigurations
+                  ) self.nixosConfigurations)
                 )
               );
           };
