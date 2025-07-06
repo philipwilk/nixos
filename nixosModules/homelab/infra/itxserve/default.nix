@@ -106,12 +106,16 @@
       in
       {
         lffBay = {
-          pwmPaths = [ "${platformControllerId}/pwm4:25:10" ];
+          pwmPaths = [
+            "${platformControllerId}/pwm4:25:10"
+            "${platformControllerId}/pwm2:25:10"
+          ];
           disks = [
             "`find /dev/disk/by-id -name \"scsi*\" -and -not -name \"*-part*\" -printf \"%p \"`"
           ];
           extraArgs = [
             "--interval=30s"
+            "--hybrid-monitoring"
           ];
         };
         sffBay = {
@@ -121,6 +125,7 @@
           ];
           extraArgs = [
             "--interval=30s"
+            "--hybrid-monitoring"
           ];
         };
       };

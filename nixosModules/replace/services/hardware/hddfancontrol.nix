@@ -45,6 +45,8 @@ in
   options = {
     services.hddfancontrol.enable = lib.mkEnableOption "hddfancontrol daemon";
 
+    services.hddfancontrol.package = lib.mkPackageOption pkgs "hddfancontrol" { };
+
     services.hddfancontrol.settings = lib.mkOption {
       type = lib.types.attrsWith {
         placeholder = "drive-bay-name";
@@ -157,7 +159,7 @@ in
           let
             argString = lib.strings.concatStringsSep " " (args cnf);
           in
-          "${lib.getExe pkgs.hddfancontrol} -v ${cnf.logVerbosity} daemon ${argString}";
+          "${lib.getExe cfg.package} -v ${cnf.logVerbosity} daemon ${argString}";
         serviceConfig = {
           CPUSchedulingPolicy = "rr";
           CPUSchedulingPriority = 49;
@@ -182,7 +184,7 @@ in
       ];
     in
     {
-      systemd.packages = [ pkgs.hddfancontrol ];
+      systemd.packages = [ cfg.package ];
 
       hardware.sensor.hddtemp = {
         enable = true;
