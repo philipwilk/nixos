@@ -1,0 +1,347 @@
+From e5e8484accd6c051b7fbf7e5feb38a4c21b71099 Mon Sep 17 00:00:00 2001
+From: "p.wilk@student.reading.ac.uk" <Philip Wilk>
+Date: Sun, 6 Jul 2025 13:24:37 +0100
+Subject: [PATCH] add option to also monitor cpu temperature
+
+---
+ Cargo.lock  | 119 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ Cargo.toml  |   1 +
+ src/cl.rs   |  10 ++++-
+ src/cpu.rs  |   8 ++++
+ src/main.rs |  36 +++++++++++++++-
+ 5 files changed, 171 insertions(+), 3 deletions(-)
+ create mode 100644 src/cpu.rs
+
+diff --git a/Cargo.lock b/Cargo.lock
+index fcc8d22..462e9ae 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -112,6 +112,12 @@ version = "2.9.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "5c8214115b7bf84099f1309324e63141d4c5d7cc26862f97a0a857dbefe165bd"
+ 
++[[package]]
++name = "bytesize"
++version = "1.3.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "2e93abca9e28e0a1b9877922aacb20576e05d4679ffa78c3d6dc22a26a216659"
++
+ [[package]]
+ name = "cfg-if"
+ version = "1.0.0"
+@@ -215,6 +221,15 @@ dependencies = [
+  "windows-sys 0.59.0",
+ ]
+ 
++[[package]]
++name = "deranged"
++version = "0.4.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9c9e6a11ca8224451684bc0d7d5a7adbf8f2fd6887261a1cfc3c0432f9d4068e"
++dependencies = [
++ "powerfmt",
++]
++
+ [[package]]
+ name = "either"
+ version = "1.15.0"
+@@ -267,6 +282,7 @@ dependencies = [
+  "serial_test",
+  "simple_logger",
+  "strum",
++ "systemstat",
+  "tempfile",
+  "thiserror",
+  "typed_floats",
+@@ -339,6 +355,12 @@ version = "2.7.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
+ 
++[[package]]
++name = "minimal-lexical"
++version = "0.2.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
++
+ [[package]]
+ name = "miniz_oxide"
+ version = "0.8.8"
+@@ -372,6 +394,22 @@ dependencies = [
+  "libc",
+ ]
+ 
++[[package]]
++name = "nom"
++version = "7.1.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "d273983c5a657a70a3e8f2a01329822f3b8c8172b73826411a55751e404a0a4a"
++dependencies = [
++ "memchr",
++ "minimal-lexical",
++]
++
++[[package]]
++name = "num-conv"
++version = "0.1.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
++
+ [[package]]
+ name = "num-traits"
+ version = "0.2.19"
+@@ -419,6 +457,12 @@ dependencies = [
+  "windows-targets 0.52.6",
+ ]
+ 
++[[package]]
++name = "powerfmt"
++version = "0.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
++
+ [[package]]
+ name = "proc-macro2"
+ version = "1.0.95"
+@@ -498,6 +542,26 @@ version = "3.0.8"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "584e070911c7017da6cb2eb0788d09f43d789029b5877d3e5ecc8acf86ceee21"
+ 
++[[package]]
++name = "serde"
++version = "1.0.219"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6"
++dependencies = [
++ "serde_derive",
++]
++
++[[package]]
++name = "serde_derive"
++version = "1.0.219"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5b0276cf7f2c73365f7157c8123c21cd9a50fbbd844757af28ca1f5925fc2a00"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn",
++]
++
+ [[package]]
+ name = "serial_test"
+ version = "3.2.0"
+@@ -577,6 +641,20 @@ dependencies = [
+  "unicode-ident",
+ ]
+ 
++[[package]]
++name = "systemstat"
++version = "0.2.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "668a4db78b439df482c238f559e4ea869017f9e62ef0a059c8bfcd841a4df544"
++dependencies = [
++ "bytesize",
++ "lazy_static",
++ "libc",
++ "nom",
++ "time",
++ "winapi",
++]
++
+ [[package]]
+ name = "tempfile"
+ version = "3.19.1"
+@@ -609,6 +687,25 @@ dependencies = [
+  "syn",
+ ]
+ 
++[[package]]
++name = "time"
++version = "0.3.41"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "8a7619e19bc266e0f9c5e6686659d394bc57973859340060a69221e57dbc0c40"
++dependencies = [
++ "deranged",
++ "num-conv",
++ "powerfmt",
++ "serde",
++ "time-core",
++]
++
++[[package]]
++name = "time-core"
++version = "0.1.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "c9e9a38711f559d9e3ce1cdb06dd7c5b8ea546bc90052da6d06bb76da74bb07c"
++
+ [[package]]
+ name = "typed_floats"
+ version = "1.0.5"
+@@ -644,6 +741,28 @@ version = "0.2.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
+ 
++[[package]]
++name = "winapi"
++version = "0.3.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5c839a674fcd7a98952e593242ea400abe93992746761e38641405d28b00f419"
++dependencies = [
++ "winapi-i686-pc-windows-gnu",
++ "winapi-x86_64-pc-windows-gnu",
++]
++
++[[package]]
++name = "winapi-i686-pc-windows-gnu"
++version = "0.4.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
++
++[[package]]
++name = "winapi-x86_64-pc-windows-gnu"
++version = "0.4.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
++
+ [[package]]
+ name = "windows-sys"
+ version = "0.48.0"
+diff --git a/Cargo.toml b/Cargo.toml
+index 3b08c57..a80c81c 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -28,6 +28,7 @@ log = { version = "0.4.27", default-features = false, features = ["max_level_tra
+ nix = { version = "0.30.0", default-features = false, features = ["fs"] }
+ simple_logger = { version = "5.0.0", default-features = false, features = ["colors", "stderr"] }
+ strum = { version = "0.27.1", default-features = false, features = ["std", "derive"] }
++systemstat = "0.2.4"
+ thiserror = { version = "2.0.12", default-features = false, features = ["std"] }
+ typed_floats = { version = "1.0.5", default-features = false, features = ["std", "compiler_hints", "ensure_no_undefined_behavior"] }
+ 
+diff --git a/src/cl.rs b/src/cl.rs
+index b40dcdf..b2acdd3 100644
+--- a/src/cl.rs
++++ b/src/cl.rs
+@@ -175,10 +175,18 @@ pub(crate) enum Command {
+         #[arg(short, long, num_args = 1.., required = true)]
+         pwm: Vec<PwmSettings>,
+ 
+-        /// Temperatures in Celcius at which the fan(s) will be set to minimum/maximum speed.
++        /// Temperatures in Celcius at which the fan(s) will be set to minimum/maximum speed via drives.
+         #[arg(short = 't', long, value_name = "TEMP", num_args = 2, default_values_t = vec![30.0, 50.0])]
+         drive_temp_range: Vec<Temp>,
+ 
++        /// Temperatures in Celcius at which the fan(s) will be set to minimum/maximum speed via cpu.
++        #[arg(short = 'c', long, value_name = "TEMP", num_args = 2, default_values_t = vec![20.0, 85.0])]
++        cpu_temp_range: Vec<Temp>,
++
++        /// Use cpu temp and drive temp to control fans. Selects higher speed from the two ranges.
++        #[arg(long, default_value_t = false)]
++        hybrid_monitoring: bool,
++
+         /// Minimum percentage of full fan speed to set the fan to.
+         /// Never set to 0 unless you have other fans to cool down your system,
+         /// or a case specially designed for passive cooling.
+diff --git a/src/cpu.rs b/src/cpu.rs
+new file mode 100644
+index 0000000..19ef512
+--- /dev/null
++++ b/src/cpu.rs
+@@ -0,0 +1,8 @@
++use systemstat::{Platform, System};
++
++pub fn get_cpu_temp() -> Option<f32> {
++    match System::new().cpu_temp() {
++        Ok(temp) => Some(temp),
++        Err(_) => None,
++    }
++}
+diff --git a/src/main.rs b/src/main.rs
+index 7527770..460cd00 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -6,6 +6,7 @@
+ )]
+ 
+ use std::{
++    cmp::max,
+     ops::Range,
+     path::PathBuf,
+     sync::{
+@@ -22,6 +23,7 @@ use device::Hwmon;
+ use exit::ExitHook;
+ use fan::Speed;
+ use probe::Temp;
++use systemstat::{Platform, System};
+ 
+ mod cl;
+ mod device;
+@@ -90,6 +92,8 @@ fn main() -> anyhow::Result<()> {
+             hddtemp_daemon_port,
+             pwm,
+             drive_temp_range,
++            cpu_temp_range,
++            hybrid_monitoring,
+             min_fan_speed_prct,
+             interval,
+             hwmons,
+@@ -100,6 +104,11 @@ fn main() -> anyhow::Result<()> {
+                 start: drive_temp_range[0],
+                 end: drive_temp_range[1],
+             };
++            #[expect(clippy::indexing_slicing)] // guaranteed by clap's numl_args
++            let cpu_temp_range = Range {
++                start: cpu_temp_range[0],
++                end: cpu_temp_range[1],
++            };
+             let drive_paths: Vec<PathBuf> = drive_selectors
+                 .into_iter()
+                 .map(|s| {
+@@ -212,6 +221,11 @@ fn main() -> anyhow::Result<()> {
+                     .flatten()
+                     .reduce(f64::max);
+ 
++                let cpu_temp = System::new()
++                    .cpu_temp()
++                    .context("Failed to get cpu temperature")
++                    .ok();
++
+                 let hwmon_temps: Vec<Temp> = hwmon_and_range
+                     .iter_mut()
+                     .map(|(hwm, _range)| {
+@@ -223,13 +237,31 @@ fn main() -> anyhow::Result<()> {
+                     })
+                     .collect::<anyhow::Result<_>>()?;
+ 
+-                let mut speed = min_fan_speed;
++                let mut drive_based_speed = min_fan_speed;
++                let mut cpu_based_speed = min_fan_speed;
+                 if let Some(max_drive_temp) = max_drive_temp {
+                     log::info!("Max drive temperature: {max_drive_temp}°C");
+-                    speed = fan::target_speed(max_drive_temp, &drive_temp_range, speed);
++                    drive_based_speed =
++                        fan::target_speed(max_drive_temp, &drive_temp_range, drive_based_speed);
+                 } else {
+                     log::info!("All drives are spun down");
+                 }
++                if hybrid_monitoring {
++                    if let Some(cpu_temp) = cpu_temp {
++                        log::info!("Cpu temperature: {cpu_temp}°C");
++                        cpu_based_speed =
++                            fan::target_speed(cpu_temp as f64, &cpu_temp_range, cpu_based_speed);
++                    } else {
++                        log::info!("Failed to get cpu temperature");
++                    }
++                }
++
++                let mut speed = if hybrid_monitoring {
++                    max(drive_based_speed, cpu_based_speed)
++                } else {
++                    drive_based_speed
++                };
++
+                 for (hwmon_temp, (_hwmon, hwmon_range)) in
+                     hwmon_temps.into_iter().zip(hwmon_and_range.iter())
+                 {
+-- 
+2.49.0
+
