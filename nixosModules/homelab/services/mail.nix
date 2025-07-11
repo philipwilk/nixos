@@ -243,11 +243,18 @@ in
           };
         };
 
-        tracer.stdout = {
-          type = "stdout";
-          level = "info";
-          ansi = true;
-          enable = true;
+        tracer = {
+          stdout = {
+            type = "stdout";
+            level = "debug";
+            ansi = true;
+            enable = true;
+          };
+          journal = {
+            type = "journal";
+            level = "debug";
+            enable = true;
+          };
         };
 
         auth.dkim.sign = [
