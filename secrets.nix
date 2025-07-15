@@ -8,9 +8,11 @@ let
 
   itxserve = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGygqcot7EsJMlGPMFiiKE6GruHaxUPwsJqBH1HiykOG root@itxserve";
   thinkcentre = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC0/qDrzDMquOwPQOspR24ZVBaFcmz/uBnD0wqTcNxdX root@thinkcentre";
+  rdg = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO3B4pG0Ztyg+D2FFt69oRRcNLWCdy79oMlQ3pjATbZ5 root@rdg";
   servers = [
     thinkcentre
     itxserve
+    rdg
   ];
 
   s = x: "secrets/${x}.age";
