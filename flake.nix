@@ -122,6 +122,7 @@
                 (lib.attrsets.genAttrs [
                   "thinkcentre"
                   "itxserve"
+                  "rdg"
                 ] (hostname: mkHomelabSystem ./nixosModules/homelab/infra/${hostname}))
               ])
             );

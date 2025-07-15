@@ -179,6 +179,8 @@ in
 
         powerManagement.powertop.enable = true;
 
+        networking.domain = "uk.region.fogbox.uk";
+
         # Accept acme terms
         security.acme = {
           acceptTerms = true;
