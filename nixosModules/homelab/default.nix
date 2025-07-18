@@ -80,7 +80,7 @@ in
     };
     hostname = lib.mkOption {
       type = lib.types.str;
-      default = null;
+      default = config.networking.fqdn;
       example = "sou.uk.regions.fogbox.uk";
       description = ''
         Fqdn hostname of the nixos install.

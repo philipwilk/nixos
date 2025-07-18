@@ -7,6 +7,8 @@ let
   cfg = config.homelab.router.systemd;
   lan = config.homelab.router.devices.lan;
   wan = config.homelab.router.devices.wan;
+  uplink = config.homelab.router.devices.uplink;
+  gateway = config.homelab.router.devices.gateway;
 
   dns4 = routerIp;
   dns6 = linkLocal;
@@ -37,8 +39,10 @@ in
       enable = true;
       config.networkConfig.IPv6Forwarding = "yes";
       networks = {
-        "10-${wan}" = {
-          matchConfig.Name = wan;
+        # only configure in simple ethernet dhcp network - no custom gateway set (pppoe)
+        # (uplink allows for simple ethernet dhcp with vlan)
+        "10-${uplink}" = lib.mkIf (uplink == gateway) {
+          matchConfig.Name = uplink;
           networkConfig = {
             DHCP = "yes";
             IPv6AcceptRA = "yes";
@@ -67,10 +71,11 @@ in
             UseDNS = "no";
             UseNTP = "no";
           };
-          linkConfig.RequiredForOnline = "routable";
+          linkConfig.RequiredForOnline = "no";
         };
         "15-${lan}" = {
           matchConfig.Name = lan;
+          matchConfig.Type = "ether";
           networkConfig = {
             IPv6AcceptRA = "no";
             IPv6SendRA = "yes";
@@ -90,7 +95,7 @@ in
             NTP = routerIp;
             PoolOffset = 100;
             ServerAddress = "${routerIp}/16";
-            UplinkInterface = wan;
+            UplinkInterface = config.homelab.router.devices.uplink;
             DefaultLeaseTimeSec = 1800;
           };
           dhcpServerStaticLeases = [
@@ -100,7 +105,7 @@ in
             #   MACAddress = "54:9f:35:14:57:3e";
             # }
           ];
-          linkConfig.RequiredForOnline = "no";
+          linkConfig.RequiredForOnline = "yes";
           ipv6SendRAConfig = {
             EmitDNS = "yes";
             DNS = dns6;

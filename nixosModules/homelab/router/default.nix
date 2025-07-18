@@ -1,6 +1,7 @@
 { lib, config, ... }:
 let
   join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
+  cfg = config.homelab.router;
 in
 {
   imports = join-dirfile "./" [
@@ -41,6 +42,32 @@ in
         example = "eth0";
         description = ''
           Network to use as the "lan" interface.
+        '';
+      };
+      wanMac = lib.mkOption {
+        type = lib.types.str;
+        description = ''
+          Mac address of the "wan" interface.
+        '';
+      };
+      lanMac = lib.mkOption {
+        type = lib.types.str;
+        description = ''
+          Mac address of the "lan" interface.
+        '';
+      };
+      uplink = lib.mkOption {
+        type = lib.types.str;
+        default = cfg.devices.wan;
+        description = ''
+          Upstream device for lan - modify where vlan is necessary.
+        '';
+      };
+      gateway = lib.mkOption {
+        type = lib.types.str;
+        default = cfg.devices.uplink;
+        description = ''
+          Gateway device for lan upstream use.
         '';
       };
     };

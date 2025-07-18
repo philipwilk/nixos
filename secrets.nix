@@ -98,4 +98,6 @@ in
   ${s "ntfy/firebase"}.publicKeys = servers;
   # Mollysocket vapid file
   ${s "mollysocket-vapid"}.publicKeys = servers;
+  # olilo pppoe
+  ${s "pppoe-chap"}.publicKeys = servers;
 }
