@@ -11,11 +11,13 @@
   ];
 
   config = lib.mkMerge [
-    {
-      boot.loader.systemd-boot.extraInstallCommands = ''
-        cp -n -a /boot/. /boot2
-      '';
-    }
+    /*
+      {
+        boot.loader.systemd-boot.extraInstallCommands = ''
+          cp -n -a /boot/. /boot2
+        '';
+      }
+    */
     (lib.mkIf (config.specialisation != { }) {
       fileSystems = {
         "/boot" = {
