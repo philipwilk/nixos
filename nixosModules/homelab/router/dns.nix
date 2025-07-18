@@ -100,6 +100,7 @@ in
             upstream_mode = "parallel";
             enable_dnssec = true;
             serve_http3 = true;
+            hostsfile_enabled = false;
             bind_hosts = [
               "127.0.0.1"
               "::1"
