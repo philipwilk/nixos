@@ -14,7 +14,7 @@ in
       allowedTCPPorts = [
         53
         9153
-        config.services.adguardhome.port
+        #config.services.adguardhome.port
       ];
       allowedUDPPorts = [
         53
@@ -39,13 +39,13 @@ in
         server = {
           verbosity = 3;
           interface = [
-            "127.0.0.1"
-            "::1"
+            "0.0.0.0"
+            "::0"
           ];
-          port = 5300;
+          port = 53;
           access-control = [
-            "127.0.0.1 allow"
-            "::1 allow"
+            "0.0.0.0 allow"
+            "::0 allow"
           ];
           prefetch = true;
           prefetch-key = true;
@@ -75,60 +75,62 @@ in
         ];
       };
     };
-    services.adguardhome = {
-      enable = true;
-      port = 5353;
-      host = ip4;
-      mutableSettings = false;
-      settings = {
-        dns =
-          let
-            port = builtins.toString config.services.unbound.settings.server.port;
-            local = [
-              "[::1]:${port}"
-              "127.0.0.1:${port}"
-            ];
+    /*
+      services.adguardhome = {
+        enable = true;
+        port = 5353;
+        host = ip4;
+        mutableSettings = false;
+        settings = {
+          dns =
+            let
+              port = builtins.toString config.services.unbound.settings.server.port;
+              local = [
+                "[::1]:${port}"
+                "127.0.0.1:${port}"
+              ];
 
-          in
-          {
-            bootstrap_dns = local;
-            bootstrap_prefer_ipv6 = true;
-            upstream_dns = local;
-            upstream_mode = "parallel";
-            enable_dnssec = true;
-            serve_http3 = true;
-            hostsfile_enabled = false;
-            bind_hosts = [
-              "127.0.0.1"
-              "::1"
-              ip4
-            ];
+            in
+            {
+              bootstrap_dns = local;
+              bootstrap_prefer_ipv6 = true;
+              upstream_dns = local;
+              upstream_mode = "parallel";
+              enable_dnssec = true;
+              serve_http3 = true;
+              hostsfile_enabled = false;
+              bind_hosts = [
+                "127.0.0.1"
+                "::1"
+                ip4
+              ];
+            };
+
+          statistics.enabled = true;
+
+          filtering = {
+            protection_enabled = true;
+            filtering_enabled = true;
+
+            safe_search = {
+              enabled = false;
+            };
           };
 
-        statistics.enabled = true;
-
-        filtering = {
-          protection_enabled = true;
-          filtering_enabled = true;
-
-          safe_search = {
-            enabled = false;
-          };
+          filters = (
+            map
+              (url: {
+                enabled = true;
+                url = url;
+              })
+              [
+                "https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt" # Ads
+                "https://adguardteam.github.io/HostlistsRegistry/assets/filter_9.txt" # The Big List of Hacked Malware Web Sites
+                "https://adguardteam.github.io/HostlistsRegistry/assets/filter_11.txt" # malicious url blocklist
+              ]
+          );
         };
-
-        filters = (
-          map
-            (url: {
-              enabled = true;
-              url = url;
-            })
-            [
-              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt" # Ads
-              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_9.txt" # The Big List of Hacked Malware Web Sites
-              "https://adguardteam.github.io/HostlistsRegistry/assets/filter_11.txt" # malicious url blocklist
-            ]
-        );
       };
-    };
+    */
   };
 }
