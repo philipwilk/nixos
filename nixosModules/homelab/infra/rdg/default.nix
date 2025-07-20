@@ -16,15 +16,6 @@ in
 
   system.stateVersion = "25.11";
 
-  services.openssh.enable = true;
-  users.mutableUsers = lib.mkForce true;
-  age.secrets.server_password.file = ../../../../secrets/server_password.age;
-  users.users.philip = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    hashedPasswordFile = config.age.secrets.server_password.path;
-  };
-
   systemd.network.wait-online.enable = false;
   systemd.network.links = {
     "90-${linkNames.wan}" = {
@@ -53,7 +44,7 @@ in
 
   systemd.network.networks = {
     "10-${linkNames.wan}" = {
-      #matchConfig.MACAddress = config.homelab.router.devices.wanMac;
+      matchConfig.PermanentMACAddress = config.homelab.router.devices.wanMac;
       vlan = [
         linkNames.uplink
       ];
