@@ -26,10 +26,6 @@ in
         file = ../../../secrets/mastodon/priv.age;
         owner = "mastodon";
       };
-      mastodonOtpSec = {
-        file = ../../../secrets/mastodon/otpSec.age;
-        owner = "mastodon";
-      };
       mastodonSecBase = {
         file = ../../../secrets/mastodon/secBase.age;
         owner = "mastodon";
@@ -61,7 +57,6 @@ in
       # Secrets
       vapidPublicKeyFile = config.age.secrets.mastodonVaPub.path;
       vapidPrivateKeyFile = config.age.secrets.mastodonVaPriv.path;
-      otpSecretFile = config.age.secrets.mastodonOtpSec.path;
       secretKeyBaseFile = config.age.secrets.mastodonSecBase.path;
     };
   };

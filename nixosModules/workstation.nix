@@ -33,7 +33,7 @@
         users."philip".imports = [
           ../hmModules/home.nix
           catppuccin.homeModules.catppuccin
-          nix-index-database.hmModules.nix-index
+          nix-index-database.homeModules.nix-index
         ];
         useGlobalPkgs = true;
         useUserPackages = true;

@@ -4,8 +4,6 @@
   pkgs,
   ...
 }:
-let
-in
 {
   config = lib.mkIf (config.workstation.desktop == "sway") {
     # Nixos config
@@ -16,10 +14,9 @@ in
     services = {
       greetd = {
         enable = true;
-        package = pkgs.greetd.tuigreet;
         settings = {
           default_session = {
-            command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd sway";
+            command = "${lib.getExe pkgs.greetd.tuigreet} --time --remember --cmd ${lib.getExe pkgs.swayfx}";
           };
         };
       };
@@ -48,14 +45,22 @@ in
     };
 
     # https://github.com/apognu/tuigreet/issues/68#issuecomment-1586359960
-    systemd.services.greetd.serviceConfig = {
-      Type = "idle";
-      StandardInput = "tty";
-      StandardOutput = "tty";
-      StandardError = "journal";
-      TTYReset = true;
-      TTYVHangup = true;
-      TTYVTDisallocate = true;
+    systemd.services.greetd = {
+      serviceConfig = {
+        Type = "idle";
+        StandardInput = "tty";
+        StandardOutput = "tty";
+        StandardError = "journal";
+        TTYReset = true;
+        TTYVHangup = true;
+        TTYVTDisallocate = true;
+      };
+      after = [
+        "autovt@tty1.service"
+      ];
+      conflicts = [
+        "autovt@tty1.service"
+      ];
     };
   };
 }

@@ -25,18 +25,7 @@
       theme = "blahaj";
     };
 
-    boot.kernelPackages = pkgs.linuxPackagesFor (
-      pkgs.linuxKernel.kernels.linux_6_15.override {
-        argsOverride = {
-          kernelPatches = [
-            {
-              name = "backport ath12k patch to fix wifi";
-              patch = ../../overlays/kernel/ath12k.patch;
-            }
-          ];
-        };
-      }
-    );
+    boot.kernelPackages = pkgs.linuxPackages_latest;
 
     powerManagement.enable = true;
     hardware.opentabletdriver.enable = true;
@@ -48,6 +37,7 @@
 
     nixpkgs.config.permittedInsecurePackages = [
       "ventoy-1.1.05"
+      "libxml2-2.13.8"
     ];
     nixpkgs.overlays = [
       nix-matlab.overlay

@@ -8,11 +8,7 @@
 {
   nixpkgs.config.allowUnfree = true;
   nix = {
-    package = pkgs.nixVersions.latest.overrideAttrs {
-      patches = [
-        ../../overlays/nix/0001-Gracefully-fallback-from-failing-substituters.patch
-      ];
-    };
+    package = pkgs.nixVersions.latest;
     registry = lib.mapAttrs (_: value: { flake = value; }) {
       inherit nixpkgs;
     };
