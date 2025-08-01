@@ -33,7 +33,6 @@
       enable = true;
       enableQuicBPF = true;
       package = pkgs.nginxQuic;
-      recommendedZstdSettings = true;
       recommendedTlsSettings = true;
       recommendedProxySettings = true;
       recommendedOptimisation = true;
