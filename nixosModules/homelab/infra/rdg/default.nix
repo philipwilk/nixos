@@ -48,13 +48,11 @@ in
       vlan = [
         linkNames.uplink
       ];
-
-      linkConfig.MTUBytes = 1508;
+      linkConfig.MTUBytes = 1512;
     };
     "20-${linkNames.uplink}" = {
       matchConfig.Name = linkNames.uplink;
-      # this line dont bloody work while pppoe is running
-      #linkConfig.MTUBytes = 1508;
+      linkConfig.MTUBytes = 1508;
     };
 
   };
@@ -84,7 +82,6 @@ in
       maxfail 0
       holdoff 5
       mtu 1500
-      mru 1500
       noaccomp
       default-asyncmap
       +ipv6
@@ -92,9 +89,14 @@ in
     '';
   };
 
+  systemd.services.pppd-olilo-pppoe.wants = [ "systemd-networkd.service" ];
+  systemd.services.pppd-olilo-pppoe.requires = [ "systemd-networkd.service" ];
+  systemd.services.pppd-olilo-pppoe.unitConfig = {
+    BindsTo = [ "sys-subsystem-net-devices-${linkNames.wan}.device" ];
+    After = [ "sys-subsystem-net-devices-${linkNames.wan}.device" ];
+  };
+
   systemd.services."pppd-olilo-pppoe".preStart = ''
-    # if your ISP doesn't offer baby-jump frames, remove this line
-    ${pkgs.iproute2}/bin/ip link set ${linkNames.uplink} mtu 1508
     # bring up the interface so ppp can use it
     ${pkgs.iproute2}/bin/ip link set ${linkNames.wan} up
   '';
@@ -108,7 +110,6 @@ in
       ${pkgs.logger}/bin/logger "$1 is up"
       if [ $IFNAME = "olilo-pppoe" ]; then
         ${pkgs.logger}/bin/logger "PPPoE online"
-
         ${pkgs.logger}/bin/logger "Add default routes via PPPoE"
         ${pkgs.iproute2}/bin/ip route add default dev olilo-pppoe scope link metric 100
       fi
@@ -126,44 +127,8 @@ in
       ${pkgs.logger}/bin/logger "$1 is down"
       if [ $IFNAME = "olilo-pppoe" ]; then
         ${pkgs.logger}/bin/logger "PPPoE offline"
-
         ${pkgs.logger}/bin/logger "Remove default routes via PPPoE"
         ${pkgs.iproute2}/bin/ip route del default dev olilo-pppoe scope link metric 100
-
-      fi
-    '';
-  };
-  environment.etc.ppp-up-ipv6 = {
-    enable = true;
-    target = "ppp/ipv6-up";
-    mode = "0755";
-    text = ''
-      #!${pkgs.bash}/bin/bash
-      ${pkgs.logger}/bin/logger "$1 is up"
-      if [ $IFNAME = "olilo-pppoe" ]; then
-        ${pkgs.logger}/bin/logger "PPPoE online"
-
-        ${pkgs.logger}/bin/logger "Add default routes via PPPoE"
-        ${pkgs.iproute2}/bin/ip -6 route add default dev olilo-pppoe scope link metric 100
-      fi
-    '';
-  };
-
-  environment.etc.ppp-down-ipv6 = {
-    # this script runs after the PPP connection drops
-    # we'll use it to log, and remove the default routes
-    enable = true;
-    target = "ppp/ipv6-down";
-    mode = "0755";
-    text = ''
-      #!${pkgs.bash}/bin/bash
-      ${pkgs.logger}/bin/logger "$1 is down"
-      if [ $IFNAME = "olilo-pppoe" ]; then
-        ${pkgs.logger}/bin/logger "PPPoE offline"
-
-        ${pkgs.logger}/bin/logger "Remove default routes via PPPoE"
-        ${pkgs.iproute2}/bin/ip -6 route del default dev olilo-pppoe scope link metric 100
-
       fi
     '';
   };
