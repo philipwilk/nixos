@@ -43,7 +43,10 @@ in
         # (uplink allows for simple ethernet dhcp with vlan)
         "10-${uplink}" = lib.mkIf (uplink == gateway) {
           matchConfig.Name = uplink;
+          #"10-${gateway}" = {
+          #  matchConfig.Name = gateway;
           networkConfig = {
+            #    KeepConfiguration = "yes";
             DHCP = "yes";
             IPv6AcceptRA = "yes";
             LinkLocalAddressing = "ipv6";

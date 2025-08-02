@@ -44,16 +44,22 @@ in
           ];
           port = 53;
           access-control = [
-            "0.0.0.0 allow"
-            "::0 allow"
+            "127.0.0.1 allow"
+            "::1 allow"
+            "${config.homelab.router.systemd.ipRange} allow"
+            "fe80::/64 allow"
+            "fd00::/8 allow"
+            "2000::/3 allow"
           ];
           prefetch = true;
           prefetch-key = true;
           edns-buffer-size = 1232;
           module-config = "\"validator cachedb iterator\"";
+          do-not-query-localhost = false;
 
           hide-identity = true;
           hide-version = true;
+          prefer-ip6 = true;
         };
         cachedb = {
           backend = "\"redis\"";
