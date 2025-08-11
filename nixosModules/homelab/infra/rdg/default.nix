@@ -48,89 +48,12 @@ in
       vlan = [
         linkNames.uplink
       ];
-      linkConfig.MTUBytes = 1512;
+      linkConfig.MTUBytes = 1504;
     };
     "20-${linkNames.uplink}" = {
       matchConfig.Name = linkNames.uplink;
-      linkConfig.MTUBytes = 1508;
+      linkConfig.MTUBytes = 1500;
     };
-
-  };
-
-  # copied straight from s-n.me/building-a-nixos-router-for-a-uk-fttp-isp-the-basics
-  # for the pppoe bollocks
-  age.secrets.pppoe-chap = {
-    file = ../../../../secrets/pppoe-chap.age;
-    path = "/etc/ppp/chap-secrets";
-    owner = "root";
-    group = "root";
-    mode = "0600";
-  };
-
-  services.pppd = {
-    enable = true;
-    peers.olilo.config = ''
-      plugin pppoe.so ${linkNames.uplink}
-      name "oli-wilk@olilo.net"
-
-      noipdefault
-      hide-password
-      lcp-echo-interval 1
-      lcp-echo-failure 4
-      noauth
-      persist
-      maxfail 0
-      holdoff 5
-      mtu 1500
-      noaccomp
-      default-asyncmap
-      +ipv6
-      ifname olilo-pppoe
-    '';
-  };
-
-  systemd.services.pppd-olilo-pppoe.wants = [ "systemd-networkd.service" ];
-  systemd.services.pppd-olilo-pppoe.requires = [ "systemd-networkd.service" ];
-  systemd.services.pppd-olilo-pppoe.unitConfig = {
-    BindsTo = [ "sys-subsystem-net-devices-${linkNames.wan}.device" ];
-    After = [ "sys-subsystem-net-devices-${linkNames.wan}.device" ];
-  };
-
-  systemd.services."pppd-olilo-pppoe".preStart = ''
-    # bring up the interface so ppp can use it
-    ${pkgs.iproute2}/bin/ip link set ${linkNames.wan} up
-  '';
-
-  environment.etc.ppp-up = {
-    enable = true;
-    target = "ppp/ip-up";
-    mode = "0755";
-    text = ''
-      #!${pkgs.bash}/bin/bash
-      ${pkgs.logger}/bin/logger "$1 is up"
-      if [ $IFNAME = "olilo-pppoe" ]; then
-        ${pkgs.logger}/bin/logger "PPPoE online"
-        ${pkgs.logger}/bin/logger "Add default routes via PPPoE"
-        ${pkgs.iproute2}/bin/ip route add default dev olilo-pppoe scope link metric 100
-      fi
-    '';
-  };
-
-  environment.etc.ppp-down = {
-    # this script runs after the PPP connection drops
-    # we'll use it to log, and remove the default routes
-    enable = true;
-    target = "ppp/ip-down";
-    mode = "0755";
-    text = ''
-      #!${pkgs.bash}/bin/bash
-      ${pkgs.logger}/bin/logger "$1 is down"
-      if [ $IFNAME = "olilo-pppoe" ]; then
-        ${pkgs.logger}/bin/logger "PPPoE offline"
-        ${pkgs.logger}/bin/logger "Remove default routes via PPPoE"
-        ${pkgs.iproute2}/bin/ip route del default dev olilo-pppoe scope link metric 100
-      fi
-    '';
   };
 
   homelab = {
@@ -143,7 +66,6 @@ in
       devices.lanMac = "e8:ea:6a:93:e6:1e";
       devices.lan = "lan";
       devices.uplink = "vlan911";
-      devices.gateway = "olilo-pppoe";
     };
     services.nginx.enable = true;
   };
