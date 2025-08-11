@@ -43,12 +43,10 @@ in
         # (uplink allows for simple ethernet dhcp with vlan)
         "10-${uplink}" = lib.mkIf (uplink == gateway) {
           matchConfig.Name = uplink;
-          #"10-${gateway}" = {
-          #  matchConfig.Name = gateway;
           networkConfig = {
-            #    KeepConfiguration = "yes";
             DHCP = "yes";
             IPv6AcceptRA = "yes";
+            DHCPPrefixDelegation = "yes";
             LinkLocalAddressing = "ipv6";
             IPv4Forwarding = "yes";
           };
@@ -67,13 +65,15 @@ in
             DHCPv6Client = "yes";
           };
 
+          dhcpPrefixDelegationConfig.UplinkInterface = ":self";
+
           dhcpV6Config = {
             WithoutRA = "solicit";
-            UseDelegatedPrefix = true;
             UseHostname = "no";
             UseDNS = "no";
             UseNTP = "no";
           };
+
           linkConfig.RequiredForOnline = "no";
         };
         "15-${lan}" = {
@@ -101,6 +101,7 @@ in
             UplinkInterface = config.homelab.router.devices.uplink;
             DefaultLeaseTimeSec = 1800;
           };
+
           dhcpServerStaticLeases = [
             # {
             #   # Idac for example
@@ -108,13 +109,16 @@ in
             #   MACAddress = "54:9f:35:14:57:3e";
             # }
           ];
+
           linkConfig.RequiredForOnline = "yes";
+
           ipv6SendRAConfig = {
             EmitDNS = "yes";
             DNS = dns6;
             EmitDomains = "no";
           };
-          dhcpPrefixDelegationConfig.SubnetId = "0x1";
+
+          dhcpPrefixDelegationConfig.UplinkInterface = uplink;
         };
       };
     };
