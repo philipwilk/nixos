@@ -9,11 +9,11 @@
     home.sourceControl = {
       name = lib.mkOption {
         type = lib.types.str;
-        default = "p.wilk@student.reading.ac.uk";
+        default = "Philip Wilk";
       };
       email = lib.mkOption {
         type = lib.types.str;
-        default = "Philip Wilk";
+        default = "p.wilk@student.reading.ac.uk";
       };
     };
   };
