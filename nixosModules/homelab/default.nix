@@ -221,9 +221,11 @@ in
           let
             pc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMJEglhv4CBSjHclGcDmolVViPXFIqv9o7yTJwYaULP philip@nixowos";
             laptop = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBv5FgfTO1OENN87FnrI3G+Sc/TNoYvOubZUXhEQrYAe philip@nixowos-laptop";
+            nuc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDoRccZau15aB0GGXTtgJjqtQ2RDqZr/l0/1UTnnt2M1 philip.wilk@fivium.co.uk";
             workstations = [
               pc
               laptop
+              nuc
             ];
           in
           workstations;
