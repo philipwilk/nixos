@@ -48,11 +48,6 @@ in
       vlan = [
         linkNames.uplink
       ];
-      linkConfig.MTUBytes = 1504;
-    };
-    "20-${linkNames.uplink}" = {
-      matchConfig.Name = linkNames.uplink;
-      linkConfig.MTUBytes = 1500;
     };
   };
 
@@ -68,5 +63,12 @@ in
       devices.uplink = "vlan911";
     };
     services.nginx.enable = true;
+    services.homeAssistant.enable = true;
+  };
+
+  homelab.services.kanidm = {
+    enable = true;
+    domain = "testing-idm.fogbox.uk";
+    backupCount = 0;
   };
 }
