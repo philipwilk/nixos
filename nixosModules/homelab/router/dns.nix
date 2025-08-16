@@ -75,6 +75,14 @@ in
               "9.9.9.9#dns.quad9.net"
               "2620:fe::9#dns.quad9.net"
               "149.112.112.112#dns.quad9.net"
+              "193.110.81.0#dns0.eu"
+              "2a0f:fc80::#dns0.eu"
+              "185.253.5.0#dns0.eu"
+              "2a0f:fc81::#dns0.eu"
+              "1.1.1.1#cloudflare-dns.com"
+              "2606:4700:4700::1111#cloudflare-dns.com"
+              "1.0.0.1#cloudflare-dns.com"
+              "2606:4700:4700::1001#cloudflare-dns.com"
             ];
             forward-tls-upstream = true;
           }
