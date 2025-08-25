@@ -23,6 +23,7 @@ in
         "analytics"
         "google_translate"
         "met"
+        "radio_browser"
         "shopping_list"
         # Recommended for fast zlib compression
         # https://www.home-assistant.io/integrations/isal
@@ -35,7 +36,6 @@ in
         "thread"
         "matter"
         "otbr"
-        "mqtt"
       ];
       config = {
         # Includes dependencies for a basic setup
@@ -48,75 +48,10 @@ in
       extraPackages = ps: with ps; [ psycopg2 ];
     };
 
-    # mosquitto is the mqtt server, zigbee2mqtt deals with the dongle
-    age.secrets.zigbeeMqttPwd = {
-      file = ../../../secrets/mosquitto/zigbeeMqttPwd.age;
-    };
-    age.secrets.homeassistantMqttPwd = {
-      file = ../../../secrets/mosquitto/homeassistantMqttPwd.age;
-    };
-    age.secrets.zigbeeMqttPwdYml = {
-      file = ../../../secrets/mosquitto/zigbeeMqttPwdYml.age;
-    };
-    services.mosquitto = {
-      enable = true;
-      listeners = [
-        {
-          users = {
-            zigbee2mqtt = {
-              passwordFile = config.age.secrets.zigbeeMqttPwd.path;
-              acl = [
-                "read zigbee2mqtt/#"
-                "write zigbee2mqtt/#"
-                "read homeassistant/#"
-                "write homeassistant/#"
-              ];
-            };
-            hazigbee = {
-              passwordFile = config.age.secrets.homeassistantMqttPwd.path;
-              acl = [
-                "read zigbee2mqtt/#"
-                "write zigbee2mqtt/#"
-                "read homeassistant/#"
-                "write homeassistant/#"
-              ];
-            };
-          };
-        }
-      ];
-    };
-    systemd.services.zigbee2mqtt.serviceConfig = {
-      LoadCredential = [
-        "mqttPwd.yaml:${config.age.secrets.zigbeeMqttPwdYml.path}"
-      ];
-      Restart = lib.mkForce "always";
-      RestartSec = "10s";
-      StandardError = "inherit";
-      StandardOutput = "inherit";
-    };
-
     services.zigbee2mqtt = {
       enable = true;
       settings = {
-        homeassistant = {
-          enabled = config.services.home-assistant.enable;
-          discover_topic = "homeassistant";
-          status_topic = "homeassistant/status";
-        };
-        serial = {
-          port = "/dev/serial/by-id/usb-Itead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_V2_2086ce948b38ef11b625317af3d9b1e5-if00-port0";
-          adapter = "ember";
-        };
-        frontend = {
-          enable = true;
-          port = 8888;
-        };
-        mqtt = {
-          server = "mqtt://localhost:1883";
-          version = 5;
-          user = "zigbee2mqtt";
-          password = "!/run/credentials/zigbee2mqtt.service/mqttPwd.yaml password";
-        };
+
       };
     };
 
@@ -124,7 +59,6 @@ in
     # https://hub.docker.com/r/b2un0/silabs-multipan-docker
     networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [
       otbrPort
-      config.services.zigbee2mqtt.settings.frontend.port
     ];
     #virtualisation.oci-containers.containers."silabs-multipan" = {
     #  image = "docker.io/b2un0/silabs-multipan-docker:2.4.5";
