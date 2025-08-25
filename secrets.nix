@@ -100,4 +100,8 @@ in
   ${s "mollysocket-vapid"}.publicKeys = servers;
   # olilo pppoe
   ${s "pppoe-chap"}.publicKeys = servers;
+  # mosquitto MQTT server
+  ${s "mosquitto/zigbeeMqttPwd"}.publicKeys = servers;
+  ${s "mosquitto/homeassistantMqttPwd"}.publicKeys = servers;
+  ${s "mosquitto/zigbeeMqttPwdYml"}.publicKeys = servers;
 }
