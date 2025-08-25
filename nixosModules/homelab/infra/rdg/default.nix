@@ -53,6 +53,7 @@ in
 
   homelab = {
     hostname = config.networking.fqdn;
+    net.lan = config.homelab.router.devices.lan;
     router = {
       enable = true;
       linkLocal = "fe80::66ab:5898:6981:3273";
