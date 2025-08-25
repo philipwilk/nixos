@@ -42,6 +42,10 @@ in
         # https://www.home-assistant.io/integrations/default_config/
         default_config = { };
 
+        "automation ui" = "!include automations.yaml";
+        "scene ui" = "!include scenes.yaml";
+        "script ui" = "!include scripts.yaml";
+
         # to use postgres
         recorder.db_url = "postgresql://@/hass";
       };
