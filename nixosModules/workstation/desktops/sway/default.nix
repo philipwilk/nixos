@@ -16,7 +16,7 @@
         enable = true;
         settings = {
           default_session = {
-            command = "${lib.getExe pkgs.greetd.tuigreet} --time --remember --cmd ${lib.getExe pkgs.swayfx}";
+            command = "${lib.getExe pkgs.tuigreet} --time --remember --cmd ${lib.getExe pkgs.swayfx}";
           };
         };
       };

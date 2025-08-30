@@ -152,7 +152,7 @@
           blender
           # Media consumption
           vlc
-          jellyfin-media-player
+          #jellyfin-media-player
           youtube-music
           # Ripping
           picard
@@ -221,7 +221,7 @@
 
     services = {
       fwupd.enable = true;
-      logind = {
+      logind.settings.Login = {
         powerKey = "poweroff";
         powerKeyLongPress = "reboot";
         lidSwitch = "suspend-then-hibernate";
@@ -232,7 +232,7 @@
       openssh.settings.UseDns = true;
       kanidm = {
         enableClient = true;
-        package = pkgs.kanidm;
+        package = pkgs.kanidm_1_7;
         clientSettings.uri = "https://testing-idm.fogbox.uk";
       };
       udev.extraRules = ''

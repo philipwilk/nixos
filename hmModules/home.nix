@@ -91,6 +91,18 @@
       ssh = {
         enable = true;
         matchBlocks = {
+          "*" = {
+            forwardAgent = false;
+            addKeysToAgent = "no";
+            compression = false;
+            serverAliveInterval = 0;
+            serverAliveCountMax = 3;
+            hashKnownHosts = false;
+            userKnownHostsFile = "~/.ssh/known_hosts";
+            controlMaster = "no";
+            controlPath = "~/.ssh/master-%r@%n:%p";
+            controlPersist = "no";
+          };
           csgitlab = {
             host = "csgitlab.reading.ac.uk";
             identityFile = [ "~/.ssh/csgitlab" ];
@@ -190,7 +202,6 @@
       fish.enable = true;
       fuzzel.enable = true;
       gh-dash.enable = true;
-      gtk.enable = true;
       helix.enable = true;
       kitty.enable = true;
       obs.enable = true;
