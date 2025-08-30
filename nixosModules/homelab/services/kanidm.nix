@@ -59,6 +59,7 @@ in
     networking.firewall.allowedTCPPorts = [ 636 ];
 
     services.kanidm = {
+      package = pkgs.kanidm_1_7;
       enableClient = true;
       clientSettings.uri = config.services.kanidm.serverSettings.origin;
       enableServer = true;

@@ -120,7 +120,7 @@
                   #"nixosvmtest"
                 ] (hostname: mkWorkstationSystem ./nixosModules/workstation/infra/${hostname}))
                 (lib.attrsets.genAttrs [
-                  "thinkcentre"
+                  #"thinkcentre"
                   "itxserve"
                   "rdg"
                 ] (hostname: mkHomelabSystem ./nixosModules/homelab/infra/${hostname}))
