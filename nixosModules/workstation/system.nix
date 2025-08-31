@@ -169,6 +169,7 @@
           foliate
 
           # Development
+          jetbrains.idea-community-src
           # Source control
           darcs
           ## Nix
