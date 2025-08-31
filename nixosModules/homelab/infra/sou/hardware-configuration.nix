@@ -2,6 +2,7 @@
   config,
   lib,
   modulesPath,
+  pkgs,
   ...
 }:
 
@@ -12,7 +13,7 @@
     {
       # copy bootloader from primary disk to redundant secondary
       boot.loader.systemd-boot.extraInstallCommands = ''
-        cp -n -a /boot/. /boot2
+        ${lib.getExe pkgs.rsync} -a --delete /boot/. /boot2
       '';
     }
     (lib.mkIf (config.specialisation != { }) {
