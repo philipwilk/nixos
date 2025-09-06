@@ -1,0 +1,73 @@
+From 0c6826cebe6d1ec4754c174cb7a44441cbf014e0 Mon Sep 17 00:00:00 2001
+From: Philip Wilk <p.wilk@student.reading.ac.uk>
+Date: Sat, 6 Sep 2025 12:55:07 +0100
+Subject: [PATCH 2/2] feat/13301/fallback-from-failing-substituters: treat all
+ 500s as hard errors and give up as they're out of our control
+
+---
+ src/libstore/filetransfer.cc            |  8 +++-----
+ src/libstore/http-binary-cache-store.cc | 14 ++++++++++++--
+ 2 files changed, 15 insertions(+), 7 deletions(-)
+
+diff --git a/src/libstore/filetransfer.cc b/src/libstore/filetransfer.cc
+index a162df1ad..60f2d5e10 100644
+--- a/src/libstore/filetransfer.cc
++++ b/src/libstore/filetransfer.cc
+@@ -496,11 +496,9 @@ struct curlFileTransfer : public FileTransfer
+                     // Most 4xx errors are client errors and are probably not worth retrying:
+                     //   * 408 means the server timed out waiting for us, so we try again
+                     err = Misc;
+-                } else if (httpStatus == 501 || httpStatus == 505 || httpStatus == 511) {
+-                    // Let's treat most 5xx (server) errors as transient, except for a handful:
+-                    //   * 501 not implemented
+-                    //   * 505 http version not supported
+-                    //   * 511 we're behind a captive portal
++                } else if (httpStatus >= 500 && httpStatus <= 599) {
++                    // a server is unlikely to 5xx unless there is a critical configuration/system error
++                    // we can't recover from an error that isn't our fault so give up
+                     err = Misc;
+                 } else {
+ // Don't bother retrying on certain cURL errors either
+diff --git a/src/libstore/http-binary-cache-store.cc b/src/libstore/http-binary-cache-store.cc
+index 7737389a3..e4a297207 100644
+--- a/src/libstore/http-binary-cache-store.cc
++++ b/src/libstore/http-binary-cache-store.cc
+@@ -96,7 +96,7 @@ protected:
+     void maybeDisable()
+     {
+         auto state(_state.lock());
+-        if (state->enabled && settings.tryFallback) {
++        if (state->enabled) {
+             int t = 60;
+             printError("disabling binary cache '%s' for %s seconds", config->getHumanReadableURI(), t);
+             state->enabled = false;
+@@ -196,8 +196,14 @@ protected:
+                     try {
+                         (*callbackPtr)(std::move(result.get().data));
+                     } catch (FileTransferError & e) {
+-                        if (e.error == FileTransfer::NotFound || e.error == FileTransfer::Forbidden)
++                        if (e.error == FileTransfer::NotFound || e.error == FileTransfer::Forbidden) {
+                             return (*callbackPtr)({});
++                        }
++                        // if the server is having errors then give up on it
++                        if (e.error == FileTransfer::Misc) {
++                            maybeDisable();
++                            return (*callbackPtr)({});
++                        }
+                         maybeDisable();
+                         callbackPtr->rethrow();
+                     } catch (...) {
+@@ -219,6 +225,10 @@ protected:
+         } catch (FileTransferError & e) {
+             if (e.error == FileTransfer::NotFound)
+                 return std::nullopt;
++            if (e.error == FileTransfer::Misc) {
++                maybeDisable();
++                return std::nullopt;
++            }
+             maybeDisable();
+             throw;
+         }
+-- 
+2.50.1
+
