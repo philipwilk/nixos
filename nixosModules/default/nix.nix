@@ -8,7 +8,7 @@
 {
   nixpkgs.config.allowUnfree = true;
   nix = {
-    package = pkgs.nixVersions.latest;
+    package = pkgs.nixVersions.nix_2_30;
     registry = lib.mapAttrs (_: value: { flake = value; }) {
       inherit nixpkgs;
     };
