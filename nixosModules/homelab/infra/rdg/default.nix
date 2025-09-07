@@ -72,4 +72,7 @@ in
     domain = "testing-idm.fogbox.uk";
     backupCount = 0;
   };
+
+  homelab.buildbot.enableWorker = true;
+  services.buildbot-nix.worker.masterUrl = "tls:host=buildbot.fogbox.uk:port=9989";
 }
