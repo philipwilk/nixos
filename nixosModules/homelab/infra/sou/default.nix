@@ -79,6 +79,8 @@
     enableWorker = true;
     enableMaster = true;
   };
+  networking.firewall.interfaces.${config.homelab.router.devices.wan}.allowedTCPPorts = [ 9989 ];
+
   homelab.nix = {
     #hercules-ci.enable = true;
     harmonia.enable = true;
