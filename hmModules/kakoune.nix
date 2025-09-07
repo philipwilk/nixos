@@ -138,6 +138,10 @@
           unmap global insert <s-tab>
         }
 
+        # Bind line comment toggle
+        map global insert <a-c> %{:comment-line<ret>}
+        map global normal <a-c> %{:comment-line<ret>}
+
         map global user l %{:enter-user-mode lsp<ret>} -docstring "LSP mode"
 
         map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Select next snippet placeholder'
