@@ -110,6 +110,7 @@
 
       services = {
         power-profiles-daemon.enable = true;
+        automatic-timezoned.enable = true;
         printing.enable = true;
         avahi = {
           enable = true;
