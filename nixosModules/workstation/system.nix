@@ -154,6 +154,8 @@
           vlc
           #jellyfin-media-player
           youtube-music
+          spotify
+          spotify-cli-linux
           # Ripping
           picard
           asunder
