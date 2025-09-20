@@ -267,7 +267,7 @@ in
 
       keybindings =
         let
-          mod = config.home-manager.users.philip.wayland.windowManager.sway.config.modifier;
+          mod = config.wayland.windowManager.sway.config.modifier;
 
           #pamixer = lib.getExe pkgs.pamixer;
           #brightnessctl = lib.getExe pkgs.brightnessctl;
@@ -276,6 +276,8 @@ in
           slurp = lib.getExe pkgs.slurp;
         in
         lib.mkOptionDefault {
+          # terminal
+          "${mod}+t" = "exec ${config.wayland.windowManager.sway.config.terminal}";
           # Volume
           "XF86AudioMute" = "exec volumectl toggle-mute";
           "XF86AudioRaiseVolume" = "exec volumectl -u up";
