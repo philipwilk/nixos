@@ -37,7 +37,7 @@
     };
 
     nixpkgs.config.permittedInsecurePackages = [
-      "ventoy-1.1.05"
+      "ventoy-1.1.07"
       "libxml2-2.13.8"
     ];
     nixpkgs.overlays = [
