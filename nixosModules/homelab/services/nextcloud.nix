@@ -112,6 +112,11 @@
       };
     };
 
+    networking.domains.subDomains.${config.services.nextcloud.hostName} = {
+      a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+      aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+    };
+
     # ensure that mariadb is running *before* running the setup
     systemd.services."nextcloud-setup" = {
       requires = [ "mysql.service" ];

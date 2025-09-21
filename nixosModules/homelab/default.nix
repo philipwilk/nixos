@@ -303,6 +303,11 @@ in
             };
           };
         };
+
+        networking.domains.subDomains.${config.homelab.services.grafana.domain} = {
+          a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+          aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+        };
       })
       (lib.mkIf cfg.services.prometheusExporters.enable {
         services.prometheus.exporters = {
@@ -351,6 +356,10 @@ in
               basicAuthFile = config.age.secrets.smartctlHtpasswd.path;
             };
           };
+        };
+        networking.domains.subDomains."*.stats.${config.networking.fqdn}" = {
+          a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+          aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
         };
       })
       (lib.mkIf (cfg.isLeader) {
@@ -460,6 +469,12 @@ in
             basicAuthFile = config.age.secrets.prometheusBasicAuth.path;
           };
         };
+
+        networking.domains.subDomains."prometheus.${cfg.tld}" = {
+          a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+          aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+        };
+
       })
       # Zfs monitoring
       (lib.mkIf config.boot.zfs.enabled {

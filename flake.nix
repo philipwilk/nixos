@@ -41,6 +41,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-dns = {
+      url = "github:Janik-Haag/nixos-dns";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -109,6 +113,7 @@
                   ./nixosModules/homelab.nix
                   inputs.buildbot-nix.nixosModules.buildbot-master
                   inputs.buildbot-nix.nixosModules.buildbot-worker
+                  inputs.nixos-dns.nixosModules.dns
                 ];
 
               in
@@ -162,6 +167,29 @@
                   "*.envrc"
                   "*.css"
                 ];
+              };
+
+            packages =
+              let
+                dnsGenerators = inputs.nixos-dns.utils.generate pkgs;
+                generateZoneAttrs = inputs.nixos-dns.utils.octodns.generateZoneAttrs;
+              in
+              {
+                zoneFiles = dnsGenerators.zoneFiles {
+                  inherit (self) nixosConfigurations;
+                  extraConfig = import ./nixosModules/homelab/dns;
+                };
+                octodns = dnsGenerators.octodnsConfig {
+                  dnsConfig = {
+                    inherit (self) nixosConfigurations;
+                    extraConfig = import ./nixosModules/homelab/dns;
+                  };
+                  config.providers.desec = {
+                    class = "octodns_desec.DesecProvider";
+                    token = "env/DESEC_TOKEN";
+                  };
+                  zones."fogbox.uk." = generateZoneAttrs [ "desec" ];
+                };
               };
 
             checks = # nixosConfigurations.machine -> nixosConfigurations-machine

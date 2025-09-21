@@ -16,6 +16,7 @@
     };
 
     age.secrets.workstation_password.file = ../../secrets/workstation_password.age;
+    age.secrets.octodns_desec_secret.file = ../../secrets/octodns/desec.age;
     age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
 
     boot.kernelParams = [ "net.ipv4.tcp_mtu_probing=1" ];
@@ -184,6 +185,11 @@
           dbeaver-bin
           openldap
           apache-directory-studio
+
+          (octodns.withProviders (ps: [
+            octodns-providers.desec
+            octodns-providers.bind
+          ]))
 
           ## Phone stuff
           pmbootstrap

@@ -23,6 +23,11 @@ in
       };
     };
 
+    networking.domains.subDomains.${domain} = {
+      a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+      aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+    };
+
     systemd.services.nginx.serviceConfig.ProtectHome = false;
     users.groups.searx.members = [ "nginx" ];
 

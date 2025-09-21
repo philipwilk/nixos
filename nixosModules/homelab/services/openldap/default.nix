@@ -136,5 +136,24 @@ in
       389
       636
     ];
+
+    networking.domains.subDomains = {
+      ${ldapname} = {
+        a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+        aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+      };
+      "_ldap._tcp.${ldapname}".srv.data = {
+        port = 389;
+        priority = 0;
+        target = ldapname;
+        weight = 0;
+      };
+      "_ldaps._tcp.${ldapname}".srv.data = {
+        port = 636;
+        priority = 0;
+        target = ldapname;
+        weight = 0;
+      };
+    };
   };
 }

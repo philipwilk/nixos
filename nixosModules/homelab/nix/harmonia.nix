@@ -45,5 +45,10 @@ in
         proxy_set_header Connection $connection_upgrade;
       '';
     };
+
+    networking.domains.subDomains.${domain} = {
+      a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+      aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+    };
   };
 }
