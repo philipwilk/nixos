@@ -49,6 +49,11 @@ in
       proxyPass = "http://${config.services.mollysocket.settings.host}:${builtins.toString config.services.mollysocket.settings.port}";
       proxyWebsockets = true;
     };
+
+    networking.domains.subDomains."mollysocket.${config.homelab.tld}" = {
+      a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+      aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+    };
   };
 
 }

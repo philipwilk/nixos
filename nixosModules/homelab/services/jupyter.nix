@@ -122,5 +122,10 @@ in
         proxyWebsockets = true;
       };
     };
+
+    networking.domains.subDomains."notebooks.${config.homelab.tld}" = {
+      a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+      aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+    };
   };
 }

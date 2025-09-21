@@ -104,4 +104,6 @@ in
   ${s "mosquitto/zigbeeMqttPwd"}.publicKeys = servers;
   ${s "mosquitto/homeassistantMqttPwd"}.publicKeys = servers;
   ${s "mosquitto/zigbeeMqttPwdYml"}.publicKeys = servers;
+  # octodns
+  ${s "octodns/desec"}.publicKeys = workstations;
 }

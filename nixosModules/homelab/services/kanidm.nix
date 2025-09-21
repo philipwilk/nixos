@@ -44,6 +44,11 @@ in
       };
     };
 
+    networking.domains.subDomains.${cfg.domain} = {
+      a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
+      aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
+    };
+
     systemd.services.kanidm = {
       wants = [ "acme-${cfg.domain}.service" ];
       after = [ "acme-${cfg.domain}.service" ];

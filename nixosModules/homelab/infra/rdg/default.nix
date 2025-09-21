@@ -51,6 +51,17 @@ in
     };
   };
 
+  networking.domains = {
+    enable = true;
+    baseDomains.${config.homelab.tld} = { };
+    subDomains = {
+      ${config.networking.fqdn} = {
+        a.data = "194.105.76.8";
+        aaaa.data = "2a11:2646:1005:1:eaea:6aff:fe93:e61d";
+      };
+    };
+  };
+
   homelab = {
     hostname = config.networking.fqdn;
     net.lan = config.homelab.router.devices.lan;
