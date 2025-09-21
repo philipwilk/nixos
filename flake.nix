@@ -138,6 +138,7 @@
             pkgs,
             lib,
             system,
+            self',
             ...
           }:
           {
@@ -193,13 +194,26 @@
               };
 
             checks = # nixosConfigurations.machine -> nixosConfigurations-machine
-              (
-                lib.filterAttrs (lib.const (deriv: deriv.system == system)) (
-                  (lib.mapAttrs' (
-                    name: value: lib.nameValuePair "nixosConfigurations-${name}" value.config.system.build.toplevel
-                  ) self.nixosConfigurations)
-                )
-              );
+              let
+                nixosMachines = (
+                  lib.filterAttrs (lib.const (deriv: deriv.system == system)) (
+                    (lib.mapAttrs' (
+                      name: value: lib.nameValuePair "nixosConfigurations-${name}" value.config.system.build.toplevel
+                    ) self.nixosConfigurations)
+                  )
+                );
+                blacklistPackages = [
+                  "install-iso"
+                  "nspawn-template"
+                  "netboot-pixie-core"
+                  "netboot"
+                ];
+                packages = lib.mapAttrs' (n: lib.nameValuePair "package-${n}") (
+                  lib.filterAttrs (n: _v: !(builtins.elem n blacklistPackages)) self'.packages
+                );
+                devShells = lib.mapAttrs' (n: lib.nameValuePair "devShell-${n}") self'.devShells;
+              in
+              nixosMachines // packages // devShells;
           };
       }
     );
