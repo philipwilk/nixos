@@ -174,6 +174,13 @@
               let
                 dnsGenerators = inputs.nixos-dns.utils.generate pkgs;
                 generateZoneAttrs = inputs.nixos-dns.utils.octodns.generateZoneAttrs;
+                # Using these is suboptimal atm
+                # ideally can we make this consumable from a gh action/bot or something that would be really cool
+                # but right now
+                /*
+                  sudo cat /run/agenix/octodns_desec_secret | source
+                  DESEC_TOKEN=$DESEC_TOKEN octodns-sync --config-file=$(nix build .#octodns --print-out-paths)
+                */
               in
               {
                 zoneFiles = dnsGenerators.zoneFiles {
