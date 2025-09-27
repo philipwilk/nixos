@@ -5,16 +5,17 @@
   ...
 }:
 let
-  cnf = config.homelab.ci.runners.gitlab;
+  cfg = config.homelab.ci.runners.gitlab;
 in
 {
   options = {
     homelab.ci.runners.gitlab.csgitlab.enabled = lib.mkEnableOption "the csgitlab nix runner";
-  };
-  config = lib.mkIf cnf.csgitlab.enabled {
-    age.secrets.gitlab-runner-csgitlab = {
-      file = ../../../secrets/runners/csgitlab.age;
+    homelab.ci.runners.gitlab.csgitlab.secretPath = lib.mkOption {
+      type = lib.types.path;
     };
+  };
+  config = lib.mkIf cfg.csgitlab.enabled {
+    age.secrets.gitlab-runner-csgitlab.file = cfg.csgitlab.secretPath;
 
     virtualisation.docker.enable = lib.mkForce false;
 

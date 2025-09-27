@@ -6,12 +6,10 @@ let
     laptop
   ];
 
-  itxserve = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGygqcot7EsJMlGPMFiiKE6GruHaxUPwsJqBH1HiykOG root@itxserve";
-  thinkcentre = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC0/qDrzDMquOwPQOspR24ZVBaFcmz/uBnD0wqTcNxdX root@thinkcentre";
+  sou = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGygqcot7EsJMlGPMFiiKE6GruHaxUPwsJqBH1HiykOG root@itxserve";
   rdg = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO3B4pG0Ztyg+D2FFt69oRRcNLWCdy79oMlQ3pjATbZ5 root@rdg";
   servers = [
-    thinkcentre
-    itxserve
+    sou
     rdg
   ];
 
@@ -83,14 +81,14 @@ in
   # msmtp passwords
   ${s "msmtp/zedPwd"}.publicKeys = servers;
   # Wireguard
-  ${s "wireguard/itxserve/private"}.publicKeys = [ itxserve ];
-  ${s "wireguard/thinkcentre/private"}.publicKeys = [ thinkcentre ];
+  ${s "wireguard/itxserve/private"}.publicKeys = [ sou ];
   ${s "wireguard/probook/private"}.publicKeys = [ laptop ];
   ${s "wireguard/prime/private"}.publicKeys = [ pc ];
   # Jupyterhub
   ${s "jupyter-envs"}.publicKeys = servers;
   #  gitlab-runner
-  ${s "runners/csgitlab"}.publicKeys = servers;
+  ${s "runners/csgitlab/sou"}.publicKeys = [ sou ];
+  ${s "runners/csgitlab/rdg"}.publicKeys = [ rdg ];
   # upsmon user
   ${s "upsmon/sou"}.publicKeys = servers;
   # ntfy-sh envs

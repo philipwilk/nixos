@@ -108,6 +108,7 @@
   services.factorio.saveName = "space";
 
   homelab.ci.runners.gitlab.csgitlab.enabled = true;
+  homelab.ci.runners.gitlab.csgitlab.secretPath = ../../../../secrets/runners/csgitlab/sou.age;
 
   boot.kernelModules = [ "nct6775" ];
   environment.systemPackages = with pkgs; [ hddfancontrol ];
