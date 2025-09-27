@@ -117,6 +117,11 @@
             identityFile = [ "~/.ssh/csgitlab" ];
             identitiesOnly = true;
           };
+          legacy-csgitlab = {
+            host = "csgitlab-legacy.reading.ac.uk";
+            identityFile = [ "~/.ssh/csgitlab" ];
+            identitiesOnly = true;
+          };
           github = {
             host = "github.com";
             identityFile = [ "~/.ssh/id_ed25519" ];

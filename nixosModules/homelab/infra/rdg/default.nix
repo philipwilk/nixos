@@ -85,5 +85,5 @@ in
   };
 
   homelab.buildbot.enableWorker = true;
-  services.buildbot-nix.worker.masterUrl = "tls:host=buildbot.fogbox.uk:port=9989";
+  services.buildbot-nix.worker.masterUrl = "tcp:host=buildbot.fogbox.uk:port=9989";
 }
