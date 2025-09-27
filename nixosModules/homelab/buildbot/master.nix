@@ -9,6 +9,14 @@ in
       oauth_sec.file = ../../../secrets/buildbot/oauth_sec.age;
       webhook_sec.file = ../../../secrets/buildbot/webhook_sec.age;
       gh_pem.file = ../../../secrets/buildbot/gh_pem.age;
+
+      buildbot-httpbasicsecret.file = ../../../secrets/buildbot/httpbasicsecret.age;
+      buildbot-httpbasicsecret.owner = "oauth2-proxy";
+
+      buildbot-cookiesecret.file = ../../../secrets/buildbot/cookiesecret.age;
+      buildbot-cookiesecret.owner = "oauth2-proxy";
+      buildbot-clientsecret.file = ../../../secrets/buildbot/clientsecret.age;
+      buildbot-clientsecret.owner = "oauth2-proxy";
     };
 
     services.buildbot-master = {
@@ -24,13 +32,26 @@ in
 
       workersFile = config.age.secrets.workers.path;
 
+      authBackend = "httpbasicauth";
+      httpBasicAuthPasswordFile = config.age.secrets.buildbot-httpbasicsecret.path;
+
       admins = [ "philipwilk" ];
+      accessMode.fullyPrivate = {
+        backend = "github";
+        teams = [ "fogboxuk" ];
+
+        cookieSecretFile = config.age.secrets.buildbot-cookiesecret.path;
+        clientSecretFile = config.age.secrets.buildbot-clientsecret.path;
+        clientId = "Iv23liSS80uhJbjh4cQD";
+      };
+
       github = {
         appId = 914149;
         appSecretKeyFile = config.age.secrets.gh_pem.path;
+
         webhookSecretFile = config.age.secrets.webhook_sec.path;
-        oauthId = "iv23liss80uhjbjh4cqd";
-        oauthSecretFile = config.age.secrets.oauth_sec.path;
+        # oauthId = "Iv23liSS80uhJbjh4cQD";
+        # oauthSecretFile = config.age.secrets.oauth_sec.path;
         topic = "fogbox-buildbot";
       };
     };

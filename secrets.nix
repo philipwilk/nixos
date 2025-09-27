@@ -44,6 +44,11 @@ in
   ${s "buildbot/user_sec"}.publicKeys = servers;
   ${s "buildbot/webhook_sec"}.publicKeys = servers;
   ${s "buildbot/gh_pem"}.publicKeys = servers;
+
+  ${s "buildbot/clientsecret"}.publicKeys = servers;
+  ${s "buildbot/cookiesecret"}.publicKeys = servers;
+
+  ${s "buildbot/httpbasicsecret"}.publicKeys = servers;
   # Hercules=ci
   ${s "hercules-ci/binaryCacheKeys"}.publicKeys = servers;
   ${s "hercules-ci/clusterJoinToken"}.publicKeys = servers;
