@@ -3,6 +3,5 @@
 }:
 {
   nixpkgs.overlays = [
-    (import ./nix)
   ];
 }
