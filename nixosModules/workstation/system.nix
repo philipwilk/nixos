@@ -173,6 +173,7 @@
 
           # Development
           jetbrains.idea-community-src
+          bruno
           # Source control
           darcs
           ## Nix
