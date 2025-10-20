@@ -41,7 +41,6 @@
       https = true;
       home = "${config.homelab.stateDir}/nextcloud";
       configureRedis = true;
-      nginx.recommendedHttpHeaders = true;
       autoUpdateApps.enable = true;
       maxUploadSize = "4096M";
       enableImagemagick = true;
