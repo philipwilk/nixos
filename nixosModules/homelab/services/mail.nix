@@ -5,14 +5,14 @@
   ...
 }:
 let
-  domain = config.homelab.services.email.domain;
   svcDomain = "services.${domain}";
+  domain = config.homelab.services.email.domain;
   autoDiscover = "autodiscover.${domain}";
   autoConfig = "autoconfig.${domain}";
   webmail_domain = config.homelab.services.email.web;
   mail_selfservice_domain = "selfservice.${config.homelab.tld}";
-  ldapSuffix = config.services.openldap.settings.children."olcDatabase={1}mdb".attrs.olcSuffix;
   userSuffix = "ou=users,${ldapSuffix}";
+  ldapSuffix = config.services.openldap.settings.children."olcDatabase={1}mdb".attrs.olcSuffix;
   stateDir = "${config.homelab.stateDir}/stalwart-mail";
   credPath = "/run/credentials/stalwart-mail.service";
 in
@@ -149,38 +149,38 @@ in
         {
           certificateAssociationData = "d016e1fe311948aca64f2de44ce86c9a51ca041df6103bb52a88eb3f761f57d7";
           usage = 2;
-          matchingType = 1;
           selector = 1;
+          matchingType = 1;
         }
         {
           certificateAssociationData = "f8a2b4e23e82a4494e9998fcc4242bef1277656a118beede55ddfadcb82e20c5dc036dcb3b6c48d2ce04e362a9f477c82ad5a557b06b6f33b45ca6662b37c1c9";
           usage = 2;
-          matchingType = 2;
           selector = 1;
+          matchingType = 2;
         }
         {
           certificateAssociationData = "d1bc8e794c79b922996681fb4730b672d6019d2467023e8f346bc76ddd1c26e7";
           usage = 3;
-          matchingType = 1;
           selector = 0;
+          matchingType = 1;
         }
         {
           certificateAssociationData = "b2ea2aeba149f49a39d936b6072fe7874aba318a348b03f0e690f0761a2fce1df3034f58c73813b90773dee4b906b4a5485f332829b984e36aa548a5ec9b2806";
           usage = 3;
-          matchingType = 2;
           selector = 0;
+          matchingType = 2;
         }
         {
           certificateAssociationData = "f38a5c614a2bc41f780babf19b0416bc6e57b4dc365e2d46ea1a74631d0ba640";
           usage = 3;
-          matchingType = 1;
           selector = 1;
+          matchingType = 1;
         }
         {
           certificateAssociationData = "4868101a5923a8236d6657cfc5fa633c8b40badb8c5afe7c754e91a17ee61e7a649038db9139550e922a248eab6e47ccef1d4e4e0079885cd3cefc2d5ab5e010";
           usage = 3;
-          matchingType = 2;
           selector = 1;
+          matchingType = 2;
         }
       ];
       "_25._tcp.${svcDomain}".tlsa.data = [
