@@ -84,7 +84,6 @@
           tre-command
           wl-clipboard
           wl-clip-persist
-          networkmanager-openvpn
           ripunzip
           gparted
           baobab
@@ -137,6 +136,9 @@
       };
       networking.networkmanager = {
         enable = true;
+        plugins = with pkgs; [
+          networkmanager-openvpn
+        ];
         dns = "systemd-resolved";
       };
       hardware = {
