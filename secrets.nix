@@ -104,4 +104,8 @@ in
   ${s "mosquitto/zigbeeMqttPwdYml"}.publicKeys = servers;
   # octodns
   ${s "octodns/desec"}.publicKeys = workstations;
+
+  # work vpn config
+  ${s "openvpn/work/config"}.publicKeys = workstations;
+  ${s "openvpn/work/creds"}.publicKeys = workstations;
 }
