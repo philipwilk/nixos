@@ -93,6 +93,8 @@
           pavucontrol
           powertop
           nvtopPackages.full
+
+          simple-scan
         ];
       };
 
@@ -107,16 +109,21 @@
         '';
       };
 
+      hardware.sane.enable = true;
+
       services = {
         power-profiles-daemon.enable = true;
         automatic-timezoned.enable = true;
+
         printing.enable = true;
+        ipp-usb.enable = true;
         avahi = {
           enable = true;
           nssmdns4 = true;
           nssmdns6 = true;
           ipv6 = true;
         };
+
         gnome.gnome-keyring.enable = true;
         flatpak.enable = true;
         pipewire = {
