@@ -1,14 +1,21 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   options.workstation.iwd.enabled = lib.mkEnableOption "the iwd wifi backend";
 
   config = lib.mkIf config.workstation.iwd.enabled {
+    environment.systemPackages = with pkgs; [
+      impala
+    ];
     networking.networkmanager.wifi.backend = "iwd";
     networking.wireless.iwd = {
       enable = true;
       settings = {
         General = {
-          ControlPortOverNL80211 = false;
           UseDefaultNetwork = true;
         };
         Network = {
@@ -21,20 +28,5 @@
         };
       };
     };
-    systemd.network =
-      let
-        net = "wlan0";
-      in
-      {
-        enable = true;
-        networks.${net} = {
-          matchConfig.Name = net;
-          networkConfig = {
-            DHCP = "yes";
-            IgnoreCarrierLoss = 3;
-            IPv6PrivacyExtensions = "kernel";
-          };
-        };
-      };
   };
 }
