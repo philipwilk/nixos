@@ -31,6 +31,8 @@ in
     extraGroups = [
       "networkmanager"
       "wheel"
+      "scanner"
+      "lp"
     ];
   };
 
