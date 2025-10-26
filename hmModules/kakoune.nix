@@ -66,6 +66,17 @@
           }
         }
 
+        hook -group lsp-filetype-html global BufSetOption filetype=(cabal|haskell) %{
+          set-option buffer lsp_servers %{
+            [haskell-language-server]
+            root_globs = ["hie.yaml", "cabal.project", "Setup.hs", "stack.yaml", "*.cabal"]
+            command = "haskell-language-server-wrapper"
+            args = ["--lsp"]
+            settings_section = "_"
+            [haskell-language-server.settings._]
+          }
+        }
+
         hook -group lsp-filetype-java global BufSetOption filetype=java %{
           set-option buffer lsp_servers %{
             [jdtls]
