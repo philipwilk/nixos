@@ -65,23 +65,6 @@
           })
         );
       })
-
-      # latest linux-firmware
-      (self: super: {
-        linux-firmware = super.linux-firmware.overrideAttrs (
-          final: prev: {
-            version = "20250627";
-
-            src = pkgs.fetchFromGitLab {
-              owner = "kernel-firmware";
-              repo = "linux-firmware";
-
-              tag = final.version;
-              hash = "sha256-mNjCl+HtvvFxyLjlBFsyfyu2TAf6D/9lbRiouKC/vVY=";
-            };
-          }
-        );
-      })
     ];
 
     age.secrets.workVpnConfig.file = ../../secrets/openvpn/work/config.age;
