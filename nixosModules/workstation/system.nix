@@ -8,9 +8,6 @@
 }:
 {
   config = lib.mkIf config.workstation.declarativeHome {
-    specialisation.withIwd.configuration = {
-      workstation.iwd.enabled = true;
-    };
     specialisation.withGnome.configuration = {
       workstation.desktop = lib.mkForce "gnome";
     };
