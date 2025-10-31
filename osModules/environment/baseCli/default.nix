@@ -15,11 +15,8 @@
       ripgrep
       ripgrep-all
       tre-command
-      wl-clipboard
-      wl-clip-persist
       ripunzip
-      gparted
-      baobab
+      parted
       traceroute
       bottom
       git
@@ -31,7 +28,6 @@
       # list tools
       usbutils
       pciutils
-      libva-utils
       dnsutils
       dmidecode
       sbctl
@@ -47,6 +43,7 @@
       nix-output-monitor
       nh
       nvd
+      nix-tree
     ];
   };
 
