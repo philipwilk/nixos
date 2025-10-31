@@ -11,5 +11,7 @@
     pavucontrol
     powertop
     nvtopPackages.full
+    baobab
+    libva-utils
   ];
 }

@@ -38,11 +38,13 @@ in
   options.flakeConfig = {
     environment = {
       desktop = lib.mkOption {
-        type = lib.types.enum [
-          "gnome"
-          "sway"
-        ];
-        default = "sway";
+        type = lib.types.nullOr (
+          lib.types.enum [
+            "gnome"
+            "sway"
+          ]
+        );
+        default = null;
         example = "gnome";
         description = ''
           Which desktop environment or window manager to enable.
@@ -56,7 +58,7 @@ in
   };
 
   config = {
-    networking.nftables.enable = true;
+    networking.nftables.enable = lib.mkDefault true;
     environment.sessionVariables.NH_FLAKE = lib.mkDefault "/home/philip/repos/nixos";
   };
 }
