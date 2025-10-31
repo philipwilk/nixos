@@ -24,6 +24,8 @@
     ../../environment/windowsRebootAlias
   ];
 
+  flakeConfig.environment.desktop = "sway";
+
   specialisation.withGnome.configuration = {
     flakeConfig.environment.desktop = lib.mkForce "gnome";
   };
