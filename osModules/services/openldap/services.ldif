@@ -1,0 +1,70 @@
+dn: uid=nextcloud,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectclass: inetOrgPerson
+uid: nextcloud
+mail: nextcloud@services.fogbox.uk
+sn: nextcloud
+cn: nextcloud
+
+dn: uid=mail,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectclass: inetOrgPerson
+uid: mail
+mail: subsystem@services.fogbox.uk
+sn: mail
+cn: mail
+
+dn: uid=opnsense,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: opnsense
+mail: opnsense@services.fogbox.uk
+sn: opnsense
+cn: opnsense
+
+dn: uid=vaultwarden,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: vaultwarden
+mail: vaultwarden@services.fogbox.uk
+sn: vaultwarden
+cn: vaultwarden
+
+dn: uid=kuma,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: kuma
+mail: status@services.fogbox.uk
+sn: kuma
+cn: kuma
+
+dn: uid=grafana,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: grafana
+mail: grafana@services.fogbox.uk
+sn: grafana
+cn: grafana
+
+dn: uid=mastodon,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: mastodon
+mail: mastodon@services.fogbox.uk
+sn: mastodon
+cn: mastodon
+
+dn: uid=forgejo,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectclass: inetorgperson
+uid: forgejo
+mail: forgejo@services.fogbox.uk
+sn: forgejo
+cn: forgejo
+
+dn: uid=zfs,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: zfs
+mail: zfs@services.fogbox.uk
+sn: zfs
+cn: zfs
+
+dn: uid=ntfy,ou=users,dc=ldap,dc=fogbox,dc=uk
+objectClass: inetOrgPerson
+uid: ntfy
+mail: push@services.fogbox.uk
+sn: ntfy
+cn: ntfy
+
