@@ -88,7 +88,7 @@
                     inherit system;
                     modules = classModules ++ [
                       ./overlays
-                      ./nixosModules
+                      ./osModules
                       inputs.agenix.nixosModules.default
                       (
                         { ... }:
@@ -103,14 +103,14 @@
 
                 mkWorkstationSystem = mkSystemFactory [
                   ./overlays/workstation.nix
-                  ./nixosModules/workstation.nix
+                  ./osModules/workstation.nix
                   inputs.home-manager.nixosModules.default
                   inputs.lanzaboote.nixosModules.lanzaboote
                 ];
 
                 mkHomelabSystem = mkSystemFactory [
                   ./overlays/homelab.nix
-                  ./nixosModules/homelab.nix
+                  ./osModules/homelab.nix
                   inputs.buildbot-nix.nixosModules.buildbot-master
                   inputs.buildbot-nix.nixosModules.buildbot-worker
                   inputs.nixos-dns.nixosModules.dns
@@ -123,11 +123,11 @@
                   "probook"
                   "mini"
                   #"nixosvmtest"
-                ] (hostname: mkWorkstationSystem ./nixosModules/workstation/infra/${hostname}))
+                ] (hostname: mkWorkstationSystem ./infra/${hostname}))
                 (lib.attrsets.genAttrs [
                   "sou"
                   "rdg"
-                ] (hostname: mkHomelabSystem ./nixosModules/homelab/infra/${hostname}))
+                ] (hostname: mkHomelabSystem ./infra/${hostname}))
               ])
             );
           };
@@ -185,12 +185,12 @@
               {
                 zoneFiles = dnsGenerators.zoneFiles {
                   inherit (self) nixosConfigurations;
-                  extraConfig = import ./nixosModules/homelab/dns;
+                  extraConfig = import ./osModules/homelab/dns;
                 };
                 octodns = dnsGenerators.octodnsConfig {
                   dnsConfig = {
                     inherit (self) nixosConfigurations;
-                    extraConfig = import ./nixosModules/homelab/dns;
+                    extraConfig = import ./osModules/homelab/dns;
                   };
                   config.providers.desec = {
                     class = "octodns_desec.DesecProvider";
