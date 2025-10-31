@@ -56,7 +56,7 @@ in
     baseDomains.${config.homelab.tld} = { };
     subDomains = {
       ${config.networking.fqdn} = {
-        a.data = "194.105.76.8";
+        a.data = "158.173.146.38";
         aaaa.data = "2a11:2646:1005:1:eaea:6aff:fe93:e61d";
       };
     };
