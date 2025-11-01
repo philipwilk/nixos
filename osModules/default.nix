@@ -15,10 +15,6 @@ let
 in
 {
   imports = [
-    # original modules
-    ./default/nix.nix
-    ./default/region.nix
-
     # replaced modules
     # ./replaced/path/to/module.nix
 
@@ -28,8 +24,10 @@ in
 
     ./system/latestKernel
     ./system/bootable
+    ./system/region
 
     ./environment/programs/fish
+    ./environment/programs/nix
     ./environment/programs/agenix
 
     ./environment/baseCli

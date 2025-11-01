@@ -13,7 +13,7 @@ let
 in
 {
   imports =
-    join-dirfile "./services" [
+    join-dirfile "./service" [
       "nextcloud"
       "openldap/default"
       "navidrome"
@@ -33,18 +33,18 @@ in
       "ntfy"
       "mollysocket"
     ]
-    ++ join-dirfile "./services/websites" [ "fogbox" ]
-    ++ join-dirfile "./services/nix" [
+    ++ join-dirfile "./service/websites" [ "fogbox" ]
+    ++ join-dirfile "./service/nix" [
       "hercules-ci"
       "harmonia"
     ]
-    ++ join-dirfile "./services/ci" [
+    ++ join-dirfile "./service/ci" [
       "gitlab-runners"
     ]
-    ++ join-dirfile "./services/games" [ "factorio" ]
+    ++ join-dirfile "./service/games" [ "factorio" ]
     ++ [
-      ./services/router
-      ./services/buildbot
+      ./service/router
+      ./service/buildbot
 
       ./system/idmUserAuth
       ./system/zfs
