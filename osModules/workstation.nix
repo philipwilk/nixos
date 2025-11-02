@@ -16,7 +16,7 @@
     ./system/powerProfiles
     ./system/timezoned
 
-    ./environment/virtualisation
+    ./environment/containers
     ./environment/androidTools
     ./environment/dbTools
     ./environment/nixTools
