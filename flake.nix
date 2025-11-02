@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     make-shell.url = "github:nicknovitski/make-shell";
     agenix = {
@@ -108,6 +112,13 @@
                   inputs.lanzaboote.nixosModules.lanzaboote
                 ];
 
+                mkWslSystem = mkSystemFactory [
+                  ./overlays/workstation.nix
+                  ./osModules/wsl.nix
+                  inputs.home-manager.nixosModules.default
+                  inputs.nixos-wsl.nixosModules.default
+                ];
+
                 mkHomelabSystem = mkSystemFactory [
                   ./overlays/homelab.nix
                   ./osModules/homelab.nix
@@ -124,6 +135,10 @@
                   "mini"
                   #"nixosvmtest"
                 ] (hostname: mkWorkstationSystem ./infra/${hostname}))
+                (lib.attrsets.genAttrs [
+                  "wslphilip"
+                  "pwilk"
+                ] (hostname: mkWslSystem ./infra/${hostname}))
                 (lib.attrsets.genAttrs [
                   "sou"
                   "rdg"

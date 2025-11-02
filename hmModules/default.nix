@@ -5,8 +5,8 @@
   ...
 }:
 {
-  options = {
-    home.sourceControl = {
+  options.hmOptions = {
+    sourceControl = {
       name = lib.mkOption {
         type = lib.types.str;
         default = "Philip Wilk";
@@ -19,34 +19,20 @@
   };
 
   imports = [
-    ./i18n.nix
-    ./kakoune.nix
-    ./fish.nix
-    ./sway.nix
+    ./i18n
+    ./programs/kakoune
+    ./programs/fish
   ];
 
   config = {
-
     home = {
-      username = "philip";
-      homeDirectory = "/home/philip";
-      stateVersion = "24.05";
       packages = with pkgs; [
         (catppuccin.override {
           accent = "peach";
           variant = "latte";
         })
-        adw-gtk3
-        qadwaitadecorations
-        qadwaitadecorations-qt6
       ];
-      sessionVariables = {
-        QT_QPA_PLATFORMTHEME = "gtk3";
-        QT_WAYLAND_DECORATION = "adwaita";
-      };
     };
-
-    gtk.gtk3.extraConfig.application-prefer-dark-theme = false;
 
     programs = {
       home-manager.enable = true;
@@ -75,15 +61,10 @@
           };
         };
       };
-      kitty = {
-        enable = true;
-        shellIntegration.enableFishIntegration = true;
-        settings.confirm_os_window_close = 0;
-      };
       mercurial = {
         enable = true;
-        userName = config.home.sourceControl.name;
-        userEmail = config.home.sourceControl.email;
+        userName = config.hmOptions.sourceControl.name;
+        userEmail = config.hmOptions.sourceControl.email;
       };
       skim = {
         enable = true;
@@ -112,14 +93,15 @@
             controlPath = "~/.ssh/master-%r@%n:%p";
             controlPersist = "no";
           };
+
           csgitlab = {
             host = "csgitlab.reading.ac.uk";
-            identityFile = [ "~/.ssh/csgitlab" ];
+            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
           };
           legacy-csgitlab = {
             host = "csgitlab-legacy.reading.ac.uk";
-            identityFile = [ "~/.ssh/csgitlab" ];
+            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
           };
           github = {
@@ -154,8 +136,8 @@
       };
       git = {
         enable = true;
-        userName = config.home.sourceControl.name;
-        userEmail = config.home.sourceControl.email;
+        userName = config.hmOptions.sourceControl.name;
+        userEmail = config.hmOptions.sourceControl.email;
         aliases = {
           pl = "log --graph --abbrev-commit --decorate --stat";
           dh = "diff HEAD";
@@ -167,8 +149,8 @@
         };
         diff-so-fancy.enable = true;
         signing = {
-          signByDefault = true;
-          key = "/home/philip/.ssh/gitKey";
+          signByDefault = lib.mkDefault true;
+          key = "${config.home.homeDirectory}/.ssh/gitKey";
         };
         extraConfig = {
           core = {
@@ -205,10 +187,6 @@
     catppuccin = {
       enable = true;
       flavor = "latte";
-      cursors = {
-        enable = true;
-        accent = "peach";
-      };
       bat.enable = true;
       bottom.enable = true;
       chromium.enable = true;
@@ -226,22 +204,6 @@
 
     services = {
       easyeffects.enable = true;
-    };
-
-    dconf.settings = {
-      "org/virt-manager/virt-manager/connections" = {
-        autoconnect = [ "qemu:///system" ];
-        uris = [ "qemu:///system" ];
-      };
-      "org/gnome/desktop/wm/preferences" = {
-        button-layout = ":menu,close";
-      };
-      "org/gnome/desktop/interface" = {
-        accent-color = "pink";
-        gtk-theme = "Adwaita";
-        color-scheme = "prefer-light";
-        font-name = "Manrope 13";
-      };
     };
 
     xdg.configFile."matlab/nix.sh".text = ''

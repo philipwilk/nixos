@@ -29,6 +29,7 @@ in
     ./environment/programs/fish
     ./environment/programs/nix
     ./environment/programs/agenix
+    ./environment/programs/homeManager
 
     ./environment/baseCli
   ];
@@ -49,7 +50,10 @@ in
         '';
       };
 
-      declarativeHome.enable = lib.mkEnableOption "home-manager to manage configs.";
+      primaryHomeManagedUser = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        description = "User to manage the home of (if any)";
+      };
     };
 
     system.bootable.enable = mkEnabledOption "systemd-boot and firmware configs";

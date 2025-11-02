@@ -9,6 +9,8 @@
   age.secrets.octodns_desec_secret.file = ../../../../secrets/octodns/desec.age;
   age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
 
+  flakeConfig.environment.primaryHomeManagedUser = "philip";
+
   users.users.philip = {
     isNormalUser = true;
     extraGroups = [

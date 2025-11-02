@@ -5,11 +5,15 @@
   nix-index-database,
   ...
 }:
+let
+  user = config.flakeConfig.environment.primaryHomeManagedUser;
+in
 {
-  config = (lib.mkIf config.flakeConfig.environment.declarativeHome.enable) {
+  config = lib.mkIf (user != null) {
     home-manager = {
-      users."philip".imports = [
-        ../../../../hmModules/home.nix
+      users.${user}.imports = [
+        ../../../../hmModules
+        ../../../../hmModules/users/${user}
         catppuccin.homeModules.catppuccin
         nix-index-database.homeModules.nix-index
       ];
