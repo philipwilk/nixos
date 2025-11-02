@@ -36,7 +36,6 @@
 
     ./environment/programs/kanidm
     ./environment/programs/openssh
-    ./environment/programs/homeManager
     ./environment/programs/gnomeKeyring
     ./environment/programs/flatpak
     ./environment/programs/packetTracer

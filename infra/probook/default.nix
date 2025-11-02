@@ -15,14 +15,26 @@
     LIBVA_DRIVER_NAME = "iHD";
   };
 
-  flakeConfig.environment.declarativeHome.enable = true;
-
   services = {
     fprintd.enable = true;
     pcscd.enable = true;
   };
 
   services.thermald.enable = true;
+
+  flakeConfig.environment.primaryHomeManagedUser = "philip";
+  home-manager.users."philip".imports = [
+    ../../hmModules/programs/sway
+    ../../hmModules/guiConfig
+    (
+      {
+        ...
+      }:
+      {
+        home.stateVersion = "24.05";
+      }
+    )
+  ];
 
   system.stateVersion = "23.05";
 }
