@@ -199,12 +199,12 @@
               {
                 zoneFiles = dnsGenerators.zoneFiles {
                   inherit (self) nixosConfigurations;
-                  extraConfig = import ./osModules/homelab/dns;
+                  extraConfig = import ./osModules/service/dns;
                 };
                 octodns = dnsGenerators.octodnsConfig {
                   dnsConfig = {
                     inherit (self) nixosConfigurations;
-                    extraConfig = import ./osModules/homelab/dns;
+                    extraConfig = import ./osModules/service/dns;
                   };
                   config.providers.desec = {
                     class = "octodns_desec.DesecProvider";
