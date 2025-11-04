@@ -89,4 +89,12 @@ in
 
   homelab.ci.runners.gitlab.csgitlab.enabled = true;
   homelab.ci.runners.gitlab.csgitlab.secretPath = ../../secrets/runners/csgitlab/rdg.age;
+
+  homelab.games.factorio = {
+    # Needs statedir option fix /var/lib/factorio
+    enable = true;
+    admins = [ "wiryfuture" ];
+  };
+
+  services.factorio.saveName = "buk2";
 }
