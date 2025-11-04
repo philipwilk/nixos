@@ -52,6 +52,7 @@ in
 
       primaryHomeManagedUser = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
+        default = null;
         description = "User to manage the home of (if any)";
       };
     };

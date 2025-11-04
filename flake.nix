@@ -94,6 +94,7 @@
                       ./overlays
                       ./osModules
                       inputs.agenix.nixosModules.default
+                      inputs.home-manager.nixosModules.default
                       (
                         { ... }:
                         {
@@ -108,14 +109,12 @@
                 mkWorkstationSystem = mkSystemFactory [
                   ./overlays/workstation.nix
                   ./osModules/workstation.nix
-                  inputs.home-manager.nixosModules.default
                   inputs.lanzaboote.nixosModules.lanzaboote
                 ];
 
                 mkWslSystem = mkSystemFactory [
                   ./overlays/workstation.nix
                   ./osModules/wsl.nix
-                  inputs.home-manager.nixosModules.default
                   inputs.nixos-wsl.nixosModules.default
                 ];
 
