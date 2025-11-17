@@ -38,7 +38,6 @@
     ./environment/programs/openssh
     ./environment/programs/gnomeKeyring
     ./environment/programs/flatpak
-    ./environment/programs/packetTracer
 
     # replaced modules
     # ./replaced/path/to/module.nix

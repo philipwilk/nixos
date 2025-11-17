@@ -9,7 +9,7 @@
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
     extraPackages = with pkgs; [
-      glxinfo
+      mesa-demos
       gamescope
       mangohud
     ];

@@ -22,7 +22,6 @@
         gnomeExtensions.forge
         gnomeExtensions.just-perfection
         gnomeExtensions.search-light
-        gnomeExtensions.duckduckgo-search-provider
         gnomeExtensions.fuzzy-app-search
         gnome-tweaks
       ];
