@@ -7,9 +7,8 @@
     packages = with pkgs; [
       corefonts
       noto-fonts-emoji-blob-bin
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       noto-fonts
-      noto-fonts-extra
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       fira-code
