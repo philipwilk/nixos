@@ -31,6 +31,14 @@ in
         IP4 address range to use for the lan
       '';
     };
+    cakeBandwidth = lib.mkOption {
+      type = lib.types.str;
+      default = "850";
+      example = "2250";
+      description = ''
+        Max bandwidth for CAKE qdisc, in megabits
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -72,6 +80,15 @@ in
             UseHostname = "no";
             UseDNS = "no";
             UseNTP = "no";
+          };
+
+          cakeConfig = {
+            Bandwidth = "${cfg.cakeBandwidth}M";
+            OverheadBytes = 48;
+            MPUBytes = 84;
+            CompensationMode = "none";
+            FlowIsolationMode = "triple";
+            PriorityQueueingPreset = "diffserv8";
           };
 
           linkConfig.RequiredForOnline = "no";
