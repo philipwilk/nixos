@@ -37,7 +37,7 @@ in
       };
       settings = {
         server = {
-          verbosity = 3;
+          verbosity = 1;
           interface = [
             "0.0.0.0"
             "::0"
