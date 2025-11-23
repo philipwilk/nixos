@@ -1,0 +1,36 @@
+{
+  ...
+}:
+{
+  services.alloy.enable = true;
+
+  environtment.etc."alloy/config.alloy".text = ''
+    local.file_match "local_files" {
+      path_targets = [{"__path__" = "/var/log/*.log"}]
+      sync_period = "5s"
+    }
+
+    loki.source.file "log_scrape" {
+      targets    = local.file_match.local_files.targets
+      forward_to = [loki.process.filter_logs.receiver]
+      tail_from_end = true
+    }
+
+    logging {
+      format = "logfmt"
+      level = "debug"
+      write_to = [loki.relabel.alloy_logs_receiver]
+    }
+
+    loki.write "grafana_loki" {
+      endpoint {
+        url = "http://localhost:3100/loki/api/v1/push"
+
+        // basic_auth {
+        //  username = "admin"
+        //  password = "admin"
+        // }
+      }
+    }
+  '';
+}
