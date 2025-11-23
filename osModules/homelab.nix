@@ -320,10 +320,21 @@ in
       };
     })
     (lib.mkIf cfg.services.prometheusExporters.enable {
+      services.dbus.implementation = "broker";
+
       services.prometheus.exporters = {
         node.enable = true;
         zfs.enable = true;
         smartctl.enable = true;
+        systemd = {
+          enable = true;
+          extraFlags = [
+            "--systemd.collector.enable-restart-count"
+            # mia??? https://github.com/prometheus-community/systemd_exporter/issues/177
+            # "--systemd.collector.enable-file-descriptor-size"
+            "--systemd.collector.enable-ip-accounting"
+          ];
+        };
       };
 
       age.secrets.nodeHtpasswd = {
@@ -336,6 +347,10 @@ in
       };
       age.secrets.smartctlHtpasswd = {
         file = ../secrets/prometheus/exporters/smartctl/htpasswd.age;
+        owner = "nginx";
+      };
+      age.secrets.systemdHtpasswd = {
+        file = ../secrets/prometheus/exporters/systemd/htpasswd.age;
         owner = "nginx";
       };
       services.nginx.virtualHosts = {
@@ -366,6 +381,15 @@ in
             basicAuthFile = config.age.secrets.smartctlHtpasswd.path;
           };
         };
+        "systemd.stats.${cfg.hostname}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.systemd.port}";
+            proxyWebsockets = true;
+            basicAuthFile = config.age.secrets.systemdHtpasswd.path;
+          };
+        };
       };
       networking.domains.subDomains."*.stats.${config.networking.fqdn}" = {
         a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
@@ -387,6 +411,10 @@ in
       };
       age.secrets.nutBasicAuthPassword = {
         file = ../secrets/prometheus/exporters/nut/basicAuthPassword.age;
+        owner = "prometheus";
+      };
+      age.secrets.systemdBasicAuthPassword = {
+        file = ../secrets/prometheus/exporters/systemd/basicAuthPassword.age;
         owner = "prometheus";
       };
       services.prometheus =
@@ -438,6 +466,19 @@ in
               static_configs = [
                 {
                   targets = genStatNames targetHostnames "smart";
+                }
+              ];
+            }
+            {
+              job_name = "systemd";
+              scheme = "https";
+              basic_auth = {
+                username = "prometheus";
+                password_file = config.age.secrets.systemdBasicAuthPassword.path;
+              };
+              static_configs = [
+                {
+                  targets = genStatNames targetHostnames "systemd";
                 }
               ];
             }
