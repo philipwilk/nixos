@@ -73,6 +73,7 @@ in
       devices.lanMac = "e8:ea:6a:93:e6:1e";
       devices.lan = "lan";
       devices.uplink = "vlan911";
+      systemd.enableCake = true;
       systemd.cakeBandwidth = "2100";
     };
     services.nginx.enable = true;

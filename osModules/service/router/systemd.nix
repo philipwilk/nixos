@@ -31,6 +31,7 @@ in
         IP4 address range to use for the lan
       '';
     };
+    enableCake = lib.mkEnableOption "cake qdisc on the wan interface";
     cakeBandwidth = lib.mkOption {
       type = lib.types.str;
       default = "850";
@@ -82,7 +83,7 @@ in
             UseNTP = "no";
           };
 
-          cakeConfig = {
+          cakeConfig = lib.mkIf cfg.enableCake {
             Bandwidth = "${cfg.cakeBandwidth}M";
             OverheadBytes = 48;
             MPUBytes = 84;
