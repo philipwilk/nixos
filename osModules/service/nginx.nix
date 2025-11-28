@@ -32,7 +32,7 @@
     services.nginx = {
       enable = true;
       enableQuicBPF = true;
-      package = pkgs.nginxQuic;
+      package = pkgs.nginxMainline;
       recommendedTlsSettings = true;
       recommendedProxySettings = true;
       recommendedOptimisation = true;
