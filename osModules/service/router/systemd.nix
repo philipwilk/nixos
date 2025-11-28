@@ -141,6 +141,8 @@ in
       };
     };
 
+    networking.firewall.logRefusedConnections = lib.mkForce false;
+
     # Open ports for dhcp server on lan
     networking.firewall.interfaces.${lan}.allowedUDPPorts = [
       67
