@@ -15,6 +15,7 @@
       useNetworkingTimeServers = false;
       metrics.enable = true;
       settings = {
+        observability.log-level = "warn";
         source = [
           {
             mode = "pool";
