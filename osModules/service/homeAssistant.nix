@@ -121,6 +121,7 @@ in
           user = "zigbee2mqtt";
           password = "!/run/credentials/zigbee2mqtt.service/mqttPwd.yaml password";
         };
+        advanced.log_level = "warning";
       };
     };
 
