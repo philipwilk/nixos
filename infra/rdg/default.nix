@@ -83,7 +83,7 @@ in
   homelab.services.kanidm = {
     enable = true;
     domain = "testing-idm.fogbox.uk";
-    backupCount = 0;
+    backupPath = "/var/lib/kanidm/backups";
   };
 
   homelab.buildbot.enableWorker = true;
