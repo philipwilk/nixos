@@ -80,6 +80,7 @@
       };
       ssh = {
         enable = true;
+        enableDefaultConfig = false;
         matchBlocks = {
           "*" = {
             forwardAgent = false;
@@ -92,67 +93,66 @@
             controlMaster = "no";
             controlPath = "~/.ssh/master-%r@%n:%p";
             controlPersist = "no";
+            identityFile = [ "~/.ssh/id_ed25519" ];
           };
 
           csgitlab = {
             host = "csgitlab.reading.ac.uk";
-            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
           };
           legacy-csgitlab = {
             host = "csgitlab-legacy.reading.ac.uk";
-            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
           };
           github = {
             host = "github.com";
-            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
           };
           fogbox = {
             host = "fogbox.uk";
-            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
             port = 22420;
           };
           rdg-fogbox = {
             host = "rdg.uk.region.fogbox.uk";
-            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
             port = 22420;
           };
           sou-fogbox = {
             host = "sou.uk.region.fogbox.uk";
-            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
             port = 22420;
           };
           fogbox-git = {
             host = "git.fogbox.uk";
-            identityFile = [ "~/.ssh/id_ed25519" ];
             identitiesOnly = true;
           };
         };
       };
+      diff-so-fancy = {
+        enable = true;
+        enableGitIntegration = true;
+      };
       git = {
         enable = true;
-        userName = config.hmOptions.sourceControl.name;
-        userEmail = config.hmOptions.sourceControl.email;
-        aliases = {
-          pl = "log --graph --abbrev-commit --decorate --stat";
-          dh = "diff HEAD";
-          dhp = "diff HEAD~";
-          push-fwl = "push --force-with-lease";
-          rhp = "reset HEAD~";
-          rhph = "reset HEAD~ --hard";
-          rhh = "reset HEAD --hard";
-        };
-        diff-so-fancy.enable = true;
         signing = {
           signByDefault = lib.mkDefault true;
           key = "${config.home.homeDirectory}/.ssh/gitKey";
         };
-        extraConfig = {
+        settings = {
+          user = {
+            name = config.hmOptions.sourceControl.name;
+            email = config.hmOptions.sourceControl.email;
+          };
+          alias = {
+            pl = "log --graph --abbrev-commit --decorate --stat";
+            dh = "diff HEAD";
+            dhp = "diff HEAD~";
+            push-fwl = "push --force-with-lease";
+            rhp = "reset HEAD~";
+            rhph = "reset HEAD~ --hard";
+            rhh = "reset HEAD --hard";
+          };
           core = {
             editor = "hx";
           };
