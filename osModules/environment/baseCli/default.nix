@@ -48,4 +48,16 @@
   };
 
   programs.trippy.enable = true;
+  programs.tmux = {
+    enable = true;
+    clock24 = true;
+    keyMode = "vi";
+    shortcut = "s";
+    escapeTime = 0;
+    extraConfig = ''
+      set -g mouse on
+
+      unbind C-[
+    '';
+  };
 }
