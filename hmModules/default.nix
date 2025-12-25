@@ -57,57 +57,6 @@
         enable = true;
         enableFishIntegration = true;
       };
-      ssh = {
-        enable = true;
-        enableDefaultConfig = false;
-        matchBlocks = {
-          "*" = {
-            forwardAgent = false;
-            addKeysToAgent = "no";
-            compression = false;
-            serverAliveInterval = 0;
-            serverAliveCountMax = 3;
-            hashKnownHosts = false;
-            userKnownHostsFile = "~/.ssh/known_hosts";
-            controlMaster = "no";
-            controlPath = "~/.ssh/master-%r@%n:%p";
-            controlPersist = "no";
-            identityFile = [ "~/.ssh/id_ed25519" ];
-          };
-
-          csgitlab = {
-            host = "csgitlab.reading.ac.uk";
-            identitiesOnly = true;
-          };
-          legacy-csgitlab = {
-            host = "csgitlab-legacy.reading.ac.uk";
-            identitiesOnly = true;
-          };
-          github = {
-            host = "github.com";
-            identitiesOnly = true;
-          };
-          fogbox = {
-            host = "fogbox.uk";
-            identitiesOnly = true;
-            port = 22420;
-          };
-          rdg-fogbox = {
-            host = "rdg.uk.region.fogbox.uk";
-            identitiesOnly = true;
-            port = 22420;
-          };
-          sou-fogbox = {
-            host = "sou.uk.region.fogbox.uk";
-            identitiesOnly = true;
-            port = 22420;
-          };
-          fogbox-git = {
-            host = "git.fogbox.uk";
-            identitiesOnly = true;
-          };
-        };
-      };
       gh = {
         enable = true;
         gitCredentialHelper.enable = false;

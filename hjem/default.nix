@@ -14,6 +14,7 @@
         bat.enable = true;
         carapace.enable = true;
         git.enable = true;
+        ssh.enable = true;
       };
     };
   };
