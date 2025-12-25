@@ -31,10 +31,6 @@
       };
     };
     kernelModules = [ "kvm-intel" ];
-    kernelParams = [
-      "i915.force_probe=!9a49"
-      "xe.force_probe=9a49"
-    ];
     extraModulePackages = [ ];
   };
 

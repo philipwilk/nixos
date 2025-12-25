@@ -29,6 +29,9 @@
   specialisation.withGnome.configuration = {
     flakeConfig.environment.desktop = lib.mkForce "gnome";
   };
+  specialisation.withGamescope.configuration = {
+    flakeConfig.environment.desktop = lib.mkForce "gamescope";
+  };
 
   boot.kernelParams = [ "net.ipv4.tcp_mtu_probing=1" ];
   boot.kernelModules = [ "sg" ];

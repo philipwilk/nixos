@@ -21,6 +21,7 @@ in
     # Desktop environments
     ./environment/desktops/gnome
     ./environment/desktops/sway
+    ./environment/desktops/gamescope
 
     ./system/latestKernel
     ./system/bootable
@@ -41,6 +42,7 @@ in
           lib.types.enum [
             "gnome"
             "sway"
+            "gamescope"
           ]
         );
         default = null;
