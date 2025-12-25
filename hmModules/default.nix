@@ -91,18 +91,5 @@
     services = {
       easyeffects.enable = true;
     };
-
-    xdg.configFile."matlab/nix.sh".text = ''
-      INSTALL_DIR=$HOME/Documents/matlab
-    '';
-
-    home.file = {
-      ".ldaprc".text = ''
-        BASE dc=ldap,dc=fogbox,dc=uk
-        URI ldaps://ldap.fogbox.uk
-        BINDDN cn=admin,dc=ldap,dc=fogbox,dc=uk
-      '';
-      "${config.xdg.configHome}/nixpkgs/config.nix".text = "{ allowUnfree = true; }";
-    };
   };
 }

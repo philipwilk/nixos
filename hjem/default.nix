@@ -15,6 +15,9 @@
         carapace.enable = true;
         git.enable = true;
         ssh.enable = true;
+        matlab.enable = true;
+        openldap.enable = true;
+        nix.enable = true;
       };
     };
   };
