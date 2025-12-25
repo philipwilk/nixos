@@ -27,4 +27,12 @@
       };
     };
   };
+
+  systemd.services.iwd.serviceConfig.ExecStartPre =
+    let
+      sleep = lib.getExe' pkgs.uutils-coreutils "uutils-sleep";
+    in
+    [
+      "${sleep} 2s"
+    ];
 }
