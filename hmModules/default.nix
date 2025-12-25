@@ -5,19 +5,6 @@
   ...
 }:
 {
-  options.hmOptions = {
-    sourceControl = {
-      name = lib.mkOption {
-        type = lib.types.str;
-        default = "Philip Wilk";
-      };
-      email = lib.mkOption {
-        type = lib.types.str;
-        default = "p.wilk@student.reading.ac.uk";
-      };
-    };
-  };
-
   imports = [
     ./i18n
     ./programs/kakoune
@@ -36,9 +23,6 @@
 
     programs = {
       home-manager.enable = true;
-      bat.enable = true;
-      bottom.enable = true;
-      carapace.enable = true;
       starship.enable = true;
       helix.enable = true;
       nix-index-database.comma.enable = true;
@@ -60,11 +44,6 @@
             load_dotenv = true;
           };
         };
-      };
-      mercurial = {
-        enable = true;
-        userName = config.hmOptions.sourceControl.name;
-        userEmail = config.hmOptions.sourceControl.email;
       };
       skim = {
         enable = true;
@@ -127,48 +106,6 @@
             host = "git.fogbox.uk";
             identitiesOnly = true;
           };
-        };
-      };
-      diff-so-fancy = {
-        enable = true;
-        enableGitIntegration = true;
-      };
-      git = {
-        enable = true;
-        signing = {
-          signByDefault = lib.mkDefault true;
-          key = "${config.home.homeDirectory}/.ssh/gitKey";
-        };
-        settings = {
-          user = {
-            name = config.hmOptions.sourceControl.name;
-            email = config.hmOptions.sourceControl.email;
-          };
-          alias = {
-            pl = "log --graph --abbrev-commit --decorate --stat";
-            dh = "diff HEAD";
-            dhp = "diff HEAD~";
-            push-fwl = "push --force-with-lease";
-            rhp = "reset HEAD~";
-            rhph = "reset HEAD~ --hard";
-            rhh = "reset HEAD --hard";
-          };
-          core = {
-            editor = "hx";
-          };
-          gpg = {
-            format = "ssh";
-          };
-          pull = {
-            rebase = true;
-          };
-          push = {
-            autoSetupRemote = true;
-          };
-          init = {
-            defaultBranch = "main";
-          };
-          rerere.enabled = true;
         };
       };
       gh = {

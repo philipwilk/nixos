@@ -49,6 +49,10 @@
       url = "github:Janik-Haag/nixos-dns";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hjem = {
+      url = "github:feel-co/hjem";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -93,8 +97,10 @@
                     modules = classModules ++ [
                       ./overlays
                       ./osModules
+                      ./hjem
                       inputs.agenix.nixosModules.default
                       inputs.home-manager.nixosModules.default
+                      inputs.hjem.nixosModules.default
                       (
                         { ... }:
                         {

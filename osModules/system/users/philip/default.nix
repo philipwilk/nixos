@@ -10,6 +10,7 @@
   age.identityPaths = [ "/home/philip/.ssh/id_ed25519" ];
 
   flakeConfig.environment.primaryHomeManagedUser = "philip";
+  hjem.users.philip.enable = true;
 
   users.users.philip = {
     isNormalUser = true;
