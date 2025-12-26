@@ -18,6 +18,7 @@
         matlab.enable = true;
         openldap.enable = true;
         nix.enable = true;
+        direnv.enable = true;
       };
     };
   };
