@@ -1,5 +1,5 @@
 {
-  nixpkgs,
+  inputs,
   pkgs,
   lib,
   config,
@@ -10,7 +10,7 @@
   nix = {
     package = pkgs.nixVersions.nix_2_30;
     registry = lib.mapAttrs (_: value: { flake = value; }) {
-      inherit nixpkgs;
+      inherit (inputs) nixpkgs;
     };
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
     settings = {

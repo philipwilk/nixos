@@ -155,16 +155,6 @@ in
       };
       style = catppuccin + waybar-style;
     };
-    fuzzel = {
-      enable = true;
-      settings = {
-        main = {
-          exit-on-keyboard-focus-loss = false;
-          terminal = "${lib.getExe pkgs.fish}";
-          layer = "overlay";
-        };
-      };
-    };
     xplr.enable = true;
   };
 

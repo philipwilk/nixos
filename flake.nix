@@ -109,7 +109,7 @@
                       )
                       hostModule
                     ];
-                    specialArgs = inputs;
+                    specialArgs = { inherit inputs; };
                   };
 
                 mkWorkstationSystem = mkSystemFactory [

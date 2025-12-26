@@ -1,11 +1,11 @@
 {
   pkgs,
-  nix-matlab,
+  inputs,
   ...
 }:
 {
   nixpkgs.overlays = [
-    nix-matlab.overlay
+    inputs.nix-matlab.overlay
   ];
 
   environment.systemPackages = with pkgs; [

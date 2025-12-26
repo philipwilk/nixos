@@ -1,8 +1,7 @@
 {
   lib,
   config,
-  catppuccin,
-  nix-index-database,
+  inputs,
   ...
 }:
 let
@@ -14,8 +13,8 @@ in
       users.${user}.imports = [
         ../../../../hmModules
         ../../../../hmModules/users/${user}
-        catppuccin.homeModules.catppuccin
-        nix-index-database.homeModules.nix-index
+        inputs.catppuccin.homeModules.catppuccin
+        inputs.nix-index-database.homeModules.nix-index
       ];
       useGlobalPkgs = true;
       useUserPackages = true;
