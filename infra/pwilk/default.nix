@@ -4,17 +4,11 @@
 {
   wsl.defaultUser = "pwilk";
   flakeConfig.environment.primaryHomeManagedUser = "pwilk";
-
-  home-manager.users."pwilk".imports = [
-    (
-      {
-        ...
-      }:
-      {
-        home.stateVersion = "25.05";
-      }
-    )
-  ];
+  hjem.users.pwilk.enable = true;
+  hjem.users.pwilk.localDef.programs.git = {
+    email = "philip.wilk@fivium.co.uk";
+    signingKey = "/home/pwilk/.ssh/gitKey";
+  };
 
   system.stateVersion = "25.05";
 }

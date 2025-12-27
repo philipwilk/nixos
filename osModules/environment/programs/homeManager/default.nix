@@ -8,7 +8,7 @@ let
   user = config.flakeConfig.environment.primaryHomeManagedUser;
 in
 {
-  config = lib.mkIf (user != null) {
+  config = lib.mkIf (user == "philip") {
     home-manager = {
       users.${user}.imports = [
         ../../../../hmModules
