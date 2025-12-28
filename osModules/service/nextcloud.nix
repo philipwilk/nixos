@@ -99,7 +99,7 @@
       aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
     };
 
-    # ensure that mariadb is running *before* running the setup
+    # ensure that the db is running *before* running the setup
     systemd.services."nextcloud-setup" = {
       requires = [ "postgresql.target" ];
       after = [ "postgresql.target" ];
