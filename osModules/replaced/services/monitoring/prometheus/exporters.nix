@@ -4,7 +4,7 @@
   lib,
   options,
   utils,
-  nixpkgs,
+  inputs,
   ...
 }:
 
@@ -390,7 +390,7 @@ in
     type = types.submodule {
       options = (mkSubModules);
       imports = [
-        "${nixpkgs}/nixos/modules/misc/assertions.nix"
+        "${inputs.nixpkgs}/nixos/modules/misc/assertions.nix"
         (lib.mkRenamedOptionModule [ "unifi-poller" ] [ "unpoller" ])
         (lib.mkRemovedOptionModule [ "minio" ] ''
           The Minio exporter has been removed, as it was broken and unmaintained.

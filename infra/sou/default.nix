@@ -53,7 +53,6 @@
   homelab = {
     hostname = "sou.uk.region.fogbox.uk";
     isLeader = true;
-    stateDir = "/pool";
     archiveDir = "/mnt/zfs/colossus";
     router = {
       enable = true;

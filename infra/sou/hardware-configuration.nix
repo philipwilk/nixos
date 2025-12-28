@@ -71,7 +71,7 @@
         "usb_storage"
         "sd_mod"
       ];
-      boot.initrd.kernelModules = [ ];
+      boot.initrd.kernelModules = [ "mpt3sas" ];
       boot.kernelModules = [ "kvm-intel" ];
       boot.extraModulePackages = [ ];
 
@@ -86,9 +86,10 @@
           fsType = "zfs";
           options = [ "zfsutil" ]; # removes need for dataset to have a legacy mountpoint
         };
-        "/pool" = {
-          device = "storagepool/pool";
+        "/var/lib" = {
+          device = "statepool/state";
           fsType = "zfs";
+          options = [ "zfsutil" ]; # removes need for dataset to have a legacy mountpoint
         };
         "/mnt/zfs/colossus" = {
           enable = true;
