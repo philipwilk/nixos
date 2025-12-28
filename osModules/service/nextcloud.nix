@@ -48,10 +48,9 @@
       config = {
         adminpassFile = config.age.secrets.nextcloud_admin.path;
         adminuser = "philip";
-        dbtype = "mysql";
-        dbhost = "localhost";
+        dbtype = "pgsql";
+        dbhost = "/run/postgresql";
         dbname = "nextcloud";
-        dbpassFile = config.age.secrets.nextcloud_sql.path;
       };
       settings = {
         trusted_domains = [ ];
@@ -61,31 +60,15 @@
       package = pkgs.nextcloud32;
     };
 
-    services.mysql = {
+    services.postgresql = {
       enable = true;
-      package = pkgs.mariadb_1011;
       ensureDatabases = [ "nextcloud" ];
       ensureUsers = [
         {
           name = "nextcloud";
-          ensurePermissions = {
-            "nextcloud.*" = "ALL PRIVILEGES";
-          };
+          ensureDBOwnership = true;
         }
       ];
-      settings = {
-        msqld = {
-          max_allowed_packet = "64M";
-          connect_timeout = 30;
-          net_buffer_length = "64M";
-          innodb_file_per_table = "ON";
-          character_set_server = "utf8mb4";
-          collation_server = "utf8mb4_general_ci";
-        };
-        client = {
-          "default-character-set" = "utf8mb4";
-        };
-      };
     };
 
     services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
@@ -118,8 +101,8 @@
 
     # ensure that mariadb is running *before* running the setup
     systemd.services."nextcloud-setup" = {
-      requires = [ "mysql.service" ];
-      after = [ "mysql.service" ];
+      requires = [ "postgresql.target" ];
+      after = [ "postgresql.target" ];
     };
   };
 }
