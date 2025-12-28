@@ -7,5 +7,6 @@
     jetbrains.idea-community-src
     bruno
     darcs
+    mdcat
   ];
 }
