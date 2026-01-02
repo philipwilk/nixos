@@ -59,3 +59,12 @@ All uses of `storagepool` will be updated to use `statepool`, and all uses of `/
 - `sou` may refuse to boot due to zpool mount failure if all zpools are not exported correctly
 - state be unused if all options are not updated. this dill be fixed with a system rebuild and correct config
 - acme certs may be re-issued if state is not retained correctly
+
+## Outcomes
+
+- `storagepool/pool` had a legacy mountpoint, preventing the regular mounting approach from working. This was resolved trivially via `zfs set mountpoint=none storagepool/pool`
+- `sou` did not boot for 3 hours as I did not realise i had to add `mpt3sas` kernel module to the initrd module list; resolved trivially by adding `boot.initrd.kernelModules = [ "mpt3sas" ];` to `sou`'s hardware configuration
+- grafana has not carried its state correctly; will recover from old folder
+- nextcloud's mariadb has exploded and is missing a table; will recover from old folder
+
+Successfully migrated all other state to new location on `statepool/state`
