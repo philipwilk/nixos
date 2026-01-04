@@ -5,47 +5,12 @@
   ...
 }:
 let
-  join-dirfile = dir: files: (map (file: ./${dir}/${file}.nix) files);
-  mkOpt = lib.mkOption;
-  t = lib.types;
-
   cfg = config.homelab;
 in
 {
   imports =
-    join-dirfile "./service" [
-      "nextcloud"
-      "openldap/default"
-      "navidrome"
-      "uptime-kuma"
-      "vaultwarden"
-      "mediawiki"
-      "nginx"
-      "mail"
-      "mastodon"
-      "forgejo"
-      "soft-serve"
-      "searxng"
-      "jellyfin"
-      "homeAssistant"
-      "kanidm"
-      "jupyter"
-      "ntfy"
-      "mollysocket"
-    ]
-    ++ join-dirfile "./service/websites" [ "fogbox" ]
-    ++ join-dirfile "./service/nix" [
-      "hercules-ci"
-      "harmonia"
-    ]
-    ++ join-dirfile "./service/ci" [
-      "gitlab-runners"
-    ]
-    ++ join-dirfile "./service/games" [ "factorio" ]
+    (builtins.filter (lib.strings.hasSuffix ".nix") (lib.filesystem.listFilesRecursive ./service))
     ++ [
-      ./service/router
-      ./service/buildbot
-
       ./system/idmUserAuth
       ./system/zfs
 
@@ -53,8 +18,8 @@ in
     ];
 
   options.homelab = {
-    enable = mkOpt {
-      type = t.bool;
+    enable = lib.mkOption {
+      type = lib.types.bool;
       default = true;
       example = true;
       description = ''
@@ -64,16 +29,16 @@ in
           - prometheus and grafana monitoring
       '';
     };
-    isLeader = mkOpt {
-      type = t.bool;
+    isLeader = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       example = true;
       description = ''
         Whether this server should act as a host for the key lab services
       '';
     };
-    tld = mkOpt {
-      type = t.str;
+    tld = lib.mkOption {
+      type = lib.types.str;
       default = null;
       example = "example.com";
       description = ''
@@ -132,16 +97,16 @@ in
     };
     services = {
       grafana = {
-        enable = mkOpt {
-          type = t.bool;
+        enable = lib.mkOption {
+          type = lib.types.bool;
           default = config.homelab.isLeader;
           example = false;
           description = ''
             Whether to enable the homelab grafana instance.
           '';
         };
-        domain = mkOpt {
-          type = t.str;
+        domain = lib.mkOption {
+          type = lib.types.str;
           default = "grafana.${config.homelab.tld}";
           example = "grafana.example.com";
           description = ''
@@ -149,8 +114,8 @@ in
           '';
         };
       };
-      prometheusExporters.enable = mkOpt {
-        type = t.bool;
+      prometheusExporters.enable = lib.mkOption {
+        type = lib.types.bool;
         default = true;
         example = false;
         description = ''

@@ -110,4 +110,8 @@ in
   # work vpn config
   ${s "openvpn/work/config"}.publicKeys = workstations;
   ${s "openvpn/work/creds"}.publicKeys = workstations;
+
+  # oauth2-proxy
+  ${s "oauth2proxy/client"}.publicKeys = servers;
+  ${s "oauth2proxy/cookieSecret"}.publicKeys = servers;
 }

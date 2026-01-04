@@ -82,6 +82,8 @@
       jellyfin.enable = true;
       ntfy.enable = true;
       mollysocket.enable = true;
+      radicale.enable = true;
+      oauth2proxy.enable = true;
     };
   };
   homelab.buildbot = {

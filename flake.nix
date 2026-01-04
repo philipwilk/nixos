@@ -205,12 +205,12 @@
               {
                 zoneFiles = dnsGenerators.zoneFiles {
                   inherit (self) nixosConfigurations;
-                  extraConfig = import ./osModules/service/dns;
+                  extraConfig = import ./dns;
                 };
                 octodns = dnsGenerators.octodnsConfig {
                   dnsConfig = {
                     inherit (self) nixosConfigurations;
-                    extraConfig = import ./osModules/service/dns;
+                    extraConfig = import ./dns;
                   };
                   config.providers.desec = {
                     class = "octodns_desec.DesecProvider";
