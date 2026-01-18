@@ -141,6 +141,20 @@ in
       };
     };
 
+    networking.nftables.tables = {
+      firewall = {
+        family = "inet";
+        content = ''
+          chain postrouting {
+            type nat hook postrouting priority 100; policy accept
+
+            ip saddr ${cfg.ipRange} oifname ${uplink} masquerade
+            
+            ip saddr ${cfg.ipRange} ip daddr ${routerIp} masquerade
+          }
+        '';
+      };
+    };
     networking.firewall.logRefusedConnections = lib.mkForce false;
 
     # Open ports for dhcp server on lan
