@@ -27,8 +27,7 @@ in
       settings = {
         server.hosts = [ "0.0.0.0:5232" ];
         auth = {
-          type = "oauth2";
-          oauth2_token_endpoint = "https://${idmDomain}/oauth2/token";
+          type = "http_x_remote_user";
         };
       };
     };
@@ -40,14 +39,15 @@ in
         locations."/" = {
           proxyPass = "http://127.0.0.1:5232";
           proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header X-Remote-User $user;
+          '';
         };
       };
     };
 
     services.oauth2-proxy.nginx.virtualHosts.${cfg.domain} = {
-      allowed_groups = [
-        "users"
-      ];
+      # allowed_groups = [ "users" ];
     };
 
     networking.domains.subDomains.${cfg.domain} = {

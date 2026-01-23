@@ -32,15 +32,17 @@ in
       redirectURL = "https://${proxyDomain}/oauth2/callback";
       keyFile = config.age.secrets.oauth2proxyClient.path;
       reverseProxy = true;
-      passAccessToken = true;
       extraConfig = {
-        oidc-groups-claim = "users";
+        skip-provider-button = true;
+        set-xauthrequest = true;
+        set-authorization-header = true;
         cookie-secret-file = "/run/credentials/oauth2-proxy.service/cookieFile";
         cookie-refresh = "6h0m0s";
         code-challenge-method = "S256";
         whitelist-domain = builtins.attrNames config.services.oauth2-proxy.nginx.virtualHosts;
       };
       email.domains = [ "*" ];
+      cookie.domain = ".${config.homelab.tld}";
       nginx.domain = proxyDomain;
     };
     networking.domains.subDomains.${proxyDomain} = {
