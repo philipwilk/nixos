@@ -84,8 +84,17 @@
       mollysocket.enable = true;
       radicale.enable = true;
       oauth2proxy.enable = true;
+
+      opencloud.enable = true;
     };
   };
+
+  fileSystems."/var/lib/opencloud" = {
+    device = "colossus/state/opencloud";
+    fsType = "zfs";
+    options = [ "zfsutil" ]; # removes need for dataset to have a legacy mountpoint
+  };
+
   homelab.buildbot = {
     enableWorker = true;
     enableMaster = true;
