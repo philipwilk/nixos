@@ -56,7 +56,8 @@ in
   # Vaultwarden
   ${s "vaultwarden_smtp"}.publicKeys = servers;
   # Grafana
-  ${s "grafanamail"}.publicKeys = servers;
+  ${s "grafana/mail"}.publicKeys = servers;
+  ${s "grafana/secret"}.publicKeys = servers;
   # Prometheus
   ${s "prometheus/htpasswd"}.publicKeys = servers;
   ${s "prometheus/basicAuthPassword"}.publicKeys = servers;

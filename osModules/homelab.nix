@@ -225,10 +225,12 @@ in
     (lib.mkIf cfg.services.grafana.enable {
 
       # Grafana and prometheus monithoring
-      age.secrets.grafanamail.file = ../secrets/grafanamail.age;
+      age.secrets.grafanamail.file = ../secrets/grafana/mail.age;
+      age.secrets.grafanaSecret.file = ../secrets/grafana/secret.age;
 
       systemd.services.grafana.serviceConfig.LoadCredential = [
         "smtpPwd:${config.age.secrets.grafanamail.path}"
+        "secretKey:${config.age.secrets.grafanaSecret.path}"
       ];
 
       age.secrets.prometheusBasicAuthPassword = {
@@ -256,6 +258,7 @@ in
             ];
           };
           settings = {
+            security.secret_key = "$__file(/run/credentials/grafana/secretKey)";
             server = {
               enable_gzip = true;
               enforce_domain = true;
