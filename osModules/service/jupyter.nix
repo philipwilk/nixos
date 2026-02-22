@@ -52,7 +52,12 @@ in
       jupyterlabEnv = pkgs.python3.withPackages (
         p: with p; [
           (jupyterhub.overridePythonAttrs (previousAttrs: {
-            dependencies = previousAttrs.dependencies ++ [ pkgs.git ];
+            dependencies =
+              previousAttrs.dependencies
+              ++ (with pkgs; [
+                git
+                haskell-language-server
+              ]);
           }))
           jupyterlab
           python-lsp-server
@@ -60,58 +65,101 @@ in
           ipympl
         ]
       );
-      kernels.python3 =
-        let
-          env = (
-            pkgs.python312.withPackages (
-              pythonPackages: with pythonPackages; [
-                nbclassic
-                pandas
-                matplotlib
-                scikit-learn
-                seaborn
-                networkx
-                plotly
-                cartopy
-                xarray
-                joblib
-                netcdf4
-                ipython
-                pyquerylist
-                statsmodels
-                tensorflow
-                mlxtend
-                imbalanced-learn
-                graphviz
-                pydot
-                gymnasium
-                flask
-                django
-                opencv-python
-                psycopg2
-                html5lib
+      kernels = {
+        python3 =
+          let
+            env = (
+              pkgs.python312.withPackages (
+                pythonPackages: with pythonPackages; [
+                  nbclassic
+                  pandas
+                  matplotlib
+                  scikit-learn
+                  seaborn
+                  networkx
+                  plotly
+                  cartopy
+                  xarray
+                  joblib
+                  netcdf4
+                  ipython
+                  pyquerylist
+                  statsmodels
+                  tensorflow
+                  mlxtend
+                  imbalanced-learn
+                  graphviz
+                  pydot
+                  gymnasium
+                  flask
+                  django
+                  opencv-python
+                  psycopg2
+                  html5lib
 
-                ipympl
-              ]
-            )
-          );
-        in
-        {
-          displayName = "Python 3 for ML";
-          argv = [
-            "${env.interpreter}"
-            "-m"
-            "ipykernel_launcher"
-            "-f"
-            "{connection_file}"
-          ];
-          env = {
-            TF_ENABLE_ONEDNN_OPTS = "0";
+                  ipympl
+                ]
+              )
+            );
+          in
+          {
+            displayName = "Python 3 for ML";
+            argv = [
+              "${env.interpreter}"
+              "-m"
+              "ipykernel_launcher"
+              "-f"
+              "{connection_file}"
+            ];
+            env = {
+              TF_ENABLE_ONEDNN_OPTS = "0";
+            };
+            language = "python";
+            logo32 = "${env}/${env.sitePackages}/ipykernel/resources/logo-32x32.png";
+            logo64 = "${env}/${env.sitePackages}/ipykernel/resources/logo-64x64.png";
           };
-          language = "python";
-          logo32 = "${env}/${env.sitePackages}/ipykernel/resources/logo-32x32.png";
-          logo64 = "${env}/${env.sitePackages}/ipykernel/resources/logo-64x64.png";
-        };
+        haskell =
+          let
+            # hpkgs = pkgs.haskell.packages.ghc910;
+            # env = (
+            #   hpkgs.shellFor {
+            #     packages = p: [ ];
+
+            #     withHoogle = true;
+            #     nativeBuildInputs = with hpkgs; [
+            #       cabal-install
+            #       haskell-language-server
+            #       cabal-gild
+            #     ];
+            #   }
+            # );
+            env = (
+              pkgs.haskell.packages.ghc910.ghcWithPackages (
+                p: with p; [
+                  cabal-install
+                  haskell-language-server
+                  cabal-gild
+                  ihaskell
+                ]
+              )
+            );
+          in
+          {
+            displayName = "Haskell with ghc910";
+            argv = [
+              "${lib.getExe pkgs.haskell.packages.ghc910.ihaskell}"
+              "kernel"
+              "{connection_file}"
+              "--ghclib"
+              "${env}/lib/${env.name}/lib"
+              "+RTS"
+              "-M3g"
+              "-N2"
+              "-RTS"
+            ];
+            language = "haskell";
+          };
+      };
     };
 
     services.nginx.virtualHosts."notebooks.${config.homelab.tld}" = {
