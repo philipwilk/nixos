@@ -4,7 +4,7 @@
 }:
 {
   environment.systemPackages = with pkgs; [
-    jetbrains.idea-community-src
+    jetbrains.idea
     bruno
     darcs
     mdcat

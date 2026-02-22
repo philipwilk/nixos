@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.system.idmUserAuth;
+  package = pkgs.kanidm_1_8;
 in
 {
   options.system.idmUserAuth = {
@@ -31,10 +32,9 @@ in
     users.mutableUsers = false;
     services.kanidm = {
       enablePam = true;
-      package = lib.mkForce pkgs.kanidm_1_8;
+      package = lib.mkForce package;
       clientSettings.uri = "https://${cfg.idmDomain}";
       unixSettings = {
-        pam_allowed_login_groups = cfg.allowedGroups;
         version = "2";
         kanidm = {
           pam_allowed_login_groups = cfg.allowedGroups;
@@ -53,7 +53,7 @@ in
       mode = "0555";
       text = ''
         #!${pkgs.stdenv.shell}
-        ${lib.getExe' pkgs.kanidm "kanidm_ssh_authorizedkeys"} $1
+        ${lib.getExe' package "kanidm_ssh_authorizedkeys"} $1
       '';
     };
   };
