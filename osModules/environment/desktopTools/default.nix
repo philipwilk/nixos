@@ -13,5 +13,6 @@
     nvtopPackages.full
     baobab
     libva-utils
+    gnome-system-monitor
   ];
 }
