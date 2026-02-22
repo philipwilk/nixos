@@ -14,7 +14,7 @@ let
   userSuffix = "ou=users,${ldapSuffix}";
   ldapSuffix = config.services.openldap.settings.children."olcDatabase={1}mdb".attrs.olcSuffix;
   stateDir = "${config.homelab.stateDir}/stalwart-mail";
-  credPath = "/run/credentials/stalwart-mail.service";
+  credPath = "/run/credentials/stalwart.service";
 in
 {
   options.homelab.services.email = {
@@ -60,7 +60,7 @@ in
       "${svcDomain}" = { };
     };
 
-    systemd.services.stalwart-mail = {
+    systemd.services.stalwart = {
       wants = [
         "acme-${domain}.service"
         "acme-${svcDomain}.service"
@@ -268,7 +268,7 @@ in
       };
     };
 
-    services.stalwart-mail = {
+    services.stalwart = {
       enable = true;
       settings = {
         certificate.${domain} = {
