@@ -29,7 +29,7 @@ in
   config = lib.mkIf config.localDef.programs.kakoune.enable {
     packages = with pkgs; [
       kakouneWithPlugins
-      nixfmt-rfc-style
+      nixfmt
       nil
       lemminx
       python313Packages.editorconfig

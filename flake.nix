@@ -165,7 +165,7 @@
             # devshells
             make-shells.default = {
               packages = with pkgs; [
-                nixfmt-rfc-style
+                nixfmt
                 nil
                 nix-tree
               ];
