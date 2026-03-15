@@ -547,7 +547,7 @@ in
     {
       services.mysql.dataDir = "${config.homelab.stateDir}/mysql";
       services.postgresql.dataDir = "${config.homelab.stateDir}/postgresql/${config.services.postgresql.package.psqlSchema}";
-      services.postgresql.package = pkgs.postgresql_16;
+      services.postgresql.package = pkgs.postgresql_17;
     }
   ];
 }
