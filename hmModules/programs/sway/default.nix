@@ -72,7 +72,7 @@ in
         ];
         clock = {
           interval = 1;
-          format = "{:%H:%M:%S}";
+          format = "{:%Y-%m-%d %H:%M:%S}";
         };
         mpris = {
           format = "{player_icon} {player}: {artist} {title}";
