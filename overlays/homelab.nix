@@ -15,6 +15,7 @@
       python313 = prev.python313.override {
         packageOverrides = pFinal: pPrev: {
           mlxtend = prev.python313.pkgs.callPackage ./mlxtend { };
+          jupyterlab-git = prev.python313.pkgs.callPackage ./jupyterlab-git { };
         };
       };
     })
