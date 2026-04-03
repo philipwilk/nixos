@@ -5,6 +5,11 @@
 {
   environment.systemPackages = with pkgs; [
     chromium
+    (vivaldi.overrideAttrs (oldAttrs: {
+      dontWrapQtApps = false;
+      dontPatchELF = true;
+      nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [ pkgs.kdePackages.wrapQtAppsHook ];
+    }))
     firefox
     thunderbird
     libreoffice
