@@ -33,7 +33,7 @@ in
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        proxyPass = "https://${config.services.kanidm.serverSettings.bindaddress}";
+        proxyPass = "https://${config.services.kanidm.server.settings.bindaddress}";
         proxyWebsockets = true;
         extraConfig = ''
           proxy_ssl_server_name on;
@@ -63,11 +63,11 @@ in
     networking.firewall.allowedTCPPorts = [ 636 ];
 
     services.kanidm = {
-      package = pkgs.kanidm_1_8;
-      enableClient = true;
-      clientSettings.uri = config.services.kanidm.serverSettings.origin;
-      enableServer = true;
-      serverSettings = {
+      package = pkgs.kanidm_1_9;
+      client.enable = true;
+      client.settings.uri = config.services.kanidm.server.settings.origin;
+      server.enable = true;
+      server.settings = {
         version = "2";
         db_fs_type = "zfs";
         #db_path = lib.mkForce "${config.homelab.stateDir}/kanidm/kanidm.db"; # why is this read only you state heathens

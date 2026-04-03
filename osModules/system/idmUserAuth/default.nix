@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.system.idmUserAuth;
-  package = pkgs.kanidm_1_8;
+  package = pkgs.kanidm_1_9;
 in
 {
   options.system.idmUserAuth = {
@@ -31,10 +31,10 @@ in
   config = lib.mkIf cfg.enable {
     users.mutableUsers = false;
     services.kanidm = {
-      enablePam = true;
+      unix.enable = true;
       package = lib.mkForce package;
-      clientSettings.uri = "https://${cfg.idmDomain}";
-      unixSettings = {
+      client.settings.uri = "https://${cfg.idmDomain}";
+      unix.settings = {
         version = "2";
         kanidm = {
           pam_allowed_login_groups = cfg.allowedGroups;

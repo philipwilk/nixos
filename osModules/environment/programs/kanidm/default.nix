@@ -4,8 +4,8 @@
 }:
 {
   services.kanidm = {
-    enableClient = true;
-    package = pkgs.kanidm_1_8;
-    clientSettings.uri = "https://testing-idm.fogbox.uk";
+    client.enable = true;
+    package = pkgs.kanidm_1_9;
+    client.settings.uri = "https://testing-idm.fogbox.uk";
   };
 }
