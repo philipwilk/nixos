@@ -57,10 +57,15 @@ in
           edns-buffer-size = 1232;
           module-config = "\"validator cachedb iterator\"";
           do-not-query-localhost = false;
-
           hide-identity = true;
           hide-version = true;
           prefer-ip6 = true;
+          num-threads = 4;
+          so-reuseport = true;
+          rrset-cache-size = "512m";
+          msg-cache-size = "256m";
+          key-cache-size = "256m";
+          neg-cache-size = "256m";
         };
         remote-control = {
           control-enable = true;
