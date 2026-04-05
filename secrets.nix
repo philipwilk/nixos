@@ -71,6 +71,8 @@ in
   ${s "prometheus/exporters/nut/htpasswd"}.publicKeys = servers;
   ${s "prometheus/exporters/systemd/basicAuthPassword"}.publicKeys = servers;
   ${s "prometheus/exporters/systemd/htpasswd"}.publicKeys = servers;
+  ${s "prometheus/exporters/unbound/basicAuthPassword"}.publicKeys = servers;
+  ${s "prometheus/exporters/unbound/htpasswd"}.publicKeys = servers;
   # Mastodon
   ${s "mastodon/smtp"}.publicKeys = servers;
   ${s "mastodon/pub"}.publicKeys = servers;

@@ -298,6 +298,10 @@ in
         node.enable = true;
         zfs.enable = true;
         smartctl.enable = true;
+        unbound = {
+          enable = true;
+          unbound.host = "unix:///run/unbound/unbound.socket";
+        };
         systemd = {
           enable = true;
           extraFlags = [
@@ -323,6 +327,10 @@ in
       };
       age.secrets.systemdHtpasswd = {
         file = ../secrets/prometheus/exporters/systemd/htpasswd.age;
+        owner = "nginx";
+      };
+      age.secrets.unboundHtpasswd = {
+        file = ../secrets/prometheus/exporters/unbound/htpasswd.age;
         owner = "nginx";
       };
       services.nginx.virtualHosts = {
@@ -362,6 +370,15 @@ in
             basicAuthFile = config.age.secrets.systemdHtpasswd.path;
           };
         };
+        "unbound.stats.${cfg.hostname}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:${toString config.services.prometheus.exporters.unbound.port}";
+            proxyWebsockets = true;
+            basicAuthFile = config.age.secrets.unboundHtpasswd.path;
+          };
+        };
       };
       networking.domains.subDomains."*.stats.${config.networking.fqdn}" = {
         a.data = config.networking.domains.subDomains.${config.networking.fqdn}.a.data;
@@ -387,6 +404,10 @@ in
       };
       age.secrets.systemdBasicAuthPassword = {
         file = ../secrets/prometheus/exporters/systemd/basicAuthPassword.age;
+        owner = "prometheus";
+      };
+      age.secrets.unboundBasicAuthPassword = {
+        file = ../secrets/prometheus/exporters/unbound/basicAuthPassword.age;
         owner = "prometheus";
       };
       services.prometheus =
@@ -472,6 +493,19 @@ in
                   labels = {
                     ups = "SMT1500I";
                   };
+                }
+              ];
+            }
+            {
+              job_name = "unbound";
+              scheme = "https";
+              basic_auth = {
+                username = "prometheus";
+                password_file = config.age.secrets.unboundBasicAuthPassword.path;
+              };
+              static_configs = [
+                {
+                  targets = genStatNames targetHostnames "unbound";
                 }
               ];
             }

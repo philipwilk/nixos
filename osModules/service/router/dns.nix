@@ -38,6 +38,7 @@ in
       settings = {
         server = {
           verbosity = 1;
+          extended-statistics = true;
           interface = [
             "0.0.0.0"
             "::0"
@@ -60,6 +61,10 @@ in
           hide-identity = true;
           hide-version = true;
           prefer-ip6 = true;
+        };
+        remote-control = {
+          control-enable = true;
+          control-interface = "/run/unbound/unbound.socket";
         };
         cachedb = {
           backend = "\"redis\"";
