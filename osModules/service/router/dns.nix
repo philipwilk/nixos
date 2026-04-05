@@ -66,6 +66,15 @@ in
           msg-cache-size = "256m";
           key-cache-size = "256m";
           neg-cache-size = "256m";
+
+          private-address = [
+            "10.0.0.0/8"
+            "172.16.0.0/12"
+            "192.168.0.0/16"
+            "169.254.0.0/16"
+            "fd00::/8"
+            "fe80::/10"
+          ];
         };
         remote-control = {
           control-enable = true;
@@ -77,26 +86,26 @@ in
           redis-server-port = config.services.redis.servers.unbound.port;
           redis-expire-records = true;
         };
-        forward-zone = [
-          {
-            name = ".";
-            forward-addr = [
-              "2620:fe::fe#dns.quad9.net"
-              "9.9.9.9#dns.quad9.net"
-              "2620:fe::9#dns.quad9.net"
-              "149.112.112.112#dns.quad9.net"
-              "193.110.81.0#dns0.eu"
-              "2a0f:fc80::#dns0.eu"
-              "185.253.5.0#dns0.eu"
-              "2a0f:fc81::#dns0.eu"
-              "1.1.1.1#cloudflare-dns.com"
-              "2606:4700:4700::1111#cloudflare-dns.com"
-              "1.0.0.1#cloudflare-dns.com"
-              "2606:4700:4700::1001#cloudflare-dns.com"
-            ];
-            forward-tls-upstream = true;
-          }
-        ];
+        # forward-zone = [
+        #   {
+        #     name = ".";
+        #     forward-addr = [
+        #       "2620:fe::fe#dns.quad9.net"
+        #       "9.9.9.9#dns.quad9.net"
+        #       "2620:fe::9#dns.quad9.net"
+        #       "149.112.112.112#dns.quad9.net"
+        #       "193.110.81.0#dns0.eu"
+        #       "2a0f:fc80::#dns0.eu"
+        #       "185.253.5.0#dns0.eu"
+        #       "2a0f:fc81::#dns0.eu"
+        #       "1.1.1.1#cloudflare-dns.com"
+        #       "2606:4700:4700::1111#cloudflare-dns.com"
+        #       "1.0.0.1#cloudflare-dns.com"
+        #       "2606:4700:4700::1001#cloudflare-dns.com"
+        #     ];
+        #     forward-tls-upstream = true;
+        #   }
+        # ];
       };
     };
     services.adguardhome = {
