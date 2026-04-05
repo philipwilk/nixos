@@ -128,7 +128,7 @@ in
             bootstrap_prefer_ipv6 = true;
             upstream_dns = local;
             upstream_mode = "parallel";
-            enable_dnssec = true;
+            enable_dnssec = false;
             serve_http3 = true;
             hostsfile_enabled = false;
             bind_hosts = [
@@ -136,6 +136,7 @@ in
               "::1"
               ip4
             ];
+            cache_enabled = false;
           };
 
         statistics.enabled = true;
