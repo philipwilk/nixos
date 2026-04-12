@@ -32,6 +32,7 @@ in
       nixfmt
       nil
       lemminx
+      vscode-json-languageserver
       python313Packages.editorconfig
     ];
 
