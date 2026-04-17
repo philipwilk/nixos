@@ -21,5 +21,7 @@
         };
       };
     })
+
+    (import ./searxng)
   ];
 }
