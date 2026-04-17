@@ -270,6 +270,7 @@ in
 
     services.stalwart = {
       enable = true;
+      stateVersion = "24.11";
       settings = {
         certificate.${domain} = {
           cert = "%{file:${credPath}/${domain}-cert.pem}%";
