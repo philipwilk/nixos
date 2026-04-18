@@ -32,7 +32,7 @@ in
     age.secrets.factorio_password.file = ../../../secrets/factorio_password.age;
     services.factorio = {
       enable = true;
-      inherit package;
+      # inherit package;
       openFirewall = true;
       requireUserVerification = true;
       game-name = "special interest simulator";
