@@ -7,6 +7,17 @@
 let
   lan = config.homelab.router.devices.lan;
   ip4 = config.homelab.router.ip4;
+  linkLocal = config.homelab.router.linkLocal;
+
+  dnsDomains = builtins.attrNames config.networking.domains.subDomains;
+  simpleDataDomains = map (lib.removePrefix "*.") dnsDomains;
+  localData4 = map (host: "\"${host}. 3600 IN A ${ip4}\"") simpleDataDomains;
+  localData6 = map (host: "\"${host}. 3600 IN AAAA ${linkLocal}\"") simpleDataDomains;
+  localData = localData4 ++ localData6;
+
+  wildcardRecords = builtins.filter (lib.hasPrefix "*.") dnsDomains;
+  localZoneDomains = map (lib.removePrefix "*.") wildcardRecords;
+  localZone = map (host: "\"${host}\" redirect") localZoneDomains;
 in
 {
   config = lib.mkIf config.homelab.router.enable {
@@ -75,6 +86,8 @@ in
             "fd00::/8"
             "fe80::/10"
           ];
+          local-zone = localZone;
+          local-data = localData;
         };
         remote-control = {
           control-enable = true;
