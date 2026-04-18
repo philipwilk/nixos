@@ -114,10 +114,13 @@ in
             DNS = dns4;
             EmitNTP = "yes";
             NTP = routerIp;
+            EmitDomain = "yes";
+            Domain = config.networking.fqdn;
             PoolOffset = 100;
             ServerAddress = "${routerIp}/16";
             UplinkInterface = config.homelab.router.devices.uplink;
             DefaultLeaseTimeSec = 1800;
+            PersistLeases = "yes";
           };
 
           dhcpServerStaticLeases = [
