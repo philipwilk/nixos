@@ -144,6 +144,76 @@ in
       };
     };
 
+    systemd.paths.sync-leases-with-unbound-forwards = {
+      wantedBy = [ "multi-user.target" ];
+      description = "create/remove forward for each lease";
+      pathConfig = {
+        PathChanged = /var/lib/systemd/network/dhcp-server-lease/${lan};
+      };
+    };
+    systemd.services.sync-leases-with-unbound-forwards = {
+      serviceConfig = {
+        Restart = "on-failure";
+      };
+      script = ''
+        #! /usr/bin/env nix
+        #! nix shell nixpkgs#python314--command python
+
+        import json
+        import subprocess
+        import os
+
+
+        prev_lease_file_path = "/var/lib/systemd/networking/dhcp-server-lease/${lan}"
+        unbound_control = "unbound-control"
+
+        with open("/var/lib/systemd/network/dhcp-server-lease/lan", "r") as leases_file:
+          prev_leases = {}
+          if os.path.isfile(prev_lease_file_path):
+            with open(prev_lease_file_path, "r+", encoding="utf-8") as prev_leases_file_r:
+              if os.path.getsize(prev_lease_file_path) != 0:
+                prev_leases = json.load(prev_leases_file_r)
+          
+          dhcp_server_info = json.load(leases_file)
+          leases = dhcp_server_info["leases"]
+
+          clients = {}
+          for_removal = []
+          for_addition = []
+          for lease in leases:
+            clientid = lease["clientid"]
+            clientidhash = str(hash(tuple(clientid)))
+            clients[clientidhash] = lease
+            ip = lease["address"]
+
+            if clientidhash in prev_leases:
+              prev_client_lease = prev_leases[clientidhash]
+              if prev_client_lease["address"] == ip:
+                print(f"ip for client {clientid} is the same, {ip}")
+              else:
+                print(f"ip for client {clientid} is different, {ip}")
+                for_removal.append(lease)
+                for_addition.append(lease)
+            else:
+              print(f"client {clientid} is not in the previous lease file, their new ip is: {ip}")
+              for_addition.append(lease)
+         
+          for removed_lease in for_removal:
+            print(f"removing lease {removed_lease["clientid"]}")
+            hostname = added_lease["hostname"] + "." + "${config.networking.fqdn}"
+            result = subprocess.call(f"{unbound_control} local_data_remove {hostname}")
+
+          for added_lease in for_addition:
+            print("adding lease")
+            hostname = added_lease["hostname"] + "." + "${config.networking.fqdn}"
+            ip = ".".join(map(str, added_lease["address"]))  
+            result = subprocess.run(f"{unbound_control} local_data {hostname} in a {ip}")
+
+          with open(prev_lease_file_path, "w+", encoding="utf-8") as prev_leases_file_w:
+            json.dump(clients, prev_leases_file_w, ensure_ascii=false, indent=4, sort_keys=true)
+      '';
+    };
+
     networking.nftables.tables = {
       firewall = {
         family = "inet";
