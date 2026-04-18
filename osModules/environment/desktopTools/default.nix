@@ -20,4 +20,9 @@
     libva-utils
     gnome-system-monitor
   ];
+
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;
+  };
 }
