@@ -15,6 +15,7 @@ in
       ./system/zfs
 
       ./replaced/services/monitoring/prometheus/exporters.nix
+      ./replaced/services/openthread-border-router.nix
     ];
 
   options.homelab = {

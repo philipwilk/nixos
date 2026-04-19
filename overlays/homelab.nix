@@ -35,5 +35,9 @@
     })
 
     (import ./searxng)
+
+    (final: prev: {
+      openthread-border-router = prev.callPackage ./openthread-border-router { };
+    })
   ];
 }

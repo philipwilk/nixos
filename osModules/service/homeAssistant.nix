@@ -1,16 +1,8 @@
 {
-  pkgs,
   lib,
   config,
   ...
 }:
-let
-  otbrApiPort = 8081;
-  otbrPort = 8086;
-  ezspRadio = "/dev/ttyUSB0";
-  threadRadio = "/dev/ttyUSB1";
-  dongleDevice = threadRadio;
-in
 {
   options.homelab.services.homeAssistant.enable = lib.mkEnableOption "the home assistant config";
 
@@ -125,69 +117,33 @@ in
       };
     };
 
-    # for silabs multiprotocol
-    # https://hub.docker.com/r/b2un0/silabs-multipan-docker
     networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [
-      otbrPort
+      config.services.openthread-border-router.rest.listenPort
+      config.services.openthread-border-router.web.listenPort
       config.services.zigbee2mqtt.settings.frontend.port
+      config.services.matter-server.port
     ];
-    #virtualisation.oci-containers.containers."silabs-multipan" = {
-    #  image = "docker.io/b2un0/silabs-multipan-docker:2.4.5";
-    #  environment = {
-    #    BACKBONE_IF = config.homelab.net.lan;
-    #    DEVICE = dongleDevice;
-    #    FLOW_CONTROL = "false";
-    #  };
-    #  devices = [
-    #    "${dongleDevice}:${dongleDevice}"
-    #    "/dev/net/tun"
-    #  ];
-    #  capabilities = {
-    #    CAP_NET_ADMIN = true;
-    #    CAP_NET_RAW = true;
-    #  };
-    #  extraOptions = [
-    #    "--network=host"
-    #  ];
-    #  ports = [
-    #    "${toString otbrPort}:${toString otbrPort}"
-    #    "${toString otbrApiPort}:${toString otbrApiPort}"
-    #  ];
-    #  volumes = [ "${config.homelab.stateDir}/multipan:/data:Z" ];
-    #};
-    /*
-      boot.kernelModules = [ "ip6table_filter" ];
-      virtualisation.oci-containers.containers."otbr" = {
-        image = "docker.io/openthread/otbr:latest";
-        devices = [
-          dongleDevice
-          "/dev/net/tun"
-        ];
-        capabilities = {
-          CAP_NET_ADMIN = true;
-          CAP_NET_RAW = true;
-          CAP_SYSLOG = true;
-        };
-        cmd = [
-          "--radio-url \"spinel+hdlc+uart://${dongleDevice}?uart-baudrate=460800\""
-        ];
-        extraOptions = [
-          "--sysctl net.ipv6.conf.all.disable_ipv6=0"
-          "--sysctl net.ipv4.conf.all.forwarding=1"
-          "--sysctl net.ipv6.conf.all.forwarding=1"
-        ];
-        ports = [
-          "8081:8081"
-          "8086:80"
-        ];
-        volumes = [ "${config.homelab.stateDir}/multipan:/data:Z" ];
-      };
-    */
 
-    services.matter-server.enable = true; # needs stateDir patch
+    services.openthread-border-router = {
+      enable = true;
+      logLevel = "debug";
+      backboneInterfaces = [
+        "lo"
+        config.homelab.router.devices.lan
+      ];
+      radio = {
+        device = "/dev/serial/by-id/usb-Itead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_V2_1a8fbb4676d9ee1190f5ab4c37b89984-if00-port0";
+        baudRate = 460800;
+        flowControl = false;
+      };
+      rest.listenAddress = "0.0.0.0";
+      web.enable = true;
+      web.listenAddress = "0.0.0.0";
+    };
+
+    services.matter-server.enable = true;
     hardware.bluetooth.enable = true;
 
-    # for proxying
     services.home-assistant.config.http = {
       server_host = "::1";
       trusted_proxies = [ "::1" ];
