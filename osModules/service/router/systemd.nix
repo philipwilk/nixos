@@ -50,7 +50,7 @@ in
       networks = {
         # only configure in simple ethernet dhcp network - no custom gateway set (pppoe)
         # (uplink allows for simple ethernet dhcp with vlan)
-        "10-${uplink}" = lib.mkIf (uplink == gateway) {
+        "50-${uplink}" = lib.mkIf (uplink == gateway) {
           matchConfig.Name = uplink;
           networkConfig = {
             DHCP = "yes";
@@ -92,9 +92,10 @@ in
             PriorityQueueingPreset = "diffserv8";
           };
 
-          linkConfig.RequiredForOnline = "no";
+          linkConfig.RequiredForOnline = "yes";
         };
-        "15-${lan}" = {
+
+        "60-${lan}" = {
           matchConfig.Name = lan;
           matchConfig.Type = "ether";
           networkConfig = {
@@ -116,7 +117,7 @@ in
             NTP = routerIp;
             PoolOffset = 100;
             ServerAddress = "${routerIp}/16";
-            UplinkInterface = config.homelab.router.devices.uplink;
+            UplinkInterface = uplink;
             DefaultLeaseTimeSec = 1800;
           };
 
@@ -128,7 +129,7 @@ in
             # }
           ];
 
-          linkConfig.RequiredForOnline = "yes";
+          linkConfig.RequiredForOnline = "no";
 
           ipv6SendRAConfig = {
             EmitDNS = "yes";

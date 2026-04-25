@@ -33,12 +33,30 @@ in
   };
 
   systemd.network.netdevs = {
-    "0-${linkNames.uplink}" = {
+    "0-vlan911" = {
       netdevConfig = {
         Kind = "vlan";
-        Name = linkNames.uplink;
+        Name = "vlan911";
       };
       vlanConfig.Id = 911;
+    };
+    "0-${linkNames.backupWan}" = {
+      netdevConfig = {
+        Kind = "vlan";
+        Name = linkNames.backupWan;
+      };
+      vlanConfig.Id = 100;
+    };
+    "0-${linkNames.bondedWan}" = {
+      netdevConfig = {
+        Kind = "bond";
+        Name = linkNames.bondedWan;
+      };
+      bondConfig = {
+        Mode = "active-backup";
+        PrimaryReselectPolicy = "always";
+        MIIMonitorSec = "1s";
+      };
     };
   };
 
@@ -47,6 +65,28 @@ in
       matchConfig.PermanentMACAddress = config.homelab.router.devices.wanMac;
       vlan = [
         linkNames.uplink
+      ];
+    };
+    "15-vlan911" = {
+      matchConfig.Name = "vlan911";
+      networkConfig = {
+        Bond = linkNames.bondedWan;
+        PrimarySlave = true;
+      };
+    };
+    "15-${linkNames.backupWan}" = {
+      matchConfig.Name = linkNames.backupWan;
+      networkConfig.Bond = linkNames.bondedWan;
+    };
+    "20-${linkNames.uplink}" = {
+      matchConfig.Name = linkNames.uplink;
+      networkConfig.BindCarrier = "vlan911 ${linkNames.backupWan}";
+    };
+    # backup wan is actually being routed over lan via a vlan, which is why this looks weird
+    "5-${linkNames.lan}" = {
+      matchConfig.PermanentMACAddress = config.homelab.router.devices.backupWanMac;
+      vlan = [
+        linkNames.backupWan
       ];
     };
   };
@@ -70,11 +110,14 @@ in
       linkLocal = "fe80::66ab:5898:6981:3273";
       devices.wanMac = "e8:ea:6a:93:e6:1d";
       devices.wan = "wan";
+      devices.backupWan = "vlan100";
+      devices.bondedWan = "bond0";
+      # see comment on network config
+      devices.backupWanMac = config.homelab.router.devices.lanMac;
       devices.lanMac = "e8:ea:6a:93:e6:1e";
       devices.lan = "lan";
-      devices.uplink = "vlan911";
+      devices.uplink = config.homelab.router.devices.bondedWan;
       systemd.enableCake = true;
-      systemd.cakeBandwidth = "2100";
     };
     services.nginx.enable = true;
     services.homeAssistant.enable = true;

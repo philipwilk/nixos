@@ -36,6 +36,20 @@ in
           Network to use as the "wan" interface.
         '';
       };
+      backupWan = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        example = "eth2";
+        description = ''
+          Network to use as the backup wan interface (for network failover/redundancy).
+        '';
+      };
+      bondedWan = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        example = "bond0";
+        description = ''
+          Network to use at wan uplink if there is a backup wan interface present (for network failover/redundancy).
+        '';
+      };
       lan = lib.mkOption {
         type = lib.types.str;
         default = config.homelab.net.lan;
@@ -48,6 +62,12 @@ in
         type = lib.types.str;
         description = ''
           Mac address of the "wan" interface.
+        '';
+      };
+      backupWanMac = lib.mkOption {
+        type = lib.types.str;
+        description = ''
+          Mac address of the backup wan interface.
         '';
       };
       lanMac = lib.mkOption {
