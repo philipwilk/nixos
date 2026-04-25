@@ -128,7 +128,7 @@ in
             # }
           ];
 
-          linkConfig.RequiredForOnline = "yes";
+          linkConfig.RequiredForOnline = "no";
 
           ipv6SendRAConfig = {
             EmitDNS = "yes";

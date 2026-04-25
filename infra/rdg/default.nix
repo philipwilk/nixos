@@ -1,11 +1,11 @@
 {
   config,
-  lib,
-  pkgs,
   ...
 }:
 let
   linkNames = config.homelab.router.devices;
+  primaryWanVlan = "vlan911";
+  secondaryWanVlan = "vlan100";
 in
 {
   imports = [
@@ -33,12 +33,19 @@ in
   };
 
   systemd.network.netdevs = {
-    "0-${linkNames.uplink}" = {
+    "0-${primaryWanVlan}" = {
       netdevConfig = {
         Kind = "vlan";
-        Name = linkNames.uplink;
+        Name = primaryWanVlan;
       };
       vlanConfig.Id = 911;
+    };
+    "0-${secondaryWanVlan}" = {
+      netdevConfig = {
+        Kind = "vlan";
+        Name = secondaryWanVlan;
+      };
+      vlanConfig.Id = 100;
     };
   };
 
@@ -46,7 +53,13 @@ in
     "10-${linkNames.wan}" = {
       matchConfig.PermanentMACAddress = config.homelab.router.devices.wanMac;
       vlan = [
-        linkNames.uplink
+        primaryWanVlan
+      ];
+    };
+    "50-${linkNames.lan}" = {
+      matchConfig.PermanentMACAddress = config.homelab.router.devices.lanMac;
+      vlan = [
+        secondaryWanVlan
       ];
     };
   };
