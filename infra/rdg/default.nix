@@ -85,7 +85,6 @@ in
       devices.wan = "wan";
       devices.lanMac = "e8:ea:6a:93:e6:1e";
       devices.lan = "lan";
-      devices.uplink = "vlan911";
       devices.uplinks = [
         primaryWanVlan
         secondaryWanVlan

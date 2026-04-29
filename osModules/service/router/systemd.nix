@@ -1,16 +1,12 @@
 { config, lib, ... }:
 let
-  r = config.homelab.router;
-  routerIp = r.ip4;
-  linkLocal = r.linkLocal;
+  router = config.homelab.router;
+  cfg = router.systemd;
 
-  cfg = config.homelab.router.systemd;
-  devices = config.homelab.router.devices;
-  lan = config.homelab.router.devices.lan;
-  uplink = config.homelab.router.devices.uplink;
-
-  dns4 = routerIp;
-  dns6 = linkLocal;
+  routerIp = router.ip4;
+  linkLocal = router.linkLocal;
+  lan = router.devices.lan;
+  uplinks = router.devices.uplinks;
 
   generateUplinkConfiguration = uplinkName: routeMetric: {
     matchConfig.Name = uplinkName;
@@ -62,7 +58,7 @@ let
 
   uplinkInterfaceAttrsList = lib.imap1 (
     i: v: lib.nameValuePair ("10-" + v) (generateUplinkConfiguration v (100 * (i * i)))
-  ) devices.uplinks;
+  ) uplinks;
   uplinkInterfaceAttrs = builtins.listToAttrs uplinkInterfaceAttrsList;
 
 in
@@ -127,7 +123,7 @@ in
           dhcpServerConfig = {
             EmitRouter = "yes";
             EmitDNS = "yes";
-            DNS = dns4;
+            DNS = routerIp;
             EmitNTP = "yes";
             NTP = routerIp;
             PoolOffset = 100;
@@ -148,7 +144,7 @@ in
 
           ipv6SendRAConfig = {
             EmitDNS = "yes";
-            DNS = dns6;
+            DNS = linkLocal;
             EmitDomains = "no";
           };
 
