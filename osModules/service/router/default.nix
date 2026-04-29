@@ -63,6 +63,14 @@ in
           Upstream device for lan - modify where vlan is necessary.
         '';
       };
+      uplinks = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ cfg.devices.uplink ];
+        description = ''
+          Devices that will be used as upstreams for the lan.
+          The route metric will be automatically configured in the same order that devices have been passed
+        '';
+      };
       gateway = lib.mkOption {
         type = lib.types.str;
         default = cfg.devices.uplink;

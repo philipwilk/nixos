@@ -5,13 +5,65 @@ let
   linkLocal = r.linkLocal;
 
   cfg = config.homelab.router.systemd;
+  devices = config.homelab.router.devices;
   lan = config.homelab.router.devices.lan;
-  wan = config.homelab.router.devices.wan;
   uplink = config.homelab.router.devices.uplink;
-  gateway = config.homelab.router.devices.gateway;
 
   dns4 = routerIp;
   dns6 = linkLocal;
+
+  generateUplinkConfiguration = uplinkName: routeMetric: {
+    matchConfig.Name = uplinkName;
+    networkConfig = {
+      DHCP = "yes";
+      IPv6AcceptRA = "yes";
+      DHCPPrefixDelegation = "yes";
+      LinkLocalAddressing = "ipv6";
+      IPv4Forwarding = "yes";
+    };
+
+    dhcpV4Config = {
+      UseHostname = "no";
+      UseDNS = "no";
+      UseNTP = "no";
+      UseSIP = "no";
+      UseRoutes = "no";
+      UseGateway = "yes";
+      RouteMetric = routeMetric;
+    };
+
+    ipv6AcceptRAConfig = {
+      UseDNS = "no";
+      DHCPv6Client = "yes";
+      RouteMetric = routeMetric;
+    };
+
+    dhcpPrefixDelegationConfig.UplinkInterface = ":self";
+
+    dhcpV6Config = {
+      WithoutRA = "solicit";
+      UseHostname = "no";
+      UseDNS = "no";
+      UseNTP = "no";
+    };
+
+    cakeConfig = lib.mkIf cfg.enableCake {
+      Bandwidth = "${cfg.cakeBandwidth}M";
+      OverheadBytes = 48;
+      MPUBytes = 84;
+      CompensationMode = "none";
+      FlowIsolationMode = "triple";
+      PriorityQueueingPreset = "diffserv8";
+    };
+
+    linkConfig.RequiredForOnline = "no";
+  };
+
+  uplinkInterfaceAttrsList = lib.imap1 (
+    i: v: lib.nameValuePair ("10-" + v) (generateUplinkConfiguration v (100 * (i * i)))
+  ) devices.uplinks;
+  uplinkInterfaceAttrs = builtins.listToAttrs uplinkInterfaceAttrsList;
+
 in
 {
   options.homelab.router.systemd = {
@@ -21,6 +73,15 @@ in
       example = true;
       description = ''
         Whether to enable systemd network configuration.
+      '';
+    };
+    enableUplinkConfiguration = lib.mkOption {
+      type = lib.types.bool;
+      default = cfg.enable;
+      example = false;
+      description = ''
+        Whether to enable systemd network configuration of the uplink interface.
+        Relevant if the uplink interface is being externally managed, eg, by ppp
       '';
     };
     ipRange = lib.mkOption {
@@ -47,53 +108,7 @@ in
     systemd.network = {
       enable = true;
       config.networkConfig.IPv6Forwarding = "yes";
-      networks = {
-        # only configure in simple ethernet dhcp network - no custom gateway set (pppoe)
-        # (uplink allows for simple ethernet dhcp with vlan)
-        "10-${uplink}" = lib.mkIf (uplink == gateway) {
-          matchConfig.Name = uplink;
-          networkConfig = {
-            DHCP = "yes";
-            IPv6AcceptRA = "yes";
-            DHCPPrefixDelegation = "yes";
-            LinkLocalAddressing = "ipv6";
-            IPv4Forwarding = "yes";
-          };
-
-          dhcpV4Config = {
-            UseHostname = "no";
-            UseDNS = "no";
-            UseNTP = "no";
-            UseSIP = "no";
-            UseRoutes = "no";
-            UseGateway = "yes";
-          };
-
-          ipv6AcceptRAConfig = {
-            UseDNS = "no";
-            DHCPv6Client = "yes";
-          };
-
-          dhcpPrefixDelegationConfig.UplinkInterface = ":self";
-
-          dhcpV6Config = {
-            WithoutRA = "solicit";
-            UseHostname = "no";
-            UseDNS = "no";
-            UseNTP = "no";
-          };
-
-          cakeConfig = lib.mkIf cfg.enableCake {
-            Bandwidth = "${cfg.cakeBandwidth}M";
-            OverheadBytes = 48;
-            MPUBytes = 84;
-            CompensationMode = "none";
-            FlowIsolationMode = "triple";
-            PriorityQueueingPreset = "diffserv8";
-          };
-
-          linkConfig.RequiredForOnline = "no";
-        };
+      networks = lib.mergeAttrs (if (cfg.enableUplinkConfiguration) then uplinkInterfaceAttrs else { }) {
         "15-${lan}" = {
           matchConfig.Name = lan;
           matchConfig.Type = "ether";

@@ -33,14 +33,14 @@ in
   };
 
   systemd.network.netdevs = {
-    "0-${primaryWanVlan}" = {
+    "5-${primaryWanVlan}" = {
       netdevConfig = {
         Kind = "vlan";
         Name = primaryWanVlan;
       };
       vlanConfig.Id = 911;
     };
-    "0-${secondaryWanVlan}" = {
+    "5-${secondaryWanVlan}" = {
       netdevConfig = {
         Kind = "vlan";
         Name = secondaryWanVlan;
@@ -56,7 +56,7 @@ in
         primaryWanVlan
       ];
     };
-    "50-${linkNames.lan}" = {
+    "15-${linkNames.lan}" = {
       matchConfig.PermanentMACAddress = config.homelab.router.devices.lanMac;
       vlan = [
         secondaryWanVlan
@@ -86,6 +86,10 @@ in
       devices.lanMac = "e8:ea:6a:93:e6:1e";
       devices.lan = "lan";
       devices.uplink = "vlan911";
+      devices.uplinks = [
+        primaryWanVlan
+        secondaryWanVlan
+      ];
       systemd.enableCake = true;
       systemd.cakeBandwidth = "2100";
     };
