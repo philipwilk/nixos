@@ -35,6 +35,7 @@ let
     ipv6AcceptRAConfig = {
       UseDNS = "no";
       DHCPv6Client = "yes";
+      UseGateway = "yes";
       RouteMetric = routeMetric;
     };
 
@@ -131,7 +132,7 @@ in
             NTP = routerIp;
             PoolOffset = 100;
             ServerAddress = "${routerIp}/16";
-            UplinkInterface = config.homelab.router.devices.uplink;
+            UplinkInterface = ":auto";
             DefaultLeaseTimeSec = 1800;
           };
 
@@ -151,7 +152,7 @@ in
             EmitDomains = "no";
           };
 
-          dhcpPrefixDelegationConfig.UplinkInterface = uplink;
+          dhcpPrefixDelegationConfig.UplinkInterface = ":auto";
         };
       };
     };
