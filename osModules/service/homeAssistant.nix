@@ -117,7 +117,7 @@
       };
     };
 
-    networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [
+    networking.firewall.interfaces.${config.homelab.routing.interfaces.lan}.allowedTCPPorts = [
       config.services.openthread-border-router.rest.listenPort
       config.services.openthread-border-router.web.listenPort
       config.services.zigbee2mqtt.settings.frontend.port
@@ -129,7 +129,7 @@
       logLevel = "debug";
       backboneInterfaces = [
         "lo"
-        config.homelab.router.devices.lan
+        config.homelab.routing.interfaces.lan
       ];
       radio = {
         device = "/dev/serial/by-id/usb-Itead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_V2_1a8fbb4676d9ee1190f5ab4c37b89984-if00-port0";

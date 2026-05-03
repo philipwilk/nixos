@@ -78,24 +78,6 @@ in
         Path to store long-term state under
       '';
     };
-    net = {
-      lan = lib.mkOption {
-        type = lib.types.str;
-        default = "enp3s0";
-        example = "eno2";
-        description = ''
-          Lan device to use for firewall rules
-        '';
-      };
-      wan = lib.mkOption {
-        type = lib.types.str;
-        default = "enp2s0";
-        example = "eno1";
-        description = ''
-          Wan device to use for firewall rules
-        '';
-      };
-    };
     services = {
       grafana = {
         enable = lib.mkOption {

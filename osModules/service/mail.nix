@@ -87,7 +87,7 @@ in
       };
     };
 
-    networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [
+    networking.firewall.interfaces.${config.homelab.routing.interfaces.lan}.allowedTCPPorts = [
       25
       465
       993

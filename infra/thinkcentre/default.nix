@@ -7,7 +7,7 @@
 
   homelab = {
     hostname = "rdg.uk.region.fogbox.uk";
-    net.lan = "wlp2s0";
+    routing.interfaces.lan = "wlp2s0";
     services.nginx.enable = true;
     services.homeAssistant.enable = true;
   };

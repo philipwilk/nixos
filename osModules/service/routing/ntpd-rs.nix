@@ -1,15 +1,18 @@
 { lib, config, ... }:
+let
+  cfg = config.homelab.routing;
+in
 {
-  options.homelab.router.ntpd-rs.enable = lib.mkOption {
+  options.homelab.routing.ntpd-rs.enable = lib.mkOption {
     type = lib.types.bool;
-    default = config.homelab.router.enable;
+    default = config.homelab.routing.router.enable;
     example = true;
     description = ''
       Whether to enable the ntpd-rs NTP server.
     '';
   };
 
-  config = lib.mkIf config.homelab.router.ntpd-rs.enable {
+  config = lib.mkIf cfg.ntpd-rs.enable {
     services.ntpd-rs = {
       enable = true;
       useNetworkingTimeServers = false;
@@ -29,6 +32,6 @@
         ];
       };
     };
-    networking.firewall.interfaces.${config.homelab.router.devices.lan}.allowedUDPPorts = [ 123 ];
+    networking.firewall.interfaces.${cfg.interfaces.lan}.allowedUDPPorts = [ 123 ];
   };
 }

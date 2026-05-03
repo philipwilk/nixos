@@ -30,7 +30,7 @@ in
       aaaa.data = config.networking.domains.subDomains.${config.networking.fqdn}.aaaa.data;
     };
 
-    networking.firewall.interfaces.${config.homelab.net.lan}.allowedTCPPorts = [ 22 ];
+    networking.firewall.interfaces.${config.homelab.routing.interfaces.lan}.allowedTCPPorts = [ 22 ];
 
     systemd.services.soft-serve = {
       path = with pkgs; [ openssh ];

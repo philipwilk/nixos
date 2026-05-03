@@ -12,8 +12,8 @@
 
   systemd.network.links =
     let
-      lan = config.homelab.router.devices.lan;
-      wan = config.homelab.router.devices.wan;
+      lan = config.homelab.routing.interfaces.lan;
+      wan = config.homelab.routing.interfaces.wan;
     in
     {
       "link-${wan}" = {
@@ -54,11 +54,14 @@
     hostname = "sou.uk.region.fogbox.uk";
     isLeader = true;
     archiveDir = "/mnt/zfs/colossus";
-    router = {
-      enable = true;
+    routing = {
+      router.enable = true;
       linkLocal = "fe80::eaea:6aff:fe93:e79f";
-      devices.wan = "enp8s0";
-      devices.lan = "enp7s0";
+      interfaces = {
+        wan = "enp8s0";
+        lan = "enp7s0";
+      };
+      systemd.networkd.enableCake = true;
     };
     services = {
       nginx.enable = true;
@@ -90,7 +93,7 @@
     enableWorker = true;
     enableMaster = true;
   };
-  networking.firewall.interfaces.${config.homelab.router.devices.wan}.allowedTCPPorts = [ 9989 ];
+  networking.firewall.interfaces.${config.homelab.routing.interfaces.wan}.allowedTCPPorts = [ 9989 ];
 
   homelab.nix = {
     #hercules-ci.enable = true;

@@ -1,12 +1,6 @@
 { config, lib, ... }:
 let
-  router = config.homelab.router;
-  cfg = router.systemd;
-
-  routerIp = router.ip4;
-  linkLocal = router.linkLocal;
-  lan = router.devices.lan;
-  uplinks = router.devices.uplinks;
+  cfg = config.homelab.routing;
 
   generateUplinkConfiguration = uplinkName: routeMetric: {
     matchConfig.Name = uplinkName;
@@ -44,8 +38,8 @@ let
       UseNTP = "no";
     };
 
-    cakeConfig = lib.mkIf cfg.enableCake {
-      Bandwidth = "${cfg.cakeBandwidth}M";
+    cakeConfig = lib.mkIf cfg.systemd.networkd.enableCake {
+      Bandwidth = "${cfg.systemd.networkd.cakeBandwidth}M";
       OverheadBytes = 48;
       MPUBytes = 84;
       CompensationMode = "none";
@@ -58,15 +52,15 @@ let
 
   uplinkInterfaceAttrsList = lib.imap1 (
     i: v: lib.nameValuePair ("10-" + v) (generateUplinkConfiguration v (100 * (i * i)))
-  ) uplinks;
+  ) cfg.interfaces.uplinks;
   uplinkInterfaceAttrs = builtins.listToAttrs uplinkInterfaceAttrsList;
 
 in
 {
-  options.homelab.router.systemd = {
+  options.homelab.routing.systemd.networkd = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = config.homelab.router.enable;
+      default = config.homelab.routing.router.enable;
       example = true;
       description = ''
         Whether to enable systemd network configuration.
@@ -74,7 +68,7 @@ in
     };
     enableUplinkConfiguration = lib.mkOption {
       type = lib.types.bool;
-      default = cfg.enable;
+      default = cfg.systemd.networkd.enable;
       example = false;
       description = ''
         Whether to enable systemd network configuration of the uplink interface.
@@ -100,63 +94,66 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.systemd.networkd.enable {
     networking.useDHCP = false;
     systemd.network = {
       enable = true;
       config.networkConfig.IPv6Forwarding = "yes";
-      networks = lib.mergeAttrs (if (cfg.enableUplinkConfiguration) then uplinkInterfaceAttrs else { }) {
-        "15-${lan}" = {
-          matchConfig.Name = lan;
-          matchConfig.Type = "ether";
-          networkConfig = {
-            IPv6AcceptRA = "no";
-            IPv6SendRA = "yes";
-            LinkLocalAddressing = "ipv6";
-            DHCPPrefixDelegation = "yes";
-            DHCPServer = "yes";
-            Address = "${routerIp}/16";
-            IPv4Forwarding = "yes";
-            IPMasquerade = "ipv4";
+      networks =
+        lib.mergeAttrs
+          (if (cfg.systemd.networkd.enableUplinkConfiguration) then uplinkInterfaceAttrs else { })
+          {
+            "15-${cfg.interfaces.lan}" = {
+              matchConfig.Name = cfg.interfaces.lan;
+              matchConfig.Type = "ether";
+              networkConfig = {
+                IPv6AcceptRA = "no";
+                IPv6SendRA = "yes";
+                LinkLocalAddressing = "ipv6";
+                DHCPPrefixDelegation = "yes";
+                DHCPServer = "yes";
+                Address = "${cfg.ip4}/16";
+                IPv4Forwarding = "yes";
+                IPMasquerade = "ipv4";
+              };
+
+              dhcpServerConfig = {
+                EmitRouter = "yes";
+                EmitDNS = "yes";
+                DNS = cfg.ip4;
+                EmitNTP = "yes";
+                NTP = cfg.ip4;
+                PoolOffset = 100;
+                ServerAddress = "${cfg.ip4}/16";
+                UplinkInterface = ":auto";
+                DefaultLeaseTimeSec = 1800;
+              };
+
+              dhcpServerStaticLeases = [
+                # {
+                #   # Idac for example
+                #   Address = "192.168.1.50";
+                #   MACAddress = "54:9f:35:14:57:3e";
+                # }
+              ];
+
+              linkConfig.RequiredForOnline = "no";
+
+              ipv6SendRAConfig = {
+                EmitDNS = "yes";
+                DNS = cfg.linkLocal;
+                EmitDomains = "no";
+              };
+
+              dhcpPrefixDelegationConfig.UplinkInterface = ":auto";
+            };
           };
-
-          dhcpServerConfig = {
-            EmitRouter = "yes";
-            EmitDNS = "yes";
-            DNS = routerIp;
-            EmitNTP = "yes";
-            NTP = routerIp;
-            PoolOffset = 100;
-            ServerAddress = "${routerIp}/16";
-            UplinkInterface = ":auto";
-            DefaultLeaseTimeSec = 1800;
-          };
-
-          dhcpServerStaticLeases = [
-            # {
-            #   # Idac for example
-            #   Address = "192.168.1.50";
-            #   MACAddress = "54:9f:35:14:57:3e";
-            # }
-          ];
-
-          linkConfig.RequiredForOnline = "no";
-
-          ipv6SendRAConfig = {
-            EmitDNS = "yes";
-            DNS = linkLocal;
-            EmitDomains = "no";
-          };
-
-          dhcpPrefixDelegationConfig.UplinkInterface = ":auto";
-        };
-      };
     };
 
     networking.firewall.logRefusedConnections = lib.mkForce false;
 
     # Open ports for dhcp server on lan
-    networking.firewall.interfaces.${lan}.allowedUDPPorts = [
+    networking.firewall.interfaces.${cfg.interfaces.lan}.allowedUDPPorts = [
       67
       68
     ];

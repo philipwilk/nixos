@@ -3,7 +3,9 @@
   ...
 }:
 let
-  linkNames = config.homelab.router.devices;
+  linkNames = config.homelab.routing.interfaces;
+  wanMac = "e8:ea:6a:93:e6:1d";
+  lanMac = "e8:ea:6a:93:e6:1e";
   primaryWanVlan = "vlan911";
   secondaryWanVlan = "vlan100";
 in
@@ -19,13 +21,13 @@ in
   systemd.network.wait-online.enable = false;
   systemd.network.links = {
     "90-${linkNames.wan}" = {
-      matchConfig.PermanentMACAddress = config.homelab.router.devices.wanMac;
+      matchConfig.PermanentMACAddress = wanMac;
       linkConfig = {
         Name = linkNames.wan;
       };
     };
     "90-${linkNames.lan}" = {
-      matchConfig.PermanentMACAddress = config.homelab.router.devices.lanMac;
+      matchConfig.PermanentMACAddress = lanMac;
       linkConfig = {
         Name = linkNames.lan;
       };
@@ -51,13 +53,13 @@ in
 
   systemd.network.networks = {
     "10-${linkNames.wan}" = {
-      matchConfig.PermanentMACAddress = config.homelab.router.devices.wanMac;
+      matchConfig.PermanentMACAddress = wanMac;
       vlan = [
         primaryWanVlan
       ];
     };
     "15-${linkNames.lan}" = {
-      matchConfig.PermanentMACAddress = config.homelab.router.devices.lanMac;
+      matchConfig.PermanentMACAddress = lanMac;
       vlan = [
         secondaryWanVlan
       ];
@@ -77,20 +79,18 @@ in
 
   homelab = {
     hostname = config.networking.fqdn;
-    net.lan = config.homelab.router.devices.lan;
-    router = {
-      enable = true;
+    routing = {
+      router.enable = true;
       linkLocal = "fe80::66ab:5898:6981:3273";
-      devices.wanMac = "e8:ea:6a:93:e6:1d";
-      devices.wan = "wan";
-      devices.lanMac = "e8:ea:6a:93:e6:1e";
-      devices.lan = "lan";
-      devices.uplinks = [
-        primaryWanVlan
-        secondaryWanVlan
-      ];
-      systemd.enableCake = true;
-      systemd.cakeBandwidth = "2100";
+      interfaces = {
+        wan = "wan";
+        lan = "lan";
+        uplinks = [
+          primaryWanVlan
+          secondaryWanVlan
+        ];
+      };
+      systemd.networkd.enableCake = true;
     };
     services.nginx.enable = true;
     services.homeAssistant.enable = true;

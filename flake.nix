@@ -127,6 +127,7 @@
                 mkHomelabSystem = mkSystemFactory [
                   ./overlays/homelab.nix
                   ./osModules/homelab.nix
+                  ./osModules/routing.nix
                   inputs.buildbot-nix.nixosModules.buildbot-master
                   inputs.buildbot-nix.nixosModules.buildbot-worker
                   inputs.nixos-dns.nixosModules.dns

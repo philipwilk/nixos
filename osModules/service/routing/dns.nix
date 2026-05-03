@@ -5,14 +5,12 @@
   ...
 }:
 let
-  lan = config.homelab.router.devices.lan;
-  ip4 = config.homelab.router.ip4;
-  linkLocal = config.homelab.router.linkLocal;
+  cfg = config.homelab.routing;
 
   dnsDomains = builtins.attrNames config.networking.domains.subDomains;
   simpleDataDomains = map (lib.removePrefix "*.") dnsDomains;
-  localData4 = map (host: "\"${host}. 3600 IN A ${ip4}\"") simpleDataDomains;
-  localData6 = map (host: "\"${host}. 3600 IN AAAA ${linkLocal}\"") simpleDataDomains;
+  localData4 = map (host: "\"${host}. 3600 IN A ${cfg.ip4}\"") simpleDataDomains;
+  localData6 = map (host: "\"${host}. 3600 IN AAAA ${cfg.linkLocal}\"") simpleDataDomains;
   localData = localData4 ++ localData6;
 
   wildcardRecords = builtins.filter (lib.hasPrefix "*.") dnsDomains;
@@ -20,8 +18,8 @@ let
   localZone = map (host: "\"${host}\" redirect") localZoneDomains;
 in
 {
-  config = lib.mkIf config.homelab.router.enable {
-    networking.firewall.interfaces.${lan} = {
+  config = lib.mkIf config.homelab.routing.router.enable {
+    networking.firewall.interfaces.${cfg.interfaces.lan} = {
       allowedTCPPorts = [
         53
         9153
@@ -58,7 +56,7 @@ in
           access-control = [
             "127.0.0.1 allow"
             "::1 allow"
-            "${config.homelab.router.systemd.ipRange} allow"
+            "${config.homelab.routing.systemd.networkd.ipRange} allow"
             "fe80::/64 allow"
             "fd00::/8 allow"
             "2000::/3 allow"
@@ -104,7 +102,7 @@ in
     services.adguardhome = {
       enable = true;
       port = 5353;
-      host = ip4;
+      host = cfg.ip4;
       mutableSettings = false;
       settings = {
         dns =
@@ -127,7 +125,7 @@ in
             bind_hosts = [
               "127.0.0.1"
               "::1"
-              ip4
+              cfg.ip4
             ];
             cache_enabled = false;
           };
