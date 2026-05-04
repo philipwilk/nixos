@@ -11,6 +11,7 @@
 
   flakeConfig.environment.primaryHomeManagedUser = "philip";
   hjem.users.philip.enable = true;
+  hjem.interactive = true;
 
   users.users.philip = {
     isNormalUser = true;
