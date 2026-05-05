@@ -136,7 +136,7 @@ in
     }
     {
       powerManagement.powertop.enable = true;
-      powerManagement.cpuFreqGovernor = "ondemand";
+      powerManagement.cpuFreqGovernor = "powersave";
 
       networking.domain = "uk.region.fogbox.uk";
 
