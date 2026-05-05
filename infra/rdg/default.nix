@@ -25,12 +25,22 @@ in
       linkConfig = {
         Name = linkNames.wan;
       };
+      extraConfig = ''
+        [EnergyEfficientEthernet]
+        Enable=yes
+        TxLowPowerIdle=yes
+      '';
     };
     "90-${linkNames.lan}" = {
       matchConfig.PermanentMACAddress = lanMac;
       linkConfig = {
         Name = linkNames.lan;
       };
+      extraConfig = ''
+        [EnergyEfficientEthernet]
+        Enable=yes
+        TxLowPowerIdle=yes
+      '';
     };
   };
 
