@@ -17,7 +17,6 @@ in
       ./system/users/philip-server
 
       ./replaced/services/monitoring/prometheus/exporters.nix
-      ./replaced/services/openthread-border-router.nix
     ];
 
   options.homelab = {
@@ -146,7 +145,9 @@ in
         defaults = {
           email = config.homelab.acme.mail;
           dnsProvider = "desec";
-          credentialsFile = config.age.secrets.desec.path;
+          credentialFiles = {
+            DESEC_TOKEN_FILE = config.age.secrets.desec.path;
+          };
         };
       };
 
