@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -65,5 +66,8 @@ in
   config = {
     networking.nftables.enable = lib.mkDefault true;
     environment.sessionVariables.NH_FLAKE = lib.mkDefault "/home/philip/repos/nixos";
+
+    boot.extraModulePackages = with config.boot.kernelPackages; [ cpupower ];
+    environment.systemPackages = with pkgs; [ powertop ];
   };
 }
