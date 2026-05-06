@@ -7,7 +7,6 @@
     prismlauncher
     moonlight-qt
     heroic
-    bottles
     packwiz
   ];
 }
