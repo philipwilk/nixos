@@ -74,7 +74,7 @@ in
       set -q __fish_config_sourced; and exit
       set -g __fish_config_sourced 1
 
-      fish_config theme choose "Catppuccin Latte"
+      fish_config theme choose "Catppuccin Frappé" --color-theme=light
 
       source ${translatedSessionVariables}
 
@@ -89,9 +89,9 @@ in
       end
     '';
 
-    xdg.config.files."fish/themes/Catppuccin Latte.theme".source = "${
+    xdg.config.files."fish/themes/catppuccin-frappe.theme".source = "${
       inputs.catppuccin.packages.${pkgs.stdenv.hostPlatform.system}.fish
-    }/Catppuccin Latte.theme";
+    }/catppuccin-frappe.theme";
 
     xdg.config.files."fish/conf.d/plugin-grc".text = mkPluginConf pkgs.fishPlugins.grc.src;
   };

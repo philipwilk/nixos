@@ -16,8 +16,8 @@
     xdg.config.files."bat/config".text = ''
       --theme="Catppuccin Latte"
     '';
-    xdg.config.files."bat/themmes/Catppuccin Latte.tmTheme".source = "${
+    xdg.config.files."bat/themes/Catppuccin Latte.tmTheme".source = "${
       inputs.catppuccin.packages.${pkgs.stdenv.hostPlatform.system}.bat
-    }/catppuccin Latte.tmTheme";
+    }/Catppuccin Latte.tmTheme";
   };
 }
