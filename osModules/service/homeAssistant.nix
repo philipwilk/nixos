@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 {
@@ -23,11 +24,13 @@
         "nanoleaf"
         "cast"
         "denonavr"
+        "heos"
         "androidtv_remote"
         "thread"
         "matter"
         "otbr"
         "mqtt"
+        "zeroconf"
       ];
       config = {
         # Includes dependencies for a basic setup
@@ -124,11 +127,16 @@
       config.services.matter-server.port
     ];
 
+    networking.firewall.interfaces.wpan0.allowedTCPPorts = [
+      config.services.openthread-border-router.rest.listenPort
+      config.services.openthread-border-router.web.listenPort
+      config.services.matter-server.port
+    ];
+
     services.openthread-border-router = {
       enable = true;
       logLevel = "debug";
       backboneInterfaces = [
-        "lo"
         config.homelab.routing.interfaces.lan
       ];
       radio = {
@@ -142,6 +150,11 @@
     };
 
     services.matter-server.enable = true;
+    systemd.services.matter-server = {
+      path = with pkgs; [ chip-ota-provider-app ];
+      serviceConfig.DynamicUser = lib.mkForce false;
+    };
+
     hardware.bluetooth.enable = true;
 
     services.home-assistant.config.http = {
