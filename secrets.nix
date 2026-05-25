@@ -19,8 +19,7 @@ in
   # wifi passwords
   ${s "wifiPasswords"}.publicKeys = servers ++ workstations;
   #
-  ${s "cloudflare"}.publicKeys = servers;
-  ${s "desec"}.publicKeys = servers;
+  ${s "dns/desec"}.publicKeys = servers;
   ${s "ldap_admin_pw"}.publicKeys = servers ++ workstations;
   ${s "server_password"}.publicKeys = servers ++ workstations;
   ${s "workstation_password"}.publicKeys = workstations;

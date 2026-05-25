@@ -124,10 +124,7 @@ in
       ];
     }
     {
-      age.secrets = {
-        cloudflare.file = ../secrets/cloudflare.age;
-        desec.file = ../secrets/desec.age;
-      };
+      age.secrets.desec.file = ../secrets/dns/desec.age;
       homelab = {
         tld = "fogbox.uk";
         acme.mail = "philip.wilk10@gmail.com";
@@ -145,6 +142,8 @@ in
         defaults = {
           email = config.homelab.acme.mail;
           dnsProvider = "desec";
+          dnsResolver = "9.9.9.9:53";
+          profile = "shortlived";
           credentialFiles = {
             DESEC_TOKEN_FILE = config.age.secrets.desec.path;
           };
