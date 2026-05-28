@@ -144,6 +144,9 @@ in
           dnsProvider = "desec";
           dnsResolver = "9.9.9.9:53";
           profile = "shortlived";
+          environmentFile = pkgs.writeText "desecEnvs" ''
+            DESEC_POLLING_INTERVAL=90
+          '';
           credentialFiles = {
             DESEC_TOKEN_FILE = config.age.secrets.desec.path;
           };
