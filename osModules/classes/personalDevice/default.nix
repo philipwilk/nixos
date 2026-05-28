@@ -17,6 +17,7 @@
     ../../environment/programs/kitty
     ../../environment/programs/steam
     ../../environment/programs/octodns
+    ../../environment/programs/lego
     ../../environment/programs/winbox
 
     ../../environment/arrrTools
